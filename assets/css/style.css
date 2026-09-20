@@ -1,0 +1,1147 @@
+:root {
+    --bg-dark: #0b1120;
+    --bg-card: #131d31;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --gold-accent: #facc15;
+    --gold-glow: rgba(250, 204, 21, 0.15);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --table-header-bg: #0f172a;
+    --table-header-text: #e2e8f0;
+    --table-row-alt: rgba(15, 23, 42, 0.4);
+    --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.25);
+}
+
+/* =========================================================
+   LIGHT THEME VARIABLES & ULTRA-PREMIUM STYLES
+   ========================================================= */
+body.light-theme {
+    --bg-dark: #f1f5f9;
+    --bg-card: #ffffff;
+    --border-color: #e2e8f0;
+    --gold-accent: #d97706;
+    --gold-glow: rgba(217, 119, 6, 0.12);
+    --text-main: #0f172a;
+    --text-muted: #475569;
+    --table-header-bg: #092c74;
+    --table-header-text: #ffffff;
+    --table-row-alt: #f8fafc;
+    --card-shadow: 0 4px 18px -2px rgba(15, 23, 42, 0.06);
+    background-color: #f1f5f9 !important;
+    background-image: linear-gradient(180deg, #f8fafc 0%, #edf2f7 100%) !important;
+    color: #0f172a !important;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    overflow-x: hidden;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Tùy chỉnh thanh cuộn */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+body.light-theme ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+body.light-theme ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+}
+
+body.light-theme ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Dashboard Card */
+.dashboard-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(12px);
+    transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.dashboard-card:hover {
+    border-color: rgba(250, 204, 21, 0.3);
+}
+
+body.light-theme .dashboard-card {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05) !important;
+}
+
+body.light-theme .dashboard-card:hover {
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 6px 20px -2px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* Section titles & Timestamps contrast in Dark & Light modes */
+body:not(.light-theme) .section-title,
+body:not(.light-theme) #table-heading,
+body:not(.light-theme) #table-title,
+body:not(.light-theme) #chart-title,
+body:not(.light-theme) h2 {
+    color: #f8fafc !important;
+    font-weight: 800 !important;
+}
+
+body:not(.light-theme) .timestamp-text,
+body:not(.light-theme) #last-updated-time,
+body:not(.light-theme) #currency-updated-time {
+    color: #94a3b8 !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme .section-title,
+body.light-theme #table-heading,
+body.light-theme #table-title,
+body.light-theme #chart-title,
+body.light-theme h2 {
+    color: #0f172a !important;
+    font-weight: 800 !important;
+}
+
+body.light-theme .timestamp-text,
+body.light-theme #last-updated-time,
+body.light-theme #currency-updated-time {
+    color: #334155 !important;
+    font-weight: 700 !important;
+}
+
+/* Bảng giá (Modern Table) - Chuẩn Điện Thoại & Layout Mẫu */
+.modern-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.modern-table th {
+    text-transform: uppercase;
+    font-size: 0.775rem;
+    letter-spacing: 0.01em;
+    color: #ffffff !important;
+    padding: 0.5rem 0.2rem;
+    background-color: #002b9e !important;
+    border: 1px solid #002b9e !important;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+    .modern-table th {
+        font-size: 0.85rem;
+        letter-spacing: 0.03em;
+        padding: 0.65rem 0.45rem;
+    }
+}
+
+.modern-table td {
+    padding: 0.45rem 0.15rem;
+    font-size: 0.775rem;
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    color: #f8fafc;
+    transition: background-color 0.15s ease;
+}
+
+@media (min-width: 640px) {
+    .modern-table td {
+        padding: 0.55rem 0.45rem;
+        font-size: 0.925rem;
+    }
+}
+
+/* Dark Mode Cell Colors (High Specificity) */
+.modern-table td.col-org,
+.modern-table td .col-org,
+.col-org {
+    color: #60a5fa !important;
+    font-weight: 800 !important;
+}
+
+.modern-table td.price-val,
+.modern-table td .price-val,
+.price-val {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+}
+
+.modern-table td.text-val-up,
+.modern-table td .text-val-up,
+.text-val-up {
+    color: #10b981 !important;
+    font-weight: 800 !important;
+}
+
+.modern-table td.text-val-down,
+.modern-table td .text-val-down,
+.text-val-down {
+    color: #f43f5e !important;
+    font-weight: 800 !important;
+}
+
+/* Table Row Hover Highlight - Vàng Hoàng Kim Sang Trọng (Chuẩn Mẫu 3) */
+.modern-table tbody tr {
+    transition: background-color 0.12s ease;
+}
+
+.modern-table tbody tr:hover td,
+body.light-theme .modern-table tbody tr:hover td {
+    background-color: #facc15 !important;
+    color: #000000 !important;
+}
+
+/* All text inside hovered row defaults to black for crisp readability on yellow */
+.modern-table tbody tr:hover td *,
+body.light-theme .modern-table tbody tr:hover td * {
+    color: #000000 !important;
+}
+
+/* Organization Column (Tổ chức) -> Navy Blue #002b9e */
+.modern-table tbody tr:hover td.col-org,
+.modern-table tbody tr:hover td.col-org *,
+.modern-table tbody tr:hover td .col-org,
+body.light-theme .modern-table tbody tr:hover td.col-org,
+body.light-theme .modern-table tbody tr:hover td.col-org *,
+body.light-theme .modern-table tbody tr:hover td .col-org {
+    color: #002b9e !important;
+}
+
+/* Price Values (MUA / BÁN) -> Black #000000 */
+.modern-table tbody tr:hover td.price-val,
+.modern-table tbody tr:hover td.price-val *,
+.modern-table tbody tr:hover td .price-val,
+body.light-theme .modern-table tbody tr:hover td.price-val,
+body.light-theme .modern-table tbody tr:hover td.price-val *,
+body.light-theme .modern-table tbody tr:hover td .price-val {
+    color: #000000 !important;
+}
+
+/* Positive Changes (+/- & CL) -> Dark Emerald Green #047857 */
+.modern-table tbody tr:hover td.text-val-up,
+.modern-table tbody tr:hover td.text-val-up *,
+.modern-table tbody tr:hover td .text-val-up,
+.modern-table tbody tr:hover td .text-val-up *,
+body.light-theme .modern-table tbody tr:hover td.text-val-up,
+body.light-theme .modern-table tbody tr:hover td.text-val-up *,
+body.light-theme .modern-table tbody tr:hover td .text-val-up,
+body.light-theme .modern-table tbody tr:hover td .text-val-up * {
+    color: #047857 !important;
+}
+
+/* Negative Changes (+/- & CL) -> Dark Red #b91c1c */
+.modern-table tbody tr:hover td.text-val-down,
+.modern-table tbody tr:hover td.text-val-down *,
+.modern-table tbody tr:hover td .text-val-down,
+.modern-table tbody tr:hover td .text-val-down *,
+body.light-theme .modern-table tbody tr:hover td.text-val-down,
+body.light-theme .modern-table tbody tr:hover td.text-val-down *,
+body.light-theme .modern-table tbody tr:hover td .text-val-down,
+body.light-theme .modern-table tbody tr:hover td .text-val-down * {
+    color: #b91c1c !important;
+}
+
+/* Light Theme - Table Grid & Colors (High Specificity Override) */
+body.light-theme .modern-table th {
+    background: #002b9e !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    border: 1px solid #002b9e !important;
+}
+
+body.light-theme .modern-table td {
+    border: 1px solid #002b9e !important;
+    color: #0f172a;
+}
+
+body.light-theme .modern-table td.col-org,
+body.light-theme .modern-table td .col-org,
+body.light-theme .col-org {
+    color: #002b9e !important;
+    font-weight: 800 !important;
+}
+
+body.light-theme .modern-table td.price-val,
+body.light-theme .modern-table td .price-val,
+body.light-theme .price-val {
+    color: #000000 !important;
+    font-weight: 800 !important;
+}
+
+body.light-theme .modern-table td.text-val-up,
+body.light-theme .modern-table td .text-val-up,
+body.light-theme .text-val-up {
+    color: #047857 !important;
+    font-weight: 800 !important;
+}
+
+body.light-theme .modern-table td.text-val-down,
+body.light-theme .modern-table td .text-val-down,
+body.light-theme .text-val-down {
+    color: #be123c !important;
+    font-weight: 800 !important;
+}
+
+body.light-theme .modern-table td .text-slate-100,
+body.light-theme .modern-table td .text-slate-200,
+body.light-theme .modern-table td .text-white {
+    color: #000000 !important;
+    font-weight: 800 !important;
+}
+
+body.light-theme .modern-table td .text-slate-300 {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme .modern-table td .text-slate-400 {
+    color: #475569 !important;
+    font-weight: 500 !important;
+}
+
+body.light-theme .modern-table td .text-slate-500 {
+    color: #64748b !important;
+    font-weight: 600 !important;
+}
+
+/* Các màu sắc chi tiết cho Bán ra, Biến động, Chênh lệch trong Table */
+body.light-theme .modern-table td .text-yellow-400,
+body.light-theme .modern-table td .text-yellow-300,
+body.light-theme .modern-table td .text-amber-400,
+body.light-theme .modern-table td .text-amber-300 {
+    color: #b45309 !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme .modern-table td .text-cyan-400,
+body.light-theme .modern-table td .text-cyan-300 {
+    color: #0369a1 !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme .modern-table td .text-blue-400,
+body.light-theme .modern-table td .text-blue-300 {
+    color: #1d4ed8 !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme .modern-table td .text-emerald-400,
+body.light-theme .modern-table td .text-emerald-300 {
+    color: #047857 !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme .modern-table td .text-rose-400,
+body.light-theme .modern-table td .text-rose-300 {
+    color: #be123c !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme .modern-table td .text-purple-400,
+body.light-theme .modern-table td .text-purple-300 {
+    color: #6b21a8 !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme .modern-table td .text-indigo-400,
+body.light-theme .modern-table td .text-indigo-300 {
+    color: #3730a3 !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme #currency-table-body td .text-slate-200,
+body.light-theme #currency-table-body td .text-white {
+    color: #090d16 !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme #currency-table-body td .text-slate-300 {
+    color: #1e293b !important;
+    font-weight: 600 !important;
+}
+
+body.light-theme #currency-table-body td .text-slate-400 {
+    color: #475569 !important;
+}
+
+body.light-theme .modern-table tbody tr:nth-child(even) td {
+    background-color: #f8fafc;
+}
+
+body.light-theme .modern-table tbody tr:hover td {
+    background-color: #facc15 !important;
+}
+
+/* Header & User Profile in Light Theme */
+body.light-theme header {
+    border-bottom-color: #e2e8f0 !important;
+}
+
+body.light-theme header h1 {
+    color: #0f172a !important;
+}
+
+body.light-theme header p {
+    color: #64748b !important;
+}
+
+body.light-theme #auth-container .bg-slate-800 {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-theme #auth-container .text-slate-200,
+body.light-theme #auth-container .text-slate-100 {
+    color: #0f172a !important;
+}
+
+body.light-theme #theme-toggle-btn {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+}
+
+body.light-theme #theme-toggle-btn:hover {
+    background-color: #f8fafc !important;
+    border-color: #94a3b8 !important;
+}
+
+body.light-theme .dashboard-card.text-slate-300,
+body.light-theme header .dashboard-card {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    color: #334155 !important;
+}
+
+/* Market Switch Tabs in Light Mode */
+body.light-theme #tab-gold {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25) !important;
+}
+
+body.light-theme #tab-silver {
+    background-color: #ffffff !important;
+    color: #334155 !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-theme #tab-silver:hover {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+}
+
+/* Quick Calculator Card in Light Mode */
+body.light-theme #calc-card {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.08) !important;
+}
+
+body.light-theme #calc-card #calc-title {
+    color: #9a3412 !important;
+    font-weight: 800 !important;
+}
+
+body.light-theme #calc-card #calc-desc {
+    color: #475569 !important;
+    font-weight: 600 !important;
+}
+
+body.light-theme #calc-card input,
+body.light-theme #calc-card select {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border: 1.5px solid #cbd5e1 !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme #calc-card select#calc-unit {
+    color: #9a3412 !important;
+    font-weight: 800 !important;
+}
+
+body.light-theme #calc-card .bg-slate-950\/50 {
+    background: #f8fafc !important;
+    background-image: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%) !important;
+    border: 1.5px solid #cbd5e1 !important;
+}
+
+body.light-theme #calc-card .bg-yellow-500\/10 {
+    background-color: #fef3c7 !important;
+    border-color: #fde68a !important;
+    color: #9a3412 !important;
+    font-weight: 800 !important;
+}
+
+body.light-theme #calc-card #calc-result {
+    color: #9a3412 !important;
+    font-weight: 900 !important;
+}
+
+/* =========================================================
+   LIGHT MODE CONTRAST & READABILITY (TABLES, CARDS & TEXTS)
+   ========================================================= */
+body.light-theme .dashboard-card {
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04) !important;
+}
+
+body.light-theme .dashboard-card:hover {
+    border-color: #94a3b8 !important;
+    box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.12) !important;
+}
+
+/* Khung giá Mua/Bán bên trong thẻ */
+body.light-theme .bg-slate-950\/50,
+body.light-theme .bg-slate-950\/40 {
+    background: #f8fafc !important;
+    background-image: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%) !important;
+    border: 1.5px solid #cbd5e1 !important;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Đường ngăn cách */
+body.light-theme .border-r {
+    border-right: 1.5px solid #cbd5e1 !important;
+}
+
+body.light-theme .border-slate-800\/40,
+body.light-theme .border-slate-800 {
+    border-color: #e2e8f0 !important;
+}
+
+/* Badge Biến Động */
+body.light-theme .bg-slate-800 {
+    background-color: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+    color: #334155 !important;
+    font-weight: 800 !important;
+}
+
+body.light-theme .bg-emerald-950\/60 {
+    background-color: #ecfdf5 !important;
+    border-color: #6ee7b7 !important;
+    color: #047857 !important;
+    font-weight: 800 !important;
+}
+
+body.light-theme .bg-rose-950\/60 {
+    background-color: #fff1f2 !important;
+    border-color: #fca5a5 !important;
+    color: #b91c1c !important;
+    font-weight: 800 !important;
+}
+
+/* =========================================================
+   TEXT COLORS IN LIGHT THEME - DEEP HIGH-CONTRAST JEWEL TONES
+   ========================================================= */
+
+/* Số chính (Lượng / Giá Mua / Tiêu đề chính) - Đen tuyền sắc nét */
+body.light-theme .text-slate-100,
+body.light-theme .text-slate-200,
+body.light-theme .text-white {
+    color: #090d16 !important;
+    font-weight: 800 !important;
+}
+
+/* Số phụ / Đơn vị / Giá Chỉ Mua vào */
+body.light-theme .text-slate-300 {
+    color: #334155 !important;
+    font-weight: 600 !important;
+}
+
+/* Phụ đề giải thích bên dưới tên sản phẩm */
+body.light-theme .text-slate-400 {
+    color: #475569 !important;
+    font-weight: 500 !important;
+}
+
+/* Nhãn nhỏ (Biến động, Chênh lệch) */
+body.light-theme .text-slate-500 {
+    color: #64748b !important;
+    font-weight: 600 !important;
+}
+
+/* Vàng / Amber / Bronze */
+body.light-theme .text-yellow-400,
+body.light-theme .text-yellow-300,
+body.light-theme .text-amber-400,
+body.light-theme .text-amber-300 {
+    color: #b45309 !important;
+    /* Đậm nét ấm áp */
+    font-weight: 800 !important;
+}
+
+/* Xanh Lục Bảo (Tăng trưởng / Biến động dương) */
+body.light-theme .text-emerald-400,
+body.light-theme .text-emerald-300 {
+    color: #047857 !important;
+    /* Xanh lục bảo đậm */
+    font-weight: 800 !important;
+}
+
+/* Xanh Dương Đậm / Sky / Cyan (Chênh lệch & Bạc Phú Quý 1L) */
+body.light-theme .text-cyan-400,
+body.light-theme .text-cyan-300 {
+    color: #0369a1 !important;
+    /* Xanh dương đậm cực nét */
+    font-weight: 800 !important;
+}
+
+/* Xanh Hoàng Gia / Blue (Bạc Phú Quý 5L) */
+body.light-theme .text-blue-400,
+body.light-theme .text-blue-300 {
+    color: #1d4ed8 !important;
+    /* Xanh hoàng gia đậm */
+    font-weight: 800 !important;
+}
+
+/* Đỏ Ruby / Rose (Giảm giá / Biến động âm / Bạc Nữ Trang) */
+body.light-theme .text-rose-400,
+body.light-theme .text-rose-300 {
+    color: #be123c !important;
+    /* Đỏ ruby đậm */
+    font-weight: 800 !important;
+}
+
+/* Tím Đậm (Bạc Thái / Vàng 980) */
+body.light-theme .text-purple-400,
+body.light-theme .text-purple-300 {
+    color: #6b21a8 !important;
+    /* Tím thạch anh đậm */
+    font-weight: 800 !important;
+}
+
+/* Chàm Đậm / Indigo (Bạc Ý / Vàng 610) */
+body.light-theme .text-indigo-400,
+body.light-theme .text-indigo-300 {
+    color: #3730a3 !important;
+    /* Chàm hoàng gia */
+    font-weight: 800 !important;
+}
+
+/* Xanh Mòng Két / Teal */
+body.light-theme .text-teal-400,
+body.light-theme .text-teal-300 {
+    color: #0f766e !important;
+    font-weight: 800 !important;
+}
+
+/* Cam Đậm / Orange */
+body.light-theme .text-orange-400,
+body.light-theme .text-orange-300 {
+    color: #c2410c !important;
+    font-weight: 800 !important;
+}
+
+/* Xanh Olive / Lime */
+body.light-theme .text-lime-400,
+body.light-theme .text-lime-300 {
+    color: #3f6212 !important;
+    font-weight: 800 !important;
+}
+
+/* Hồng Sen Đậm / Fuchsia */
+body.light-theme .text-fuchsia-400,
+body.light-theme .text-fuchsia-300 {
+    color: #86198f !important;
+    font-weight: 800 !important;
+}
+
+/* Dot indicators trong Light Theme */
+body.light-theme .bg-yellow-400 {
+    background-color: #d97706 !important;
+}
+
+body.light-theme .bg-amber-400 {
+    background-color: #d97706 !important;
+}
+
+body.light-theme .bg-cyan-400 {
+    background-color: #0284c7 !important;
+}
+
+body.light-theme .bg-blue-400 {
+    background-color: #2563eb !important;
+}
+
+body.light-theme .bg-emerald-400 {
+    background-color: #059669 !important;
+}
+
+body.light-theme .bg-rose-400 {
+    background-color: #e11d48 !important;
+}
+
+body.light-theme .bg-purple-400 {
+    background-color: #9333ea !important;
+}
+
+body.light-theme .bg-indigo-400 {
+    background-color: #4f46e5 !important;
+}
+
+/* Header pill và Tiêu đề khu vực trong Light Theme */
+body.light-theme #table-heading,
+body.light-theme #table-title,
+body.light-theme #chart-title,
+body.light-theme .section-title {
+    color: #0f172a !important;
+}
+
+body.light-theme #table-unit-subtitle {
+    color: #475569 !important;
+    font-weight: 600 !important;
+}
+
+body.light-theme #last-updated-time,
+body.light-theme #currency-updated-time,
+body.light-theme .timestamp-text {
+    color: #334155 !important;
+    font-weight: 700 !important;
+}
+
+/* User Profile Pill in Header */
+.user-profile-pill {
+    background-color: rgba(30, 41, 59, 0.9);
+    border-color: #334155;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.user-profile-pill .user-name {
+    color: #f1f5f9;
+}
+
+.user-profile-pill .logout-btn {
+    color: #fb7185;
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+
+.user-profile-pill .logout-btn:hover {
+    color: #f43f5e;
+    background-color: rgba(244, 63, 94, 0.12);
+}
+
+body.light-theme .user-profile-pill {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06) !important;
+}
+
+body.light-theme .user-profile-pill .user-name {
+    color: #0f172a !important;
+}
+
+body.light-theme .user-profile-pill .logout-btn {
+    color: #e11d48 !important;
+}
+
+body.light-theme .user-profile-pill .logout-btn:hover {
+    color: #be123c !important;
+    background-color: #ffe4e6 !important;
+}
+
+/* Market Sources / Stats Grid (Dark & Light) */
+.stat-box {
+    background-color: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(51, 65, 85, 0.8);
+    transition: all 0.2s ease;
+}
+
+.stat-box .stat-label {
+    color: #94a3b8;
+}
+
+.stat-box .stat-val-white {
+    color: #f8fafc;
+}
+
+.stat-box .stat-val-green {
+    color: #34d399;
+}
+
+.stat-box .stat-val-gold {
+    color: #facc15;
+}
+
+.stat-box .stat-val-cyan {
+    color: #38bdf8;
+}
+
+.stat-box .stat-val-slate {
+    color: #cbd5e1;
+}
+
+body.light-theme .stat-box {
+    background-color: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+body.light-theme .stat-box .stat-label {
+    color: #475569 !important;
+}
+
+body.light-theme .stat-box .stat-val-white {
+    color: #0f172a !important;
+}
+
+body.light-theme .stat-box .stat-val-green {
+    color: #047857 !important;
+}
+
+body.light-theme .stat-box .stat-val-gold {
+    color: #b45309 !important;
+}
+
+body.light-theme .stat-box .stat-val-cyan {
+    color: #0369a1 !important;
+}
+
+body.light-theme .stat-box .stat-val-slate {
+    color: #1e293b !important;
+}
+
+/* Footer & Notes in Light Mode */
+body.light-theme footer {
+    border-top-color: #e2e8f0 !important;
+    color: #64748b !important;
+}
+
+body.light-theme footer .text-slate-300,
+body.light-theme footer .text-slate-400 {
+    color: #64748b !important;
+}
+
+/* Tiện ích màu sắc text */
+.text-up {
+    color: #10b981;
+}
+
+.text-down {
+    color: #f43f5e;
+}
+
+.text-gold {
+    color: var(--gold-accent);
+}
+
+body.light-theme .text-up {
+    color: #059669 !important;
+    font-weight: 700;
+}
+
+body.light-theme .text-down {
+    color: #dc2626 !important;
+    font-weight: 700;
+}
+
+body.light-theme .text-gold {
+    color: #b45309 !important;
+    font-weight: 700;
+}
+
+/* Hiệu ứng loading quay */
+.loading-spin {
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Auth Gate Locked Notice Link */
+.auth-gate-link {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.auth-gate-link:hover {
+    color: #1d4ed8;
+}
+
+body.light-theme .auth-gate-link {
+    color: #1d4ed8 !important;
+}
+
+/* Modal Transitions & Layout */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+}
+
+#news-modal .dashboard-card {
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#news-modal-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+body.light-theme #auth-modal .dashboard-card {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2) !important;
+}
+
+body.light-theme #auth-modal input {
+    background-color: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+body.light-theme #auth-modal input:focus {
+    background-color: #ffffff !important;
+    border-color: #3b82f6 !important;
+}
+
+/* =========================================================
+   MARKET NEWS SECTION & MODAL STYLING
+   ========================================================= */
+.news-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.news-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Light theme for News Grid & Cards */
+body.light-theme .news-card {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.light-theme .news-card:hover {
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08) !important;
+}
+
+body.light-theme .news-card h3,
+body.light-theme .news-card h4 {
+    color: #0f172a !important;
+}
+
+body.light-theme .news-card:hover h3,
+body.light-theme .news-card:hover h4 {
+    color: #d97706 !important;
+}
+
+body.light-theme .news-card p {
+    color: #475569 !important;
+}
+
+body.light-theme #news-section .border-slate-800 {
+    border-color: #e2e8f0 !important;
+}
+
+body.light-theme #news-section .text-slate-100 {
+    color: #0f172a !important;
+}
+
+body.light-theme #news-section .text-slate-200 {
+    color: #1e293b !important;
+}
+
+body.light-theme #news-section .text-slate-300 {
+    color: #475569 !important;
+}
+
+body.light-theme #news-section .text-slate-400 {
+    color: #64748b !important;
+}
+
+/* Filter Pills in Light Theme */
+body.light-theme #news-section button.bg-slate-800\/80 {
+    background-color: #ffffff !important;
+    color: #334155 !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.light-theme #news-section button.bg-slate-800\/80:hover {
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+    border-color: #94a3b8 !important;
+}
+
+body.light-theme #news-section button.bg-blue-950\/60 {
+    background-color: #eff6ff !important;
+    color: #1d4ed8 !important;
+    border-color: #bfdbfe !important;
+}
+
+body.light-theme #news-section button.bg-blue-950\/60:hover {
+    background-color: #dbeafe !important;
+}
+
+/* =========================================================
+   NEWS MODAL READER IN LIGHT THEME
+   ========================================================= */
+body.light-theme #news-modal .dashboard-card {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.2) !important;
+    color: #0f172a !important;
+}
+
+body.light-theme #news-modal button {
+    color: #64748b;
+}
+
+body.light-theme #news-modal button:hover {
+    color: #0f172a;
+}
+
+body.light-theme #news-modal h2 {
+    color: #0f172a !important;
+}
+
+body.light-theme #news-modal .text-slate-100 {
+    color: #0f172a !important;
+}
+
+body.light-theme #news-modal .text-slate-200 {
+    color: #1e293b !important;
+}
+
+body.light-theme #news-modal .text-slate-300 {
+    color: #334155 !important;
+}
+
+body.light-theme #news-modal .text-slate-400 {
+    color: #64748b !important;
+}
+
+body.light-theme #news-modal .border-slate-800 {
+    border-color: #e2e8f0 !important;
+}
+
+body.light-theme #news-modal .article-body {
+    color: #1e293b !important;
+}
+
+body.light-theme #news-modal .article-body p {
+    color: #334155 !important;
+    font-size: 0.925rem !important;
+    line-height: 1.7 !important;
+}
+
+body.light-theme #news-modal .article-summary {
+    color: #0f172a !important;
+    font-weight: 600 !important;
+}
+
+/* Callout Box inside News Modal in Light Mode */
+body.light-theme #news-modal .news-callout-box,
+body.light-theme #news-modal .bg-blue-950\/40 {
+    background-color: #f0f7ff !important;
+    border: 1.5px solid #bfdbfe !important;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.06) !important;
+}
+
+body.light-theme #news-modal .callout-text,
+body.light-theme #news-modal .news-callout-box p {
+    color: #1e3a8a !important;
+    font-weight: 500 !important;
+}
+
+body.light-theme #news-modal .callout-source,
+body.light-theme #news-modal .news-callout-box strong {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme #news-modal .callout-link,
+body.light-theme #news-modal .news-callout-box a {
+    color: #1d4ed8 !important;
+    font-weight: 700 !important;
+}
+
+body.light-theme #news-modal .callout-link:hover,
+body.light-theme #news-modal .news-callout-box a:hover {
+    color: #1e40af !important;
+    text-decoration: underline !important;
+}
+
+/* Custom Content Highlights in Light Mode */
+body.light-theme #news-modal .bg-amber-500\/10 {
+    background-color: #fffbeb !important;
+    border-left-color: #f59e0b !important;
+    color: #92400e !important;
+}
+
+body.light-theme #news-modal .bg-cyan-500\/10 {
+    background-color: #ecfeff !important;
+    border-left-color: #06b6d4 !important;
+    color: #155e75 !important;
+}
+
+/* Badges in Light Mode for high contrast */
+body.light-theme .badge-category,
+body.light-theme span[class*="bg-emerald-500/20"] {
+    background-color: #d1fae5 !important;
+    color: #065f46 !important;
+    border-color: #6ee7b7 !important;
+}
+
+body.light-theme span[class*="bg-amber-500/20"] {
+    background-color: #fef3c7 !important;
+    color: #92400e !important;
+    border-color: #fcd34d !important;
+}
+
+body.light-theme span[class*="bg-cyan-500/20"] {
+    background-color: #cffafe !important;
+    color: #155e75 !important;
+    border-color: #67e8f9 !important;
+}
+
+body.light-theme span[class*="bg-purple-500/20"] {
+    background-color: #f3e8ff !important;
+    color: #6b21a8 !important;
+    border-color: #d8b4fe !important;
+}
+
+body.light-theme span[class*="bg-rose-500/20"] {
+    background-color: #ffe4e6 !important;
+    color: #9f1239 !important;
+    border-color: #fda4af !important;
+}

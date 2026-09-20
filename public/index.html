@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="0WlZrnXwTEoIH_z7TcZ3BIqcFFFJd3P_ixlzII5aWVA" />
+    <title>Cập Nhật Bảng Giá Nguyên Liệu Vàng Bạc T3Gold</title>
+
+    <!-- Tích hợp Tailwind CSS qua CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font chữ Inter chuẩn tiếng Việt -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- TradingView Widget Script -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+
+    <!-- File CSS tùy chỉnh -->
+    <link rel="stylesheet" href="style.css?v=35">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body class="min-h-screen p-2.5 sm:p-4 md:p-6 flex flex-col gap-3.5 sm:gap-5">
+
+    <!-- Thanh Tiêu Đề (Header) -->
+    <header
+        class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800/80 pb-3">
+        <div class="flex items-center gap-2.5">
+            <div
+                class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-tr from-amber-600 via-yellow-500 to-amber-300 flex items-center justify-center shadow-lg shadow-yellow-500/25 border border-yellow-300/40 text-slate-950 shrink-0">
+                <i class="fa-solid fa-coins text-lg sm:text-xl"></i>
+            </div>
+            <div>
+                <h1
+                    class="text-base sm:text-xl md:text-2xl font-extrabold tracking-tight flex flex-wrap items-center gap-1.5">
+                    Cập Nhật Bảng Giá Nguyên Liệu Vàng Bạc <span class="text-yellow-400 font-extrabold">T3Gold</span>
+                </h1>
+                <p class="text-[11px] sm:text-xs text-slate-400 hidden sm:block">Cập nhật giá vàng SJC, vàng nhẫn, vàng
+                    thế giới & tỷ giá ngoại tệ trực tuyến</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <!-- Nút Chuyển Đổi Chế Độ Sáng / Tối -->
+            <button id="theme-toggle-btn" onclick="GoldDashboard.toggleTheme()" title="Chuyển chế độ Sáng / Tối"
+                class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all cursor-pointer flex items-center gap-1.5 text-xs shadow-sm">
+                <span id="theme-icon">☀️</span>
+                <span id="theme-text" class="hidden sm:inline font-semibold">Chế độ Sáng</span>
+            </button>
+
+            <!-- Khối Đăng Ký / Đăng Nhập (Chuẩn vangsaigon.vn) -->
+            <div id="auth-container" class="flex items-center gap-2">
+                <!-- JS sẽ tự đổ nút [ĐĂNG KÝ] [ĐĂNG NHẬP] hoặc Profile User -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Khối ẩn Đồng Hồ & Nút Làm Mới (Theo yêu cầu: giữ DOM cho JS nhưng ẩn hoàn toàn khỏi màn hình) -->
+    <div class="hidden" style="display: none !important;" aria-hidden="true">
+        <span id="live-time">00:00:00</span>
+        <button onclick="GoldDashboard.refreshData()" id="refresh-btn">
+            <svg id="refresh-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+            </svg>
+            <span>Làm mới</span>
+        </button>
+    </div>
+
+    <!-- Khu Vực Nội Dung Chính (Bảng Giá & Biểu Đồ & Tỷ Giá) -->
+    <main id="main-container" class="flex flex-col lg:grid lg:grid-cols-12 gap-4 sm:gap-5 flex-grow">
+        <!-- Cột Trái: Bảng Giá + Máy Tính Quy Đổi + Tab Thị Trường (8 cột trên Desktop) -->
+        <div id="main-left-col" class="contents lg:flex lg:flex-col lg:gap-4 lg:col-span-8">
+            <!-- 1. BẢNG GIÁ VÀNG / BẠC (Hiện ngay đầu trang ở cả Mobile & Desktop) -->
+            <div id="price-section" class="order-1 lg:order-none flex flex-col gap-2">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0 px-1">
+                    <h2 id="table-heading"
+                        class="section-title text-sm sm:text-base md:text-lg font-black uppercase tracking-tight">
+                        <span id="table-title">GIÁ VÀNG THAM KHẢO</span>
+                    </h2>
+                    <div id="last-updated-time" class="timestamp-text text-xs sm:text-sm font-semibold font-mono">
+                        Cập nhật lần cuối: 14:09:18
+                    </div>
+                </div>
+
+                <!-- Bảng Giá Dạng Bảng (Chuẩn vangsaigon.vn) -->
+                <div
+                    class="dashboard-card overflow-hidden rounded-xl border-2 border-[#002b9e] dark:border-blue-900/60 shadow-lg">
+                    <div class="overflow-x-auto">
+                        <table class="modern-table w-full text-right">
+                            <thead>
+                                <tr
+                                    class="bg-[#002b9e] text-white font-black text-xs sm:text-sm md:text-base uppercase tracking-wider">
+                                    <th
+                                        class="text-left pl-2 sm:pl-3 py-2 sm:py-2.5 w-[26%] sm:w-[28%] whitespace-nowrap">
+                                        Tổ chức</th>
+                                    <th class="py-2 px-1 sm:px-2 text-right w-[20%] sm:w-[22%] whitespace-nowrap">MUA
+                                    </th>
+                                    <th class="py-2 px-1 sm:px-2 text-right w-[20%] sm:w-[22%] whitespace-nowrap">BÁN
+                                    </th>
+                                    <th class="py-2 px-1 sm:px-2 text-right w-[17%] sm:w-[14%] whitespace-nowrap">+/-
+                                    </th>
+                                    <th class="py-2 pr-2 sm:pr-3 text-right w-[17%] sm:w-[14%] whitespace-nowrap">CL
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="price-table-body" class="text-xs sm:text-sm font-semibold">
+                                <!-- Dữ liệu render bằng JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. MÁY TÍNH QUY ĐỔI (Vị trí 4 trên Mobile, ngay dưới bảng giá ở Desktop) -->
+            <div id="calculator-section" class="order-4 lg:order-none mt-1">
+                <!-- JS render Calculator Card -->
+            </div>
+
+            <!-- 5. TAB ĐỔI THỊ TRƯỜNG (Vị trí 5 cuối cùng trên Mobile, dưới máy tính ở Desktop) -->
+            <nav id="market-tabs"
+                class="order-5 lg:order-none flex items-center justify-center gap-2 sm:gap-3 flex-wrap w-full my-2 pt-2 border-t border-slate-800/60">
+                <button id="tab-gold" onclick="GoldDashboard.switchMarket('gold')"
+                    class="px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 shadow-lg shadow-yellow-500/20 active-tab">
+                    <span class="text-base">🥇</span>
+                    <span>Thị Trường Vàng</span>
+                </button>
+                <button id="tab-silver" onclick="GoldDashboard.switchMarket('silver')"
+                    class="px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 border border-slate-700 inactive-tab">
+                    <span class="text-base">🥈</span>
+                    <span>Thị Trường Bạc</span>
+                </button>
+                <button id="tab-news" onclick="GoldDashboard.switchMarket('news')"
+                    class="px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 border border-slate-700 inactive-tab">
+                    <span class="text-base">📰</span>
+                    <span>Tin Tức Thị Trường</span>
+                </button>
+            </nav>
+
+            <!-- KHU VỰC TIN TỨC THỊ TRƯỜNG (Hiện khi bấm Tab Tin Tức) -->
+            <div id="news-section" class="hidden order-6 lg:order-none flex flex-col gap-4">
+                <!-- JS render nội dung tin tức -->
+            </div>
+        </div>
+
+        <!-- Cột Phải: Biểu Đồ + Giá Ngoại Tệ (4 cột trên Desktop) -->
+        <div id="main-right-col" class="contents lg:flex lg:flex-col lg:gap-4 lg:col-span-4">
+            <!-- 2. BIỂU ĐỒ GIÁ THẾ GIỚI (Vị trí 2 trên Mobile, top cột phải trên Desktop) -->
+            <div id="chart-section" class="order-2 lg:order-none flex flex-col gap-2">
+                <div class="flex justify-between items-center px-1">
+                    <h2 class="section-title text-sm sm:text-base font-bold flex items-center gap-2">
+                        <span id="chart-indicator" class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                        <span id="chart-title">Biểu Đồ Giá Vàng Thế Giới (XAU/USD)</span>
+                    </h2>
+                    <span class="text-[11px] text-slate-400 font-mono">1 Giờ / Nến</span>
+                </div>
+
+                <div
+                    class="dashboard-card h-[310px] overflow-hidden relative rounded-xl border border-slate-800 shadow-md">
+                    <div class="tradingview-widget-container h-full w-full">
+                        <div id="tv_chart" class="h-full w-full"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. GIÁ NGOẠI TỆ THAM KHẢO (Vị trí 3 trên Mobile, dưới biểu đồ ở Desktop) -->
+            <div id="currency-section" class="order-3 lg:order-none flex flex-col gap-2">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0 px-1">
+                    <h2 class="section-title text-sm sm:text-base md:text-lg font-black uppercase tracking-tight">
+                        GIÁ NGOẠI TỆ THAM KHẢO
+                    </h2>
+                    <div id="currency-updated-time" class="timestamp-text text-xs sm:text-sm font-semibold font-mono">
+                        Cập nhật lần cuối: 20/09/2026 14:09:18
+                    </div>
+                </div>
+
+                <div
+                    class="dashboard-card overflow-hidden rounded-xl border-2 border-[#002b9e] dark:border-blue-900/60 shadow-lg">
+                    <div class="overflow-x-auto">
+                        <table class="modern-table w-full text-right">
+                            <thead>
+                                <tr
+                                    class="bg-[#002b9e] text-white font-black text-xs sm:text-sm md:text-base uppercase tracking-wider">
+                                    <th class="text-left pl-2 sm:pl-3 py-2 sm:py-2.5 w-[30%] whitespace-nowrap">Tiền tệ
+                                    </th>
+                                    <th class="py-2 px-1 sm:px-2 text-right w-[24%] whitespace-nowrap">MUA</th>
+                                    <th class="py-2 px-1 sm:px-2 text-right w-[24%] whitespace-nowrap">BÁN</th>
+                                    <th class="py-2 pr-2 sm:pr-3 text-right w-[22%] whitespace-nowrap">Tỷ giá</th>
+                                </tr>
+                            </thead>
+                            <tbody id="currency-table-body" class="text-xs sm:text-sm font-semibold">
+                                <!-- JS đổ tỷ giá -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Chú Thích Quy Đổi & Chân Trang (Footer) -->
+    <footer
+        class="text-xs text-slate-400 py-3 border-t border-slate-800/80 flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div class="flex flex-col sm:flex-row items-center gap-2">
+            <span><strong>Quy chuẩn tính tiền:</strong> 1 Chỉ = 3.75 Gram · 1 Lượng (Cây) = 10 Chỉ = 37.5 Gram · 1 Ounce
+                (Troy) = 31.1035 Gram</span>
+        </div>
+        <div class="text-slate-500 text-[11px] font-mono">
+            Cập Nhật Bảng Giá Nguyên Liệu Vàng Bạc T3Gold
+        </div>
+    </footer>
+
+    <!-- Hộp Thoại Modal Đăng Nhập / Đăng Ký Nhanh -->
+    <div id="auth-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
+        <div class="dashboard-card w-full max-w-md p-6 rounded-2xl border border-slate-800 shadow-2xl relative">
+            <button onclick="GoldDashboard.closeAuthModal()"
+                class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold cursor-pointer">✕</button>
+            <div class="text-center mb-5">
+                <h3 id="modal-auth-title" class="text-base font-bold text-slate-100">Đăng Nhập Tài Khoản</h3>
+                <p class="text-xs text-slate-400 mt-0.5">Đăng ký hoặc đăng nhập để xem toàn bộ bảng giá và tính năng</p>
+            </div>
+
+            <div class="flex items-center bg-slate-950/80 p-1 rounded-xl border border-slate-800 mb-5">
+                <button id="modal-tab-login" onclick="GoldDashboard.switchModalAuthTab('login')"
+                    class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all bg-yellow-500 text-slate-950 shadow-md cursor-pointer">Đăng
+                    Nhập</button>
+                <button id="modal-tab-register" onclick="GoldDashboard.switchModalAuthTab('register')"
+                    class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white cursor-pointer">Đăng
+                    Ký</button>
+            </div>
+
+            <!-- Modal Login Form -->
+            <form id="modal-form-login" onsubmit="GoldDashboard.handleModalLogin(event)" class="space-y-3.5">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Email hoặc SĐT</label>
+                    <input type="text" id="modal-login-acc" required placeholder="name@example.com hoặc 0912345678"
+                        class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs outline-none focus:border-yellow-500" />
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Mật khẩu</label>
+                    <input type="password" id="modal-login-pwd" required placeholder="••••••••"
+                        class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs outline-none focus:border-yellow-500" />
+                </div>
+                <div id="modal-login-error"
+                    class="hidden text-xs text-rose-400 bg-rose-950/60 p-2 rounded-lg border border-rose-800"></div>
+                <button type="submit"
+                    class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 font-bold text-slate-950 text-xs shadow-md cursor-pointer">
+                    Đăng Nhập Ngay
+                </button>
+                <button type="button" onclick="GoldDashboard.loginDemo()"
+                    class="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs border border-slate-700 cursor-pointer">
+                    ⚡ Dùng thử nhanh (Tài khoản Demo)
+                </button>
+            </form>
+
+            <!-- Modal Register Form -->
+            <form id="modal-form-register" onsubmit="GoldDashboard.handleModalRegister(event)"
+                class="space-y-3.5 hidden">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Họ và tên</label>
+                    <input type="text" id="modal-reg-name" required placeholder="Nguyễn Văn A"
+                        class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs outline-none focus:border-yellow-500" />
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Email hoặc SĐT</label>
+                    <input type="text" id="modal-reg-acc" required placeholder="name@example.com hoặc 0912345678"
+                        class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs outline-none focus:border-yellow-500" />
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Mật khẩu</label>
+                    <input type="password" id="modal-reg-pwd" required minlength="6" placeholder="Tối thiểu 6 ký tự"
+                        class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs outline-none focus:border-yellow-500" />
+                </div>
+                <button type="submit"
+                    class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 font-bold text-slate-950 text-xs shadow-md cursor-pointer">
+                    Tạo Tài Khoản & Mở Khóa Giá
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hộp Thoại Đọc Tin Tức Chi Tiết (News Modal) -->
+    <div id="news-modal"
+        class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 modal-backdrop overflow-y-auto">
+        <div
+            class="dashboard-card w-full max-w-2xl p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-2xl relative max-h-[88vh] flex flex-col my-auto">
+            <button onclick="GoldDashboard.closeNewsModal()"
+                class="absolute top-3 right-3 z-10 text-slate-400 hover:text-white text-base font-bold cursor-pointer bg-slate-800/80 hover:bg-slate-700 w-8 h-8 rounded-full flex items-center justify-center transition-all">✕</button>
+            <div id="news-modal-content" class="flex-1 min-h-0 overflow-y-auto pr-1 flex flex-col gap-3.5">
+                <!-- JS render bài viết chi tiết -->
+            </div>
+        </div>
+    </div>
+
+    <!-- File JavaScript -->
+    <script src="app.js?v=45"></script>
+    <script src="assets/js/app.js?v=45"></script>
+</body>
+
+</html>
