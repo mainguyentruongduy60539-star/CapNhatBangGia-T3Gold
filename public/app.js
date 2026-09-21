@@ -1357,6 +1357,33 @@ const GoldDashboard = (function () {
         alert('🎉 Đăng ký thành công! Bảng giá đã được mở khóa.');
     }
 
+    function checkSSOParams() {
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sso = urlParams.get('sso');
+            const user = urlParams.get('user') || urlParams.get('name');
+
+            if (sso === 'true' || sso === '1' || (user && user.trim() !== '')) {
+                const decodedName = user ? decodeURIComponent(user) : 'Thành viên T3Gold';
+                const ssoUser = {
+                    name: decodedName,
+                    account: 't3gold_member',
+                    isLoggedIn: true,
+                    source: 't3gold',
+                    loginTime: new Date().toISOString()
+                };
+                AuthManager.setUser(ssoUser);
+
+                if (window.history && window.history.replaceState) {
+                    const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                    window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
+                }
+            }
+        } catch (e) {
+            console.error('Lỗi kiểm tra SSO T3Gold:', e);
+        }
+    }
+
     function loginDemo() {
         const demoUser = {
             name: 'Khách hàng Demo',
@@ -1370,6 +1397,7 @@ const GoldDashboard = (function () {
 
     return {
         init: function () {
+            checkSSOParams();
             initClock();
             initTheme();
             renderAuthHeader();

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cap-nhat-bang-gia-t3-gold.vercel.app/sitemap.xml
