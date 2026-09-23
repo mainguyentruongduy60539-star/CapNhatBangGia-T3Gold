@@ -765,8 +765,8 @@ const GoldDashboard = (function () {
                         <tr class="transition-colors border-b border-blue-900/30">
                             <!-- Cột 1: Tổ chức -->
                             <td class="text-left pl-1 sm:pl-2 pr-0.5 py-1.5 sm:py-2.5 font-black col-org">
-                                <div class="text-[12px] xs:text-[13px] sm:text-sm md:text-base font-extrabold leading-tight">${item.name}</div>
-                                <div class="text-[10.5px] xs:text-[11.5px] sm:text-[13px] font-sans font-semibold text-slate-400 normal-case mt-0.5 tracking-tight whitespace-nowrap">${getItemUnitStr(item)}</div>
+                                <div class="text-[13.5px] sm:text-[15px] md:text-base font-black leading-tight">${item.name}</div>
+                                <div class="text-[11.5px] sm:text-[13px] font-sans font-bold text-slate-400 normal-case mt-0.5 whitespace-nowrap">${getItemUnitStr(item)}</div>
                             </td>
 
                             <!-- Cột 2: Mua Vào -->
