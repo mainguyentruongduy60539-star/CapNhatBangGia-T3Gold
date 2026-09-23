@@ -555,24 +555,6 @@ const GoldDashboard = (function () {
         }
     }
 
-    async function fetchSpotTicker() {
-        const endpoints = [
-            'https://api.gold-api.com/price/XAU',
-            'https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT'
-        ];
-        for (const url of endpoints) {
-            try {
-                const res = await fetch(url, { signal: AbortSignal.timeout(2500) });
-                if (res.ok) {
-                    const data = await res.json();
-                    const px = parseFloat(data.price);
-                    if (px > 2000 && px < 10000) return px;
-                }
-            } catch (e) {}
-        }
-        return null;
-    }
-
     async function fetchData() {
         if (currentMarket === 'news') return currentData;
 
@@ -606,20 +588,7 @@ const GoldDashboard = (function () {
             currentData = lastLiveVsgData || getInstantInitialData(currentMarket);
         }
 
-        // 4. ⚡ Cập nhật live tickerSpot XAU/USD để số nhảy liên tục thời gian thực chuẩn 100% theo biểu đồ
-        if (currentMarket === 'gold' && currentData && currentData.goldItems) {
-            const liveSpot = await fetchSpotTicker();
-            if (liveSpot) {
-                const worldItem = currentData.goldItems.find(i => i.isWorld || i.name === 'Vàng TG');
-                if (worldItem) {
-                    worldItem.buy = parseFloat(liveSpot.toFixed(2));
-                    worldItem.sell = parseFloat(liveSpot.toFixed(2));
-                    currentData.price = liveSpot;
-                }
-            }
-        }
-
-        // 5. Lưu vào localStorage cache cho F5
+        // 4. Lưu vào localStorage cache cho F5
         try {
             if (currentData) {
                 localStorage.setItem('t3gold_live_cache_' + currentMarket, JSON.stringify(currentData));
@@ -756,8 +725,8 @@ const GoldDashboard = (function () {
                 if (item.isWorld) {
                     const buyNum = Number(item.buy) || 0;
                     const sellNum = Number(item.sell) || 0;
-                    buyMain = `${Math.floor(buyNum).toLocaleString('en-US')}`;
-                    sellMain = `${Math.floor(sellNum).toLocaleString('en-US')}`;
+                    buyMain = `${Math.round(buyNum).toLocaleString('en-US')}`;
+                    sellMain = `${Math.round(sellNum).toLocaleString('en-US')}`;
                     
                     let vndPerChiSell = 0;
                     let vndPerChiBuy = 0;
