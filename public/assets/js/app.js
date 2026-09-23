@@ -556,14 +556,20 @@ const GoldDashboard = (function () {
     }
 
     async function fetchSpotTicker() {
-        try {
-            const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT', { signal: AbortSignal.timeout(2000) });
-            if (res.ok) {
-                const data = await res.json();
-                const px = parseFloat(data.price);
-                if (px > 2000 && px < 10000) return px;
-            }
-        } catch (e) {}
+        const endpoints = [
+            'https://api.gold-api.com/price/XAU',
+            'https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT'
+        ];
+        for (const url of endpoints) {
+            try {
+                const res = await fetch(url, { signal: AbortSignal.timeout(2500) });
+                if (res.ok) {
+                    const data = await res.json();
+                    const px = parseFloat(data.price);
+                    if (px > 2000 && px < 10000) return px;
+                }
+            } catch (e) {}
+        }
         return null;
     }
 
