@@ -634,6 +634,15 @@ const GoldDashboard = (function () {
             }
         };
 
+        const getItemDisplayName = (name) => {
+            if (!name) return '';
+            if (name.includes('Phú Quý (1 Lượng)')) return 'Bạc Phú Quý (1L)';
+            if (name.includes('Phú Quý (5 Lượng)')) return 'Bạc Phú Quý (5L)';
+            if (name.includes('Phú Quý (1 Kg)')) return 'Bạc Phú Quý (1Kg)';
+            if (name.includes('Bạc Thế Giới')) return 'Bạc Thế Giới (XAG)';
+            return name;
+        };
+
         const getItemUnitStr = (it) => {
             if (it.isWorld) return 'ĐVT: USD / Ounce';
             if (currentMarket === 'gold') return 'ĐVT: VNĐ / 1 Chỉ';
@@ -764,9 +773,9 @@ const GoldDashboard = (function () {
                     rowsHtml += `
                         <tr class="transition-colors border-b border-blue-900/30">
                             <!-- Cột 1: Tổ chức -->
-                            <td class="text-left pl-1.5 sm:pl-2 pr-0.5 py-1.5 sm:py-2.5 font-black col-org">
-                                <div class="text-[12px] sm:text-sm md:text-base font-extrabold leading-tight tracking-tight">${item.name}</div>
-                                <div class="text-[10.5px] sm:text-[12.5px] font-sans font-semibold text-slate-400 normal-case mt-0.5 tracking-tight whitespace-nowrap">${getItemUnitStr(item)}</div>
+                            <td class="text-left pl-1 sm:pl-2 pr-0.5 py-1.5 sm:py-2.5 font-black col-org">
+                                <div class="text-[13.5px] sm:text-[15px] md:text-base font-black leading-tight">${getItemDisplayName(item.name)}</div>
+                                <div class="text-[11.5px] sm:text-[13px] font-sans font-semibold text-slate-400 normal-case mt-0.5 whitespace-nowrap">${getItemUnitStr(item)}</div>
                             </td>
 
                             <!-- Cột 2: Mua Vào -->
