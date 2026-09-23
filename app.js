@@ -1183,7 +1183,7 @@ const GoldDashboard = (function () {
                 <p class="leading-relaxed">Trên thị trường quốc tế, giá vàng giao ngay (Spot Gold XAU/USD) tiếp tục neo trên mốc lịch sử nhờ trợ lực từ kỳ vọng Cục Dự trữ Liên bang Mỹ (Fed) tiến hành nới lỏng chính sách tiền tệ và hạ lãi suất cơ bản.</p>
             `,
             source: "Ban Biên Tập Thị Trường",
-            link: "#",
+            link: "https://vnexpress.net/kinh-doanh/hang-hoa",
             date: "Hôm nay",
             readTime: "3 phút đọc",
             featured: true
@@ -1194,7 +1194,7 @@ const GoldDashboard = (function () {
             category: "silver",
             categoryName: "Thị Trường Bạc",
             badgeClass: "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40",
-            image: "https://images.unsplash.com/photo-1605792657660-596af9009e82?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1599837565318-67429bde7162?w=800&auto=format&fit=crop&q=60",
             summary: "Bạc không chỉ đóng vai trò kim loại quý tích trữ mà còn là nguyên liệu công nghiệp thiết yếu. Tốc độ tiêu thụ bạc trong ngành năng lượng tái tạo đã vượt qua mọi dự báo quý 3.",
             content: `
                 <p class="leading-relaxed">Bạc quốc tế vừa ghi nhận đợt tăng giá ấn tượng nhất trong vòng nhiều năm, vượt xa tốc độ tăng trưởng phần trăm của vàng trong cùng chu kỳ.</p>
@@ -1203,7 +1203,7 @@ const GoldDashboard = (function () {
                 </div>
             `,
             source: "Lê Minh Quân - Chuyên gia Hàng hóa",
-            link: "#",
+            link: "https://vietnamnet.vn/kinh-doanh/tai-chinh",
             date: "Hôm nay",
             readTime: "4 phút đọc",
             featured: false
@@ -1214,13 +1214,13 @@ const GoldDashboard = (function () {
             category: "policy",
             categoryName: "Chính Sách & Quản Lý",
             badgeClass: "bg-rose-500/20 text-rose-300 border border-rose-500/40",
-            image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&auto=format&fit=crop&q=60",
             summary: "Các cơ quan quản lý tiếp tục siết chặt kiểm tra hóa đơn điện tử, nguồn gốc xuất xứ vàng trang sức mỹ nghệ và đề xuất sửa đổi Nghị định 24/2012/NĐ-CP.",
             content: `
                 <p class="leading-relaxed">Ngân hàng Nhà nước Việt Nam cùng các bộ ngành liên quan đang triển khai quyết liệt các biện pháp nhằm minh bạch hóa thị trường vàng, chống đầu cơ găm hàng và thao túng giá.</p>
             `,
             source: "Thái Sơn - Ban Pháp Chế & Vĩ Mô",
-            link: "#",
+            link: "https://vnexpress.net/kinh-doanh/chinh-sach",
             date: "19/09/2026",
             readTime: "2 phút đọc",
             featured: false
@@ -1231,13 +1231,13 @@ const GoldDashboard = (function () {
             category: "world",
             categoryName: "Vàng Quốc Tế",
             badgeClass: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40",
-            image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&auto=format&fit=crop&q=60",
             summary: "Các ngân hàng đầu tư phố Wall như Goldman Sachs, Citi và UBS đồng loạt nâng mục tiêu giá vàng trung hạn trong báo cáo chiến lược mới nhất.",
             content: `
                 <p class="leading-relaxed">Khảo sát mới nhất từ Bloomberg và Kitco News cho thấy hơn 78% các chuyên gia phân tích thị trường Phố Wall và 69% nhà đầu tư bán lẻ dự báo giá vàng sẽ tiếp tục duy trì xu hướng tăng.</p>
             `,
             source: "Trần Hoàng Nam - Kinh tế Trưởng",
-            link: "#",
+            link: "https://cafef.vn/tai-chinh-quoc-te.chn",
             date: "19/09/2026",
             readTime: "5 phút đọc",
             featured: false
@@ -1254,7 +1254,7 @@ const GoldDashboard = (function () {
                 <p class="leading-relaxed">Nhiều cửa hàng vàng lớn tại Hà Nội và TP.HCM ghi nhận số lượng khách hàng tìm mua vàng nhẫn gia tăng đáng kể. Sản phẩm vàng nhẫn 1 chỉ, 2 chỉ và 5 chỉ thường xuyên trong tình trạng cháy hàng cục bộ.</p>
             `,
             source: "Ban Tài Chính Trong Nước",
-            link: "#",
+            link: "https://vnexpress.net/kinh-doanh/hang-hoa",
             date: "Hôm nay",
             readTime: "3 phút đọc",
             featured: false
@@ -1265,13 +1265,13 @@ const GoldDashboard = (function () {
             category: "silver",
             categoryName: "Thị Trường Bạc",
             badgeClass: "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40",
-            image: "https://images.unsplash.com/photo-1618042164219-62c820f10723?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1624365168968-30c29f64ef81?w=800&auto=format&fit=crop&q=60",
             summary: "Thị trường bạc vật chất trong nước chứng kiến đợt sóng tăng giá mới khi giới đầu tư cá nhân bắt đầu phân bổ vốn sang tài sản kim loại quý giá rẻ hơn vàng.",
             content: `
                 <p class="leading-relaxed">Giá bạc miếng và bạc thỏi niêm yết tại các đại lý lớn ghi nhận mức tăng đồng bộ. Tỷ lệ Gold/Silver ratio (tỷ lệ giá vàng/giá bạc) đang có dấu hiệu thu hẹp dần.</p>
             `,
             source: "Chuyên Gia Kim Loại Quý",
-            link: "#",
+            link: "https://vietnamnet.vn/kinh-doanh/tai-chinh",
             date: "Hôm nay",
             readTime: "3 phút đọc",
             featured: false
@@ -1288,7 +1288,7 @@ const GoldDashboard = (function () {
                 <p class="leading-relaxed">Áp lực giảm giá lên đồng Dollar Mỹ xuất hiện sau khi các số liệu lạm phát CPI và việc làm tại Mỹ phát đi tín hiệu hạ nhiệt rõ nét hơn so với dự báo của giới phân tích.</p>
             `,
             source: "Reuters & FXStreet",
-            link: "#",
+            link: "https://cafef.vn/tai-chinh-quoc-te.chn",
             date: "Hôm nay",
             readTime: "4 phút đọc",
             featured: false
@@ -1299,13 +1299,13 @@ const GoldDashboard = (function () {
             category: "analysis",
             categoryName: "Phân Tích & Dự Báo",
             badgeClass: "bg-purple-500/20 text-purple-300 border border-purple-500/40",
-            image: "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1535320903710-d993d3d77d29?w=800&auto=format&fit=crop&q=60",
             summary: "Kết quả khảo sát tuần mới nhất của Kitco News cho thấy tinh thần lạc quan áp đảo từ cả giới phân tích chuyên nghiệp và cộng đồng nhà đầu tư cá nhân.",
             content: `
                 <p class="leading-relaxed">Hầu hết các chiến lược gia thị trường đều đồng thuận rằng các yếu tố hỗ trợ dài hạn như rủi ro địa chính trị và làn sóng hạ lãi suất toàn cầu vẫn chưa suy giảm.</p>
             `,
             source: "Kitco News Analysis",
-            link: "#",
+            link: "https://cafef.vn/thi-truong.chn",
             date: "18/09/2026",
             readTime: "4 phút đọc",
             featured: false
@@ -1316,13 +1316,13 @@ const GoldDashboard = (function () {
             category: "policy",
             categoryName: "Chính Sách & Quản Lý",
             badgeClass: "bg-rose-500/20 text-rose-300 border border-rose-500/40",
-            image: "https://images.unsplash.com/photo-1450133064473-71024230f91b?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1556742049-0a670f4a4587?w=800&auto=format&fit=crop&q=60",
             summary: "Việc kết nối dữ liệu hóa đơn điện tử từ máy tính tiền trực tiếp đến cơ quan thuế giúp quản lý chặt chẽ doanh thu và nguồn gốc sản phẩm kim loại quý.",
             content: `
                 <p class="leading-relaxed">Bộ Tài chính và Tổng cục Thuế yêu cầu 100% doanh nghiệp, cửa hàng kinh doanh vàng bạc nghiêm túc chấp hành xuất hóa đơn điện tử cho từng giao dịch lẻ.</p>
             `,
             source: "Ban Pháp Chế Kinh Tế",
-            link: "#",
+            link: "https://vnexpress.net/kinh-doanh/chinh-sach",
             date: "18/09/2026",
             readTime: "3 phút đọc",
             featured: false
@@ -1339,7 +1339,7 @@ const GoldDashboard = (function () {
                 <p class="leading-relaxed">Phân tích biểu đồ khung D1 và H4 cho thấy ngưỡng hỗ trợ gần nhất của XAU/USD nằm ở mốc 2.620 USD/oz, trong khi kháng cự tâm lý mạnh nằm ở 2.700 USD/oz.</p>
             `,
             source: "Chuyên Gia Technical Analyst",
-            link: "#",
+            link: "https://cafef.vn/thi-truong.chn",
             date: "17/09/2026",
             readTime: "5 phút đọc",
             featured: false
@@ -1350,13 +1350,13 @@ const GoldDashboard = (function () {
             category: "world",
             categoryName: "Vàng Quốc Tế",
             badgeClass: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40",
-            image: "https://images.unsplash.com/photo-1565372195458-9de0b320ef04?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&auto=format&fit=crop&q=60",
             summary: "Báo cáo từ Hội đồng Vàng Thế giới (WGC) xác nhận xu hướng đa dạng hóa tài sản dự trữ của các NHTW Châu Á và Đông Âu tiếp tục tăng tốc.",
             content: `
                 <p class="leading-relaxed">Việc gia tăng tỷ trọng vàng trong quỹ dự trữ ngoại hối giúp các quốc gia giảm bớt rủi ro phụ thuộc vào một đồng tiền duy nhất trong bối cảnh địa chính trị phức tạp.</p>
             `,
             source: "World Gold Council (WGC)",
-            link: "#",
+            link: "https://cafef.vn/tai-chinh-quoc-te.chn",
             date: "17/09/2026",
             readTime: "4 phút đọc",
             featured: false
@@ -1367,13 +1367,13 @@ const GoldDashboard = (function () {
             category: "gold",
             categoryName: "Vàng SJC & Trong nước",
             badgeClass: "bg-amber-500/20 text-amber-300 border border-amber-500/40",
-            image: "https://images.unsplash.com/photo-1589758438368-0ad531db3366?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1618042164219-62c820f10723?w=800&auto=format&fit=crop&q=60",
             summary: "Khoảng cách giữa giá vàng miếng SJC và giá vàng thế giới quy đổi theo tỷ giá ngân hàng hiện chỉ còn quanh mức 2 - 4 triệu đồng/lượng.",
             content: `
                 <p class="leading-relaxed">Nhờ các biện pháp can thiệp thị trường hiệu quả từ Ngân hàng Nhà nước, mức chênh lệch giá vàng trong nước và quốc tế đã giảm sâu so với mức 18-20 triệu đồng trước đây.</p>
             `,
             source: "Ban Nghiên Cứu Thị Trường",
-            link: "#",
+            link: "https://vnexpress.net/kinh-doanh/hang-hoa",
             date: "16/09/2026",
             readTime: "3 phút đọc",
             featured: false
@@ -1384,13 +1384,13 @@ const GoldDashboard = (function () {
             category: "gold",
             categoryName: "Vàng SJC & Trong nước",
             badgeClass: "bg-amber-500/20 text-amber-300 border border-amber-500/40",
-            image: "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=60",
             summary: "Lượng khách hàng đến giao dịch tại các trung tâm kinh doanh vàng bạc lớn duy trì nhịp độ ổn định. Các doanh nghiệp áp dụng công nghệ đặt lịch hẹn trực tuyến tránh ùn tắc.",
             content: `
                 <p class="leading-relaxed">Ghi nhận tại hệ thống cửa hàng SJC, DOJI và Bảo Tín Minh Châu, việc niêm yết công khai bảng giá và sử dụng hệ thống xếp hàng tự động giúp khách hàng mua bán nhanh chóng, thuận tiện.</p>
             `,
             source: "Thị Trường Trong Nước",
-            link: "#",
+            link: "https://sjc.com.vn/gia-vang-online",
             date: "16/09/2026",
             readTime: "3 phút đọc",
             featured: false
@@ -1401,13 +1401,13 @@ const GoldDashboard = (function () {
             category: "gold",
             categoryName: "Vàng SJC & Trong nước",
             badgeClass: "bg-amber-500/20 text-amber-300 border border-amber-500/40",
-            image: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1605792657660-596af9009e82?w=800&auto=format&fit=crop&q=60",
             summary: "Lời khuyên từ các chuyên gia tài chính cá nhân về việc phân bổ tỷ trọng vàng trong danh mục đầu tư và các tiêu chí lựa chọn vàng nhẫn 9999 chuẩn tuổi.",
             content: `
                 <p class="leading-relaxed">Khi tích trữ vàng, người tiêu dùng nên mua tại các thương hiệu có uy tín, giữ đầy đủ hóa đơn chứng từ và bảo quản sản phẩm còn nguyên bao bì vỉ ép nhựa để tránh hao hụt khi bán ra.</p>
             `,
             source: "Tư Vấn Đầu Tư Cá Nhân",
-            link: "#",
+            link: "https://vnexpress.net/kinh-doanh/hang-hoa",
             date: "15/09/2026",
             readTime: "4 phút đọc",
             featured: false
@@ -1418,13 +1418,13 @@ const GoldDashboard = (function () {
             category: "silver",
             categoryName: "Thị Trường Bạc",
             badgeClass: "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40",
-            image: "https://images.unsplash.com/photo-1605792657660-596af9009e82?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1624365168968-30c29f64ef81?w=800&auto=format&fit=crop&q=60",
             summary: "Nhiều nhà đầu tư thế hệ trẻ lựa chọn bạc thỏi 999 làm kênh tích trữ tài sản ban đầu nhờ suất đầu tư vừa phải và tiềm năng tăng trưởng lớn trong chu kỳ năng lượng xanh.",
             content: `
                 <p class="leading-relaxed">Bạc vật chất đang khẳng định sức hút nhờ khả năng phòng thủ rủi ro tương tự vàng nhưng sở hữu dư địa tăng giá phần trăm cao hơn trong các giai đoạn bùng nổ hàng hóa công nghiệp.</p>
             `,
             source: "Tạp Chí Kim Loại Quý",
-            link: "#",
+            link: "https://vietnamnet.vn/kinh-doanh/tai-chinh",
             date: "15/09/2026",
             readTime: "4 phút đọc",
             featured: false
@@ -1435,13 +1435,13 @@ const GoldDashboard = (function () {
             category: "silver",
             categoryName: "Thị Trường Bạc",
             badgeClass: "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40",
-            image: "https://images.unsplash.com/photo-1618042164219-62c820f10723?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1508873696983-2df515122519?w=800&auto=format&fit=crop&q=60",
             summary: "Tỷ lệ Gold/Silver hiện duy trì ở mức cao so với trung bình lịch sử, mở ra cơ hội kinh doanh chênh lệch giá cho những nhà đầu tư am hiểu chu kỳ kim loại quý.",
             content: `
                 <p class="leading-relaxed">Lịch sử thị trường cho thấy khi tỷ lệ Vàng/Bạc vượt ngưỡng 80x, bạc thường có xu hướng bứt phá mạnh mẽ để thu hẹp khoảng cách giá so với vàng trong thời gian ngắn.</p>
             `,
             source: "Phân Tích Chiến Lược Hàng Hóa",
-            link: "#",
+            link: "https://vietnamnet.vn/kinh-doanh/tai-chinh",
             date: "14/09/2026",
             readTime: "5 phút đọc",
             featured: false
@@ -1452,13 +1452,13 @@ const GoldDashboard = (function () {
             category: "silver",
             categoryName: "Thị Trường Bạc",
             badgeClass: "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40",
-            image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=60",
             summary: "Đột phá trong hạ tầng trí tuệ nhân tạo (AI Data Centers) đẩy nhu cầu dẫn điện và tản nhiệt bằng bạc lên mức chưa từng có trong lịch sử ngành bán dẫn.",
             content: `
                 <p class="leading-relaxed">Khả năng dẫn điện đỉnh cao của bạc khiến kim loại này trở thành vật liệu không thể thay thế trong các dòng vi xử lý AI và trung tâm dữ liệu thế hệ mới.</p>
             `,
             source: "Tech & Metals Report",
-            link: "#",
+            link: "https://vietnamnet.vn/kinh-doanh/tai-chinh",
             date: "14/09/2026",
             readTime: "4 phút đọc",
             featured: false
@@ -1469,13 +1469,13 @@ const GoldDashboard = (function () {
             category: "world",
             categoryName: "Vàng Quốc Tế",
             badgeClass: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40",
-            image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=800&auto=format&fit=crop&q=60",
             summary: "Mỗi khi Fed hạ lãi suất cơ bản, chi phí cơ hội của việc nắm giữ tài sản không sinh lãi như vàng giảm xuống, tạo môi trường cực kỳ thuận lợi cho xu hướng tăng giá.",
             content: `
                 <p class="leading-relaxed">Các nhà kinh tế học dự báo chu kỳ nới lỏng tiền tệ của các ngân hàng trung ương lớn sẽ kéo dài trong suốt 12 đến 18 tháng tới, cung cấp bệ đỡ kiên cố cho thị trường kim loại quý.</p>
             `,
             source: "Macroeconomics Weekly",
-            link: "#",
+            link: "https://cafef.vn/tai-chinh-quoc-te.chn",
             date: "13/09/2026",
             readTime: "4 phút đọc",
             featured: false
@@ -1492,7 +1492,7 @@ const GoldDashboard = (function () {
                 <p class="leading-relaxed">Các quỹ đầu tư lớn trên thế giới (ETF) đã quay trở lại trạng thái mua ròng vàng sau nhiều tháng xả hàng, cho thấy lòng tin vững chắc vào đà tăng của vàng quốc tế.</p>
             `,
             source: "Global Risk Insight",
-            link: "#",
+            link: "https://cafef.vn/tai-chinh-quoc-te.chn",
             date: "13/09/2026",
             readTime: "4 phút đọc",
             featured: false
@@ -1503,13 +1503,13 @@ const GoldDashboard = (function () {
             category: "analysis",
             categoryName: "Phân Tích & Dự Báo",
             badgeClass: "bg-purple-500/20 text-purple-300 border border-purple-500/40",
-            image: "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=60",
             summary: "Hai ngân hàng đầu tư danh tiếng đồng loạt điều chỉnh tăng mục tiêu giá vàng trung và dài hạn nhờ động lực từ nguồn cầu vật chất của Châu Á.",
             content: `
                 <p class="leading-relaxed">Báo cáo dự báo lượng cầu mua vàng từ Trung Quốc, Ấn Độ và các thị trường mới nổi sẽ tiếp tục giữ vai trò dẫn dắt đà tăng trưởng của thị trường hàng hóa toàn cầu.</p>
             `,
             source: "Goldman Sachs Research",
-            link: "#",
+            link: "https://cafef.vn/thi-truong.chn",
             date: "12/09/2026",
             readTime: "5 phút đọc",
             featured: false
@@ -1520,13 +1520,13 @@ const GoldDashboard = (function () {
             category: "analysis",
             categoryName: "Phân Tích & Dự Báo",
             badgeClass: "bg-purple-500/20 text-purple-300 border border-purple-500/40",
-            image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=800&auto=format&fit=crop&q=60",
             summary: "Phương pháp phân bổ vốn thông minh theo tỷ lệ 70% Vàng - 30% Bạc giúp tối ưu hóa khả năng phòng thủ và gia tăng lợi nhuận cho nhà đầu tư.",
             content: `
                 <p class="leading-relaxed">Việc đa dạng hóa sản phẩm đầu tư kim loại quý kết hợp với chiến lược bình quân giá (DCA) là giải pháp loại bỏ yếu tố tâm lý đám đông hiệu quả nhất.</p>
             `,
             source: "Chuyên Gia Quản Lý Danh Mục",
-            link: "#",
+            link: "https://cafef.vn/thi-truong.chn",
             date: "12/09/2026",
             readTime: "4 phút đọc",
             featured: false
@@ -1537,13 +1537,13 @@ const GoldDashboard = (function () {
             category: "analysis",
             categoryName: "Phân Tích & Dự Báo",
             badgeClass: "bg-purple-500/20 text-purple-300 border border-purple-500/40",
-            image: "https://images.unsplash.com/photo-1450133064473-71024230f91b?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=60",
             summary: "Thống kê hiệu suất đầu tư trong 5 năm gần đây cho thấy vàng và bạc vượt trội hơn hẳn so với lãi suất tiền gửi ngân hàng.",
             content: `
                 <p class="leading-relaxed">Mặc dù gửi tiết kiệm mang lại dòng tiền ổn định, vàng lại có ưu thế vượt trội trong việc bảo vệ sức mua của đồng tiền khỏi tác động mất giá của lạm phát dài hạn.</p>
             `,
             source: "Phân Tích Dữ Liệu Tài Chính",
-            link: "#",
+            link: "https://cafef.vn/thi-truong.chn",
             date: "11/09/2026",
             readTime: "5 phút đọc",
             featured: false
@@ -1554,13 +1554,13 @@ const GoldDashboard = (function () {
             category: "policy",
             categoryName: "Chính Sách & Quản Lý",
             badgeClass: "bg-rose-500/20 text-rose-300 border border-rose-500/40",
-            image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&auto=format&fit=crop&q=60",
             summary: "Dự thảo sửa đổi Nghị định 24 hướng tới việc cấp phép sản xuất vàng miếng cho các doanh nghiệp đủ điều kiện để tăng nguồn cung cho thị trường.",
             content: `
                 <p class="leading-relaxed">Việc mở rộng quyền sản xuất và nhập khẩu vàng nguyên liệu hứa hẹn giúp thị trường vàng Việt Nam tiệm cận sát hơn với mặt bằng giá thế giới.</p>
             `,
             source: "Ban Chính Sách Tiền Tệ",
-            link: "#",
+            link: "https://vnexpress.net/kinh-doanh/chinh-sach",
             date: "11/09/2026",
             readTime: "4 phút đọc",
             featured: false
@@ -1571,13 +1571,13 @@ const GoldDashboard = (function () {
             category: "policy",
             categoryName: "Chính Sách & Quản Lý",
             badgeClass: "bg-rose-500/20 text-rose-300 border border-rose-500/40",
-            image: "https://images.unsplash.com/photo-1450133064473-71024230f91b?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&auto=format&fit=crop&q=60",
             summary: "Cơ quan quản lý siết chặt kiểm tra hóa đơn chứng từ chứng minh nguồn gốc hợp pháp của nguyên liệu chế tác trang sức vàng bạc.",
             content: `
                 <p class="leading-relaxed">Các tiệm vàng trên cả nước hưởng ứng tích cực việc chuẩn hóa sổ sách hóa đơn, góp phần đẩy lùi nạn kinh doanh vàng nhập lậu không rõ nguồn gốc.</p>
             `,
             source: "Tổng Cục Thuế & Quản Lý Thị Trường",
-            link: "#",
+            link: "https://vnexpress.net/kinh-doanh/chinh-sach",
             date: "10/09/2026",
             readTime: "3 phút đọc",
             featured: false
@@ -1588,13 +1588,13 @@ const GoldDashboard = (function () {
             category: "policy",
             categoryName: "Chính Sách & Quản Lý",
             badgeClass: "bg-rose-500/20 text-rose-300 border border-rose-500/40",
-            image: "https://images.unsplash.com/photo-1589758438368-0ad531db3366?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&auto=format&fit=crop&q=60",
             summary: "Đẩy mạnh thanh toán không dùng tiền mặt (chuyển khoản QR code, thẻ ngân hàng) giúp các giao dịch mua bán vàng diễn ra an toàn và minh bạch.",
             content: `
                 <p class="leading-relaxed">Hơn 90% các giao dịch vàng có giá trị lớn hiện nay đều được thực hiện qua hình thức chuyển khoản ngân hàng, giảm thiểu rủi ro tiền giả và đếm tiền mặt.</p>
             `,
             source: "Ban Công Nghệ Ngân Hàng",
-            link: "#",
+            link: "https://vnexpress.net/kinh-doanh/chinh-sach",
             date: "10/09/2026",
             readTime: "3 phút đọc",
             featured: false
