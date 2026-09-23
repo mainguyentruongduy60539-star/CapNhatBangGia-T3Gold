@@ -704,8 +704,8 @@ const GoldDashboard = (function () {
                 let sellSub = '';  // chỉ dùng cho isWorld
 
                 if (item.isWorld) {
-                    buyMain = `${formatUSD(item.buy)}`;
-                    sellMain = `${formatUSD(item.sell)}`;
+                    buyMain = `${Math.round(item.buy).toLocaleString('en-US')}`;
+                    sellMain = `${Math.round(item.sell).toLocaleString('en-US')}`;
                     
                     let vndPerChiSell = 0;
                     let vndPerChiBuy = 0;
@@ -774,29 +774,29 @@ const GoldDashboard = (function () {
                         <tr class="transition-colors border-b border-blue-900/30">
                             <!-- Cột 1: Tổ chức -->
                             <td class="text-left pl-1 sm:pl-2 pr-0.5 py-1.5 sm:py-2.5 font-black col-org">
-                                <div class="text-[13.5px] sm:text-[15px] md:text-base font-black leading-tight">${getItemDisplayName(item.name)}</div>
-                                <div class="text-[11.5px] sm:text-[13px] font-sans font-semibold text-slate-400 normal-case mt-0.5 whitespace-nowrap">${getItemUnitStr(item)}</div>
+                                <div class="text-[14px] xs:text-[15.5px] sm:text-base md:text-lg font-black leading-tight">${getItemDisplayName(item.name)}</div>
+                                <div class="text-[11px] sm:text-[13px] font-sans font-semibold text-slate-400 normal-case mt-0.5 whitespace-nowrap">${getItemUnitStr(item)}</div>
                             </td>
 
                             <!-- Cột 2: Mua Vào -->
-                            <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1.5 sm:px-2 text-right font-mono font-black price-val text-[14px] xs:text-[15px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                            <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:px-2 text-right font-mono font-black price-val text-[16.5px] xs:text-[18px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
                                 <div class="font-black">${buyMain}</div>
-                                ${buySub ? `<div class="text-[10px] sm:text-[12.5px] text-slate-400 font-bold mt-0.5">${buySub}</div>` : ''}
+                                ${buySub ? `<div class="text-[10.5px] sm:text-[12.5px] text-slate-400 font-bold mt-0.5">${buySub}</div>` : ''}
                             </td>
 
                             <!-- Cột 3: Bán Ra -->
-                            <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1.5 sm:px-2 text-right font-mono font-black price-val text-[14px] xs:text-[15px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                            <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:px-2 text-right font-mono font-black price-val text-[16.5px] xs:text-[18px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
                                 <div class="font-black">${sellMain}</div>
-                                ${sellSub ? `<div class="text-[10px] sm:text-[12.5px] text-yellow-400 font-bold mt-0.5">${sellSub}</div>` : ''}
+                                ${sellSub ? `<div class="text-[10.5px] sm:text-[12.5px] text-yellow-400 font-bold mt-0.5">${sellSub}</div>` : ''}
                             </td>
 
                             <!-- Cột 4: Biến Động -->
-                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black ${changeColor} text-[15px] xs:text-[16px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black ${changeColor} text-[15.5px] xs:text-[17px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
                                 <div>${changeStr}</div>
                             </td>
 
                             <!-- Cột 5: Chênh Lệch -->
-                            <td class="py-1.5 sm:py-2.5 pr-0.5 sm:pr-1 text-right font-mono font-black ${clColor} text-[15px] xs:text-[16px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                            <td class="py-1.5 sm:py-2.5 pr-0.5 sm:pr-1 text-right font-mono font-black ${clColor} text-[15.5px] xs:text-[17px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
                                 <div>${clStr}</div>
                             </td>
                         </tr>
