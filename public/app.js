@@ -612,8 +612,8 @@ const GoldDashboard = (function () {
             if (liveSpot) {
                 const worldItem = currentData.goldItems.find(i => i.isWorld || i.name === 'Vàng TG');
                 if (worldItem) {
-                    worldItem.buy = parseFloat((liveSpot - 0.2).toFixed(2));
-                    worldItem.sell = parseFloat((liveSpot + 0.2).toFixed(2));
+                    worldItem.buy = parseFloat((liveSpot).toFixed(2));
+                    worldItem.sell = parseFloat((liveSpot + 0.05).toFixed(2));
                 }
             }
         }
