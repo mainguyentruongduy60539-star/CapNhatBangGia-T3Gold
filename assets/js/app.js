@@ -1816,24 +1816,44 @@ const GoldDashboard = (function () {
         const contentEl = document.getElementById('news-modal-content');
         if (!modal || !contentEl) return;
 
-        let bodyContent = '';
-        if (article.content && article.content.length > 200) {
-            bodyContent = article.content;
-        } else {
-            const summaryText = article.summary || article.title;
-            bodyContent = `
-                <p class="leading-relaxed font-semibold text-slate-100 text-sm sm:text-base">${summaryText}</p>
+        const mainSummary = article.summary || article.title;
+        const rawContent = (article.content && article.content.trim() !== '') ? article.content : '';
+        const realLink = (article.link && article.link !== '#' && article.link.startsWith('http')) ? article.link : null;
+        const googleSearchLink = `https://www.google.com/search?q=${encodeURIComponent(article.title + ' ' + (article.source || ''))}`;
 
-                <div class="my-3 p-4 rounded-xl bg-gradient-to-r from-amber-500/10 to-yellow-500/10 border-l-4 border-amber-500 text-amber-200 font-medium text-xs sm:text-sm">
-                    <strong>Điểm tin nổi bật:</strong> Tin tức được cập nhật tự động 24/7 từ cơ quan báo chí chính thống <strong>${article.source || 'VnExpress / CafeF / VietnamNet'}</strong>. Diễn biến thị trường tài chính, giá vàng & kim loại quý đang nhận được sự quan tâm rất lớn từ cộng đồng nhà đầu tư.
-                </div>
+        const bodyContent = `
+            <!-- Đoạn mở đầu tóm tắt nổi bật -->
+            <p class="leading-relaxed font-semibold text-slate-100 text-xs sm:text-sm border-l-4 border-amber-500 pl-3.5 py-1.5 bg-amber-500/10 rounded-r-lg">
+                ${mainSummary}
+            </p>
 
-                <p class="leading-relaxed">Ghi nhận mới nhất cho thấy dòng tiền trên thị trường tài chính biến động mạnh mẽ. Các chuyên gia phân tích nhận định các yếu tố kinh tế vĩ mô như xu hướng lãi suất ngân hàng trung ương (Fed), chỉ số USD Index và nhu cầu tiêu thụ thực tế tại Việt Nam đều đóng vai trò then chốt định hình xu hướng ngắn và trung hạn.</p>
+            ${rawContent ? `<div class="my-3 leading-relaxed text-xs sm:text-sm text-slate-200 space-y-2">${rawContent}</div>` : ''}
 
-                <h4 class="text-base font-bold text-slate-100 mt-4 mb-2">Đánh Giá & Khuyến Nghị Chuyên Gia</h4>
-                <p class="leading-relaxed">Giới phân tích thị trường khuyến nghị nhà đầu tư nên theo dõi chặt chẽ các thông tin chính thống từ các cơ quan quản lý và các kênh báo chí uy tín. Việc quản trị rủi ro danh mục và phân bổ tỷ trọng hợp lý giữa các kênh tài sản (Vàng SJC, Vàng nhẫn 9999, Bạc vật chất) là yếu tố quyết định hiệu quả đầu tư dài hạn.</p>
-            `;
-        }
+            <!-- Khối phân tích chi tiết bối cảnh thị trường -->
+            <div class="my-3 p-3.5 sm:p-4 rounded-xl bg-slate-900/90 border border-slate-700/60 space-y-2.5">
+                <h4 class="text-xs sm:text-sm font-bold text-amber-400 flex items-center gap-1.5">
+                    <span>📊</span>
+                    <span>Bối Cảnh Thị Trường & Diễn Biến Chi Tiết</span>
+                </h4>
+                <p class="leading-relaxed text-xs sm:text-sm text-slate-200">
+                    Thị trường tài chính và kim loại quý đang chứng kiến những biến động quan trọng dưới tác động của chỉ số USD Index, chính sách lãi suất từ Cục Dự trữ Liên bang Mỹ (Fed) cũng như các chỉ đạo bình ổn từ Ngân hàng Nhà nước Việt Nam.
+                </p>
+                <p class="leading-relaxed text-xs sm:text-sm text-slate-200">
+                    Nhu cầu giao dịch thực tế tại các trung tâm kinh doanh vàng bạc lớn (SJC, DOJI, PNJ, Bảo Tín Minh Châu) duy trì nhịp độ sôi động. Sự cân bằng giữa sức mua tích trữ và hoạt động đầu tư dài hạn giúp thị trường giữ vững thanh khoản.
+                </p>
+            </div>
+
+            <!-- Khối đánh giá chuyên gia & khuyến nghị -->
+            <div class="my-3 p-3.5 sm:p-4 rounded-xl bg-blue-950/40 border border-blue-800/50 space-y-2.5">
+                <h4 class="text-xs sm:text-sm font-bold text-blue-300 flex items-center gap-1.5">
+                    <span>⚖️</span>
+                    <span>Đánh Giá Chuyên Gia & Quản Trị Rủi Ro</span>
+                </h4>
+                <p class="leading-relaxed text-xs sm:text-sm text-slate-200">
+                    Các chuyên gia tài chính khuyến nghị nhà đầu tư cá nhân và chủ tiệm vàng nên theo dõi chặt chẽ bản tin từ các cơ quan quản lý chính thống, tuân thủ quy định hóa đơn chứng từ điện tử và chuẩn hóa xuất xứ nguồn gốc sản phẩm.
+                </p>
+            </div>
+        `;
 
         contentEl.innerHTML = `
             <div class="flex items-center gap-2 text-xs">
@@ -1844,11 +1864,11 @@ const GoldDashboard = (function () {
                 <span class="text-slate-400 font-medium">• ${article.readTime}</span>
             </div>
             
-            <h2 class="text-lg sm:text-xl font-extrabold text-slate-100 leading-snug">
+            <h2 class="text-base sm:text-lg md:text-xl font-extrabold text-slate-100 leading-snug">
                 ${article.title}
             </h2>
 
-            <div class="flex flex-wrap items-center justify-between gap-1.5 pb-3 border-b border-slate-800 text-xs text-slate-400">
+            <div class="flex flex-wrap items-center justify-between gap-1.5 pb-2.5 border-b border-slate-800 text-xs text-slate-400">
                 <span>Nguồn báo chí 24/7: <strong class="text-blue-300">${article.source || 'VnExpress / CafeF / VietnamNet'}</strong></span>
                 <span class="text-emerald-400 font-semibold flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-emerald-400 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -1858,7 +1878,7 @@ const GoldDashboard = (function () {
                 </span>
             </div>
 
-            <div class="rounded-xl overflow-hidden max-h-72 w-full bg-slate-900">
+            <div class="rounded-xl overflow-hidden max-h-64 sm:max-h-72 w-full bg-slate-900">
                 <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&auto=format&fit=crop&q=60'" />
             </div>
 
@@ -1866,34 +1886,31 @@ const GoldDashboard = (function () {
                 ${bodyContent}
             </div>
 
-            ${article.link && article.link !== '#' ? `
-                <div class="mt-4 p-4 rounded-xl bg-gradient-to-r from-blue-950/80 to-indigo-950/80 border border-blue-600/60 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-3">
-                    <div class="flex items-center gap-3 text-left">
-                        <span class="text-2xl">🌐</span>
-                        <div>
-                            <h4 class="text-xs sm:text-sm font-bold text-white">Đọc bài viết đầy đủ từ trang báo gốc</h4>
-                            <p class="text-[11px] text-slate-300">Được xuất bản chính thức bởi <strong class="text-blue-300">${article.source}</strong></p>
-                        </div>
+            <!-- Nút đọc toàn bộ bài báo gốc -->
+            <div class="mt-4 p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-blue-950/90 to-indigo-950/90 border border-blue-600/60 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-3 text-left">
+                    <span class="text-2xl">📰</span>
+                    <div>
+                        <h4 class="text-xs sm:text-sm font-bold text-white">Xem toàn bộ bài viết chi tiết trên báo gốc</h4>
+                        <p class="text-[11px] text-slate-300">Được xuất bản bởi <strong class="text-blue-300">${article.source || 'Báo điện tử'}</strong></p>
                     </div>
-                    <a href="${article.link}" target="_blank" rel="noopener noreferrer"
-                        class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer">
-                        <span>Đọc toàn bộ bài báo trên ${article.source}</span>
-                        <span>↗</span>
-                    </a>
                 </div>
-            ` : ''}
+                <a href="${realLink || googleSearchLink}" target="_blank" rel="noopener noreferrer"
+                    class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer">
+                    <span>${realLink ? 'Đọc bài gốc trên ' + (article.source || 'Báo điện tử') : 'Tìm bài viết trên Google News'}</span>
+                    <span>↗</span>
+                </a>
+            </div>
 
             <div class="mt-4 pt-3 border-t border-slate-800 flex flex-wrap justify-between items-center gap-2">
                 <span class="text-xs text-slate-400 font-medium">Nguồn: ${article.source || 'Báo điện tử'}</span>
                 <div class="flex items-center gap-2">
-                    ${article.link && article.link !== '#' ? `
-                        <a href="${article.link}" target="_blank" rel="noopener noreferrer"
-                            class="px-3 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md inline-flex items-center gap-1">
-                            Xem bài gốc ↗
-                        </a>
-                    ` : ''}
+                    <a href="${realLink || googleSearchLink}" target="_blank" rel="noopener noreferrer"
+                        class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md inline-flex items-center gap-1">
+                        Mở bài gốc ↗
+                    </a>
                     <button onclick="GoldDashboard.closeNewsModal()" 
-                        class="px-4 py-2 rounded-xl bg-yellow-500 hover:bg-yellow-400 text-slate-950 text-xs font-bold transition-all shadow-md cursor-pointer">
+                        class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold transition-all shadow-md cursor-pointer">
                         Đóng bài viết
                     </button>
                 </div>
