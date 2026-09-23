@@ -791,12 +791,12 @@ const GoldDashboard = (function () {
                             </td>
 
                             <!-- Cột 4: Biến Động -->
-                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black ${changeColor} text-[15.5px] xs:text-[17px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black ${changeColor} text-[13.5px] xs:text-[14.5px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
                                 <div>${changeStr}</div>
                             </td>
 
                             <!-- Cột 5: Chênh Lệch -->
-                            <td class="py-1.5 sm:py-2.5 pr-0.5 sm:pr-1 text-right font-mono font-black ${clColor} text-[15.5px] xs:text-[17px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                            <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:pr-2 text-right font-mono font-black ${clColor} text-[13.5px] xs:text-[14.5px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
                                 <div>${clStr}</div>
                             </td>
                         </tr>
