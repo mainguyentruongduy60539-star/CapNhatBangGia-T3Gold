@@ -177,8 +177,8 @@ app.get(['/api/gold', '/gold', '/api/v1/gold'], async (req, res) => {
                 goldItems = vsg.vsg_gold_table.map(item => {
                     const isWorld = item.name === 'Vàng TG' || item.name === 'XAUUSD';
                     const isGF95 = item.name === '95% GF';
-                    const buyVal = isWorld ? parseFloat(item.saigon?.buy?.toFixed(1) || item.saigon?.buy) : (isGF95 ? Math.round(item.saigon?.buy) : Math.round(item.saigon?.buy || 0));
-                    const sellVal = isWorld ? parseFloat(item.saigon?.sell?.toFixed(1) || item.saigon?.sell) : (isGF95 ? Math.round(item.saigon?.sell) : Math.round(item.saigon?.sell || 0));
+                    const buyVal = isWorld ? parseFloat((item.saigon?.buy || 0).toFixed(2)) : (isGF95 ? Math.round(item.saigon?.buy) : Math.round(item.saigon?.buy || 0));
+                    const sellVal = isWorld ? parseFloat((item.saigon?.sell || 0).toFixed(2)) : (isGF95 ? Math.round(item.saigon?.sell) : Math.round(item.saigon?.sell || 0));
                     // item.gap từ API VangSaigon là nghìn VNĐ / Lượng -> quy đổi VNĐ / Chỉ: gap * 1000 / 10 = gap * 100
                     const clInChiVND = isWorld ? 0 : (item.gap !== undefined ? Math.round(item.gap * 100) : Math.round(sellVal * 100 - baseVsgChiVND));
                     return {
@@ -194,8 +194,8 @@ app.get(['/api/gold', '/gold', '/api/v1/gold'], async (req, res) => {
                 goldItems.push({
                     name: 'Vàng TG',
                     isWorld: true,
-                    buy: parseFloat(xauBuy.toFixed(1)),
-                    sell: parseFloat(xauSell.toFixed(1)),
+                    buy: parseFloat(xauBuy.toFixed(2)),
+                    sell: parseFloat(xauSell.toFixed(2)),
                     change: parseFloat(xauChange.toFixed(2)),
                     cl: 0
                 });

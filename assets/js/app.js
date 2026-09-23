@@ -146,8 +146,8 @@ const GoldDashboard = (function () {
             {
                 name: 'Vàng TG',
                 isWorld: true,
-                buy: parseFloat(liveUsdBid.toFixed(1)),
-                sell: parseFloat(liveUsdAsk.toFixed(1)),
+                buy: parseFloat(liveUsdBid.toFixed(2)),
+                sell: parseFloat(liveUsdAsk.toFixed(2)),
                 change: parseFloat((changeUsd || 0).toFixed(2)),
                 cl: 0
             },
@@ -335,8 +335,8 @@ const GoldDashboard = (function () {
                 goldItems = vsg.vsg_gold_table.map(item => {
                     const isWorld = item.name === 'Vàng TG' || item.name === 'XAUUSD';
                     const isGF95 = item.name === '95% GF';
-                    const buyVal = isWorld ? parseFloat(item.saigon?.buy?.toFixed(1) || item.saigon?.buy) : (isGF95 ? Math.round(item.saigon?.buy) : Math.round(item.saigon?.buy || 0));
-                    const sellVal = isWorld ? parseFloat(item.saigon?.sell?.toFixed(1) || item.saigon?.sell) : (isGF95 ? Math.round(item.saigon?.sell) : Math.round(item.saigon?.sell || 0));
+                    const buyVal = isWorld ? parseFloat((item.saigon?.buy || 0).toFixed(2)) : (isGF95 ? Math.round(item.saigon?.buy) : Math.round(item.saigon?.buy || 0));
+                    const sellVal = isWorld ? parseFloat((item.saigon?.sell || 0).toFixed(2)) : (isGF95 ? Math.round(item.saigon?.sell) : Math.round(item.saigon?.sell || 0));
                     const clInChiVND = isWorld ? 0 : (item.gap !== undefined ? Math.round(item.gap * 100) : Math.round(sellVal * 100 - baseVsgChiVND));
                     return {
                         name: item.name === 'XAUUSD' ? 'Vàng TG' : item.name,
@@ -351,8 +351,8 @@ const GoldDashboard = (function () {
                 goldItems.push({
                     name: 'Vàng TG',
                     isWorld: true,
-                    buy: parseFloat(xauBuy.toFixed(1)),
-                    sell: parseFloat(xauSell.toFixed(1)),
+                    buy: parseFloat(xauBuy.toFixed(2)),
+                    sell: parseFloat(xauSell.toFixed(2)),
                     change: parseFloat(xauChange.toFixed(2)),
                     cl: 0
                 });
@@ -704,8 +704,10 @@ const GoldDashboard = (function () {
                 let sellSub = '';  // chỉ dùng cho isWorld
 
                 if (item.isWorld) {
-                    buyMain = `${Math.round(item.buy).toLocaleString('en-US')}`;
-                    sellMain = `${Math.round(item.sell).toLocaleString('en-US')}`;
+                    const buyNum = Number(item.buy) || 0;
+                    const sellNum = Number(item.sell) || 0;
+                    buyMain = buyNum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    sellMain = sellNum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                     
                     let vndPerChiSell = 0;
                     let vndPerChiBuy = 0;
