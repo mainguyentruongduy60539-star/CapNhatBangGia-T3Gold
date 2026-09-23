@@ -764,21 +764,21 @@ const GoldDashboard = (function () {
                     rowsHtml += `
                         <tr class="transition-colors border-b border-blue-900/30">
                             <!-- Cột 1: Tổ chức -->
-                            <td class="text-left pl-1 sm:pl-2 pr-0.5 py-1.5 sm:py-2.5 font-black col-org">
-                                <div class="text-[13.5px] sm:text-[15px] md:text-base font-black leading-tight">${item.name}</div>
-                                <div class="text-[11.5px] sm:text-[13px] font-sans font-bold text-slate-400 normal-case mt-0.5 whitespace-nowrap">${getItemUnitStr(item)}</div>
+                            <td class="text-left pl-1.5 sm:pl-2 pr-0.5 py-1.5 sm:py-2.5 font-black col-org">
+                                <div class="text-[12px] sm:text-sm md:text-base font-extrabold leading-tight tracking-tight">${item.name}</div>
+                                <div class="text-[10.5px] sm:text-[12.5px] font-sans font-semibold text-slate-400 normal-case mt-0.5 tracking-tight whitespace-nowrap">${getItemUnitStr(item)}</div>
                             </td>
 
                             <!-- Cột 2: Mua Vào -->
-                            <td class="py-1.5 sm:py-2.5 px-1 sm:px-1.5 text-right font-mono font-black price-val text-[14.5px] xs:text-[15.5px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                            <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1.5 sm:px-2 text-right font-mono font-black price-val text-[14px] xs:text-[15px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
                                 <div class="font-black">${buyMain}</div>
-                                ${buySub ? `<div class="text-[10.5px] sm:text-[13px] text-slate-400 font-bold mt-0.5">${buySub}</div>` : ''}
+                                ${buySub ? `<div class="text-[10px] sm:text-[12.5px] text-slate-400 font-bold mt-0.5">${buySub}</div>` : ''}
                             </td>
 
                             <!-- Cột 3: Bán Ra -->
-                            <td class="py-1.5 sm:py-2.5 px-1 sm:px-1.5 text-right font-mono font-black price-val text-[14.5px] xs:text-[15.5px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                            <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1.5 sm:px-2 text-right font-mono font-black price-val text-[14px] xs:text-[15px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
                                 <div class="font-black">${sellMain}</div>
-                                ${sellSub ? `<div class="text-[10.5px] sm:text-[13px] text-yellow-400 font-bold mt-0.5">${sellSub}</div>` : ''}
+                                ${sellSub ? `<div class="text-[10px] sm:text-[12.5px] text-yellow-400 font-bold mt-0.5">${sellSub}</div>` : ''}
                             </td>
 
                             <!-- Cột 4: Biến Động -->
