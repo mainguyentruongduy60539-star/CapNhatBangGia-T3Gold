@@ -770,15 +770,15 @@ const GoldDashboard = (function () {
                             </td>
 
                             <!-- Cột 2: Mua Vào -->
-                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black price-val text-[15px] xs:text-[16px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                            <td class="py-1.5 sm:py-2.5 px-1 sm:px-1.5 text-right font-mono font-black price-val text-[14.5px] xs:text-[15.5px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
                                 <div class="font-black">${buyMain}</div>
-                                ${buySub ? `<div class="text-[11px] sm:text-[13px] text-slate-400 font-bold mt-0.5">${buySub}</div>` : ''}
+                                ${buySub ? `<div class="text-[10.5px] sm:text-[13px] text-slate-400 font-bold mt-0.5">${buySub}</div>` : ''}
                             </td>
 
                             <!-- Cột 3: Bán Ra -->
-                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black price-val text-[15px] xs:text-[16px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                            <td class="py-1.5 sm:py-2.5 px-1 sm:px-1.5 text-right font-mono font-black price-val text-[14.5px] xs:text-[15.5px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
                                 <div class="font-black">${sellMain}</div>
-                                ${sellSub ? `<div class="text-[11px] sm:text-[13px] text-yellow-400 font-bold mt-0.5">${sellSub}</div>` : ''}
+                                ${sellSub ? `<div class="text-[10.5px] sm:text-[13px] text-yellow-400 font-bold mt-0.5">${sellSub}</div>` : ''}
                             </td>
 
                             <!-- Cột 4: Biến Động -->
