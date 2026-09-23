@@ -1194,7 +1194,7 @@ const GoldDashboard = (function () {
             category: "silver",
             categoryName: "Thị Trường Bạc",
             badgeClass: "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40",
-            image: "https://images.unsplash.com/photo-1599837565318-67429bde7162?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&auto=format&fit=crop&q=60",
             summary: "Bạc không chỉ đóng vai trò kim loại quý tích trữ mà còn là nguyên liệu công nghiệp thiết yếu. Tốc độ tiêu thụ bạc trong ngành năng lượng tái tạo đã vượt qua mọi dự báo quý 3.",
             content: `
                 <p class="leading-relaxed">Bạc quốc tế vừa ghi nhận đợt tăng giá ấn tượng nhất trong vòng nhiều năm, vượt xa tốc độ tăng trưởng phần trăm của vàng trong cùng chu kỳ.</p>
@@ -1231,7 +1231,7 @@ const GoldDashboard = (function () {
             category: "world",
             categoryName: "Vàng Quốc Tế",
             badgeClass: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40",
-            image: "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&auto=format&fit=crop&q=60",
             summary: "Các ngân hàng đầu tư phố Wall như Goldman Sachs, Citi và UBS đồng loạt nâng mục tiêu giá vàng trung hạn trong báo cáo chiến lược mới nhất.",
             content: `
                 <p class="leading-relaxed">Khảo sát mới nhất từ Bloomberg và Kitco News cho thấy hơn 78% các chuyên gia phân tích thị trường Phố Wall và 69% nhà đầu tư bán lẻ dự báo giá vàng sẽ tiếp tục duy trì xu hướng tăng.</p>
@@ -1265,7 +1265,7 @@ const GoldDashboard = (function () {
             category: "silver",
             categoryName: "Thị Trường Bạc",
             badgeClass: "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40",
-            image: "https://images.unsplash.com/photo-1624365168968-30c29f64ef81?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1599837565318-67429bde7162?w=800&auto=format&fit=crop&q=60",
             summary: "Thị trường bạc vật chất trong nước chứng kiến đợt sóng tăng giá mới khi giới đầu tư cá nhân bắt đầu phân bổ vốn sang tài sản kim loại quý giá rẻ hơn vàng.",
             content: `
                 <p class="leading-relaxed">Giá bạc miếng và bạc thỏi niêm yết tại các đại lý lớn ghi nhận mức tăng đồng bộ. Tỷ lệ Gold/Silver ratio (tỷ lệ giá vàng/giá bạc) đang có dấu hiệu thu hẹp dần.</p>
@@ -1282,7 +1282,7 @@ const GoldDashboard = (function () {
             category: "world",
             categoryName: "Vàng Quốc Tế",
             badgeClass: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40",
-            image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&auto=format&fit=crop&q=60",
             summary: "Đồng USD suy yếu trên thị trường quốc tế là động lực hỗ trợ đà bứt phá của giá vàng XAU/USD và bạc XAG/USD trong các phiên giao dịch gần đây.",
             content: `
                 <p class="leading-relaxed">Áp lực giảm giá lên đồng Dollar Mỹ xuất hiện sau khi các số liệu lạm phát CPI và việc làm tại Mỹ phát đi tín hiệu hạ nhiệt rõ nét hơn so với dự báo của giới phân tích.</p>
@@ -1299,7 +1299,7 @@ const GoldDashboard = (function () {
             category: "analysis",
             categoryName: "Phân Tích & Dự Báo",
             badgeClass: "bg-purple-500/20 text-purple-300 border border-purple-500/40",
-            image: "https://images.unsplash.com/photo-1535320903710-d993d3d77d29?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format&fit=crop&q=60",
             summary: "Kết quả khảo sát tuần mới nhất của Kitco News cho thấy tinh thần lạc quan áp đảo từ cả giới phân tích chuyên nghiệp và cộng đồng nhà đầu tư cá nhân.",
             content: `
                 <p class="leading-relaxed">Hầu hết các chiến lược gia thị trường đều đồng thuận rằng các yếu tố hỗ trợ dài hạn như rủi ro địa chính trị và làn sóng hạ lãi suất toàn cầu vẫn chưa suy giảm.</p>
@@ -1418,7 +1418,7 @@ const GoldDashboard = (function () {
             category: "silver",
             categoryName: "Thị Trường Bạc",
             badgeClass: "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40",
-            image: "https://images.unsplash.com/photo-1624365168968-30c29f64ef81?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1615840287214-7ff58936c4cf?w=800&auto=format&fit=crop&q=60",
             summary: "Nhiều nhà đầu tư thế hệ trẻ lựa chọn bạc thỏi 999 làm kênh tích trữ tài sản ban đầu nhờ suất đầu tư vừa phải và tiềm năng tăng trưởng lớn trong chu kỳ năng lượng xanh.",
             content: `
                 <p class="leading-relaxed">Bạc vật chất đang khẳng định sức hút nhờ khả năng phòng thủ rủi ro tương tự vàng nhưng sở hữu dư địa tăng giá phần trăm cao hơn trong các giai đoạn bùng nổ hàng hóa công nghiệp.</p>
@@ -1435,7 +1435,7 @@ const GoldDashboard = (function () {
             category: "silver",
             categoryName: "Thị Trường Bạc",
             badgeClass: "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40",
-            image: "https://images.unsplash.com/photo-1508873696983-2df515122519?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1614028674016-81c23881e974?w=800&auto=format&fit=crop&q=60",
             summary: "Tỷ lệ Gold/Silver hiện duy trì ở mức cao so với trung bình lịch sử, mở ra cơ hội kinh doanh chênh lệch giá cho những nhà đầu tư am hiểu chu kỳ kim loại quý.",
             content: `
                 <p class="leading-relaxed">Lịch sử thị trường cho thấy khi tỷ lệ Vàng/Bạc vượt ngưỡng 80x, bạc thường có xu hướng bứt phá mạnh mẽ để thu hẹp khoảng cách giá so với vàng trong thời gian ngắn.</p>
@@ -1452,7 +1452,7 @@ const GoldDashboard = (function () {
             category: "silver",
             categoryName: "Thị Trường Bạc",
             badgeClass: "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40",
-            image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&auto=format&fit=crop&q=60",
             summary: "Đột phá trong hạ tầng trí tuệ nhân tạo (AI Data Centers) đẩy nhu cầu dẫn điện và tản nhiệt bằng bạc lên mức chưa từng có trong lịch sử ngành bán dẫn.",
             content: `
                 <p class="leading-relaxed">Khả năng dẫn điện đỉnh cao của bạc khiến kim loại này trở thành vật liệu không thể thay thế trong các dòng vi xử lý AI và trung tâm dữ liệu thế hệ mới.</p>
@@ -1469,7 +1469,7 @@ const GoldDashboard = (function () {
             category: "world",
             categoryName: "Vàng Quốc Tế",
             badgeClass: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40",
-            image: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?w=800&auto=format&fit=crop&q=60",
             summary: "Mỗi khi Fed hạ lãi suất cơ bản, chi phí cơ hội của việc nắm giữ tài sản không sinh lãi như vàng giảm xuống, tạo môi trường cực kỳ thuận lợi cho xu hướng tăng giá.",
             content: `
                 <p class="leading-relaxed">Các nhà kinh tế học dự báo chu kỳ nới lỏng tiền tệ của các ngân hàng trung ương lớn sẽ kéo dài trong suốt 12 đến 18 tháng tới, cung cấp bệ đỡ kiên cố cho thị trường kim loại quý.</p>
@@ -1486,7 +1486,7 @@ const GoldDashboard = (function () {
             category: "world",
             categoryName: "Vàng Quốc Tế",
             badgeClass: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40",
-            image: "https://images.unsplash.com/photo-1565372195458-9de0b320ef04?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=60",
             summary: "Vàng khẳng định thế mạnh số 1 với vai trò 'vịnh trú ẩn an toàn' trước những bất ổn trên bản đồ địa chính trị và thương mại quốc tế.",
             content: `
                 <p class="leading-relaxed">Các quỹ đầu tư lớn trên thế giới (ETF) đã quay trở lại trạng thái mua ròng vàng sau nhiều tháng xả hàng, cho thấy lòng tin vững chắc vào đà tăng của vàng quốc tế.</p>
@@ -1571,7 +1571,7 @@ const GoldDashboard = (function () {
             category: "policy",
             categoryName: "Chính Sách & Quản Lý",
             badgeClass: "bg-rose-500/20 text-rose-300 border border-rose-500/40",
-            image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&auto=format&fit=crop&q=60",
+            image: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=800&auto=format&fit=crop&q=60",
             summary: "Cơ quan quản lý siết chặt kiểm tra hóa đơn chứng từ chứng minh nguồn gốc hợp pháp của nguyên liệu chế tác trang sức vàng bạc.",
             content: `
                 <p class="leading-relaxed">Các tiệm vàng trên cả nước hưởng ứng tích cực việc chuẩn hóa sổ sách hóa đơn, góp phần đẩy lùi nạn kinh doanh vàng nhập lậu không rõ nguồn gốc.</p>
