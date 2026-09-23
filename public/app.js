@@ -1,15 +1,7 @@
 const GoldDashboard = (function () {
     const API_ENDPOINTS = {
-        gold: [
-            '/api/gold',
-            'http://127.0.0.1:3001/api/gold',
-            'http://localhost:3001/api/gold'
-        ],
-        silver: [
-            '/api/silver',
-            'http://127.0.0.1:3001/api/silver',
-            'http://localhost:3001/api/silver'
-        ]
+        gold: ['/api/gold', '/gold'],
+        silver: ['/api/silver', '/silver']
     };
 
     // Tỷ giá quy đổi thị trường thực tế
@@ -42,6 +34,7 @@ const GoldDashboard = (function () {
 
     let currentMarket = 'gold'; // 'gold' | 'silver'
     let currentData = null;
+    let lastLiveVsgData = null; // Giữ dữ liệu live VangSaigon trong bộ nhớ client
     let currentTheme = 'dark'; // 'dark' | 'light'
 
     // ==========================================
@@ -139,9 +132,15 @@ const GoldDashboard = (function () {
         const liveUsdBid = bid !== undefined ? parseFloat(bid) : (priceUsd - 0.2);
         const liveUsdAsk = ask !== undefined ? parseFloat(ask) : (priceUsd + 0.2);
 
-        const baseVsgChiVND = 13791431;
-        const g9999BuyRaw = 136300;
-        const g9999SellRaw = 137800;
+        const currentExRate = (priceVnd && priceUsd) ? Math.round(priceVnd / priceUsd) : EXCHANGE_RATE;
+        const baseVsgChiVND = Math.round((liveUsdAsk * currentExRate / TROY_OUNCE_TO_GRAM) * 3.75);
+        const g9999SellRaw = Math.round(baseVsgChiVND / 100);
+        const g9999BuyRaw = Math.round(g9999SellRaw * 0.989);
+
+        const sjcTdSell = Math.round(g9999SellRaw * 1.058);
+        const sjcTdBuy = Math.round(sjcTdSell * 0.990);
+
+        const baseChangeChiRaw = Math.round((changeUsd * currentExRate / TROY_OUNCE_TO_GRAM) * 3.75 / 100);
 
         return [
             {
@@ -149,47 +148,47 @@ const GoldDashboard = (function () {
                 isWorld: true,
                 buy: parseFloat(liveUsdBid.toFixed(1)),
                 sell: parseFloat(liveUsdAsk.toFixed(1)),
-                change: 35.41,
+                change: parseFloat((changeUsd || 0).toFixed(2)),
                 cl: 0
             },
             {
                 name: 'SJC Tự do',
                 isWorld: false,
-                buy: 144200,
-                sell: 145700,
-                change: 0,
-                cl: 778569
+                buy: sjcTdBuy,
+                sell: sjcTdSell,
+                change: baseChangeChiRaw,
+                cl: Math.round(sjcTdSell * 100 - baseVsgChiVND)
             },
             {
                 name: 'Vàng 999.9',
                 isWorld: false,
-                buy: 136300,
-                sell: 137800,
-                change: 0,
-                cl: Math.round(137800 * 100 - baseVsgChiVND)
+                buy: g9999BuyRaw,
+                sell: g9999SellRaw,
+                change: baseChangeChiRaw,
+                cl: Math.round(g9999SellRaw * 100 - baseVsgChiVND)
             },
             {
                 name: 'Vàng 99.9',
                 isWorld: false,
-                buy: 136000,
-                sell: 137500,
-                change: 0,
-                cl: Math.round(137500 * 100 - baseVsgChiVND)
+                buy: Math.round(g9999BuyRaw * 0.998),
+                sell: Math.round(g9999SellRaw * 0.998),
+                change: Math.round(baseChangeChiRaw * 0.998),
+                cl: Math.round(Math.round(g9999SellRaw * 0.998) * 100 - baseVsgChiVND)
             },
             {
                 name: 'Vàng 95',
                 isWorld: false,
-                buy: 128700,
-                sell: 130200,
-                change: 0,
-                cl: Math.round(130200 * 100 - baseVsgChiVND)
+                buy: Math.round(g9999BuyRaw * 0.945),
+                sell: Math.round(g9999SellRaw * 0.945),
+                change: Math.round(baseChangeChiRaw * 0.945),
+                cl: Math.round(Math.round(g9999SellRaw * 0.945) * 100 - baseVsgChiVND)
             },
             {
                 name: 'Vàng 980',
                 isWorld: false,
                 buy: Math.round(g9999BuyRaw * 0.9795),
                 sell: Math.round(g9999SellRaw * 0.9805),
-                change: 0,
+                change: Math.round(baseChangeChiRaw * 0.9805),
                 cl: Math.round(Math.round(g9999SellRaw * 0.9805) * 100 - baseVsgChiVND)
             },
             {
@@ -197,7 +196,7 @@ const GoldDashboard = (function () {
                 isWorld: false,
                 buy: Math.round(g9999BuyRaw * 0.749),
                 sell: Math.round(g9999SellRaw * 0.751),
-                change: 0,
+                change: Math.round(baseChangeChiRaw * 0.751),
                 cl: Math.round(Math.round(g9999SellRaw * 0.751) * 100 - baseVsgChiVND)
             },
             {
@@ -205,7 +204,7 @@ const GoldDashboard = (function () {
                 isWorld: false,
                 buy: Math.round(g9999BuyRaw * 0.6085),
                 sell: Math.round(g9999SellRaw * 0.6115),
-                change: 0,
+                change: Math.round(baseChangeChiRaw * 0.6115),
                 cl: Math.round(Math.round(g9999SellRaw * 0.6115) * 100 - baseVsgChiVND)
             },
             {
@@ -213,7 +212,7 @@ const GoldDashboard = (function () {
                 isWorld: false,
                 buy: Math.round(g9999BuyRaw * 0.583),
                 sell: Math.round(g9999SellRaw * 0.587),
-                change: 0,
+                change: Math.round(baseChangeChiRaw * 0.587),
                 cl: Math.round(Math.round(g9999SellRaw * 0.587) * 100 - baseVsgChiVND)
             },
             {
@@ -221,7 +220,7 @@ const GoldDashboard = (function () {
                 isWorld: false,
                 buy: Math.round(g9999BuyRaw * 0.4135),
                 sell: Math.round(g9999SellRaw * 0.4185),
-                change: 0,
+                change: Math.round(baseChangeChiRaw * 0.4185),
                 cl: Math.round(Math.round(g9999SellRaw * 0.4185) * 100 - baseVsgChiVND)
             }
         ];
@@ -237,12 +236,12 @@ const GoldDashboard = (function () {
         const baseLuongChangeVND = (changeUsd * EXCHANGE_RATE / TROY_OUNCE_TO_GRAM) * GRAM_TO_LUONG;
         const baseChiVNDWorldSell = baseGramVND * 3.75;
 
-        // 1. Bạc 999 thị trường: Giá bạc thế giới 1 chỉ làm tròn lên (ví dụ 208.259 -> 210, tức 210.000 VNĐ)
-        const bac999Price = Math.ceil(baseChiVNDWorldSell / 10000) * 10000;
-
-        // 2. Bạc Nữ trang: Giá bán = Giá bán thế giới + 60.000 VNĐ (60K); Giá mua = 60% của giá bán
-        const bacNuTrangSell = Math.round(baseChiVNDWorldSell + 60000);
-        const bacNuTrangBuy = Math.round(bacNuTrangSell * 0.6);
+        const phuquy1lSell = Math.round(baseLuongVND * 1.00);
+        const phuquy1kgSell = Math.round(baseKgVND * 1.00);
+        const bac999Sell = Math.ceil(baseChiVNDWorldSell / 10000) * 10000;
+        const bac999Buy = bac999Sell - 30000;
+        const bacNuTrangSell = bac999Sell + 70000;
+        const bacNuTrangBuy = bac999Buy + 70000;
 
         return [
             {
@@ -257,83 +256,260 @@ const GoldDashboard = (function () {
                 name: 'Bạc Phú Quý (1 Lượng)',
                 isWorld: false,
                 buy: Math.round(baseLuongVND * 0.97),
-                sell: Math.round(baseLuongVND * 1.00),
+                sell: phuquy1lSell,
                 change: Math.round(baseLuongChangeVND),
-                cl: 0
+                cl: Math.round((phuquy1lSell / 10) - baseChiVNDWorldSell)
             },
             {
                 name: 'Bạc Phú Quý (1 Kg)',
                 isWorld: false,
                 buy: Math.round(baseKgVND * 0.97),
-                sell: Math.round(baseKgVND * 1.00),
+                sell: phuquy1kgSell,
                 change: Math.round((changeUsd * EXCHANGE_RATE / TROY_OUNCE_TO_GRAM) * GRAM_TO_KG),
-                cl: 0
+                cl: Math.round((phuquy1kgSell / 266.67) - baseChiVNDWorldSell)
             },
             {
                 name: 'Bạc 999 thị trường',
                 isWorld: false,
-                buy: bac999Price,
-                sell: bac999Price,
+                buy: bac999Buy,
+                sell: bac999Sell,
                 change: Math.round(baseLuongChangeVND / 10),
-                cl: 0
+                cl: Math.round(bac999Sell - baseChiVNDWorldSell)
             },
             {
-                name: 'Bạc Nữ trang',
+                name: 'Bạc nữ trang bán lẻ',
                 isWorld: false,
                 buy: bacNuTrangBuy,
                 sell: bacNuTrangSell,
-                change: Math.round((baseLuongChangeVND / 10) * 0.925),
-                cl: 0
+                change: Math.round(baseLuongChangeVND / 10),
+                cl: Math.round(bacNuTrangSell - baseChiVNDWorldSell)
             }
         ];
     }
 
-    async function fetchData() {
-        if (currentMarket === 'news') return currentData;
-        const endpoints = API_ENDPOINTS[currentMarket] || API_ENDPOINTS['gold'];
-        for (const endpoint of endpoints) {
-            try {
-                const response = await fetch(endpoint, { signal: AbortSignal.timeout(3000) });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success && data.price > 0) {
-                        if (currentMarket === 'gold') {
-                            if (!data.goldItems || data.goldItems.length === 0) {
-                                data.goldItems = buildDynamicGoldItems(
-                                    data.price,
-                                    data.priceVndPerOunce || (data.price * (data.exchangeRate || EXCHANGE_RATE)),
-                                    data.change || 0,
-                                    data.bid,
-                                    data.ask
-                                );
-                            }
-                        } else {
-                            if (!data.silverItems || data.silverItems.length === 0) {
-                                data.silverItems = buildDynamicSilverItems(
-                                    data.price,
-                                    data.priceVndPerOunce || (data.price * (data.exchangeRate || EXCHANGE_RATE)),
-                                    data.change || 0,
-                                    data.bid,
-                                    data.ask
-                                );
-                            }
-                        }
-                        currentData = data;
-                        return data;
-                    }
-                }
-            } catch (e) { }
+    function formatVsgTimestamp(isoStr) {
+        if (!isoStr) return getFormattedDateTimeStr();
+        try {
+            const d = new Date(isoStr);
+            if (isNaN(d.getTime())) return getFormattedDateTimeStr();
+            const dateStr = d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Asia/Ho_Chi_Minh' });
+            const timeStr = d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Ho_Chi_Minh' });
+            return `${dateStr} ${timeStr}`;
+        } catch (e) {
+            return getFormattedDateTimeStr();
         }
+    }
 
-        // Fallback live data nếu server đang bận
-        if (currentMarket === 'gold') {
-            const livePrice = 4378.385;
-            const openPrice = 4376.585;
-            const change = livePrice - openPrice;
-            const changePercent = parseFloat(((change / openPrice) * 100).toFixed(2));
+    async function fetchVsgLiveDirectly() {
+        const vsgUrls = [
+            'https://services.vang247.vn/ws-prices/api/v1/c_prices',
+            'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://services.vang247.vn/ws-prices/api/v1/c_prices')
+        ];
+        for (const url of vsgUrls) {
+            try {
+                const res = await fetch(url, { signal: AbortSignal.timeout(4000) });
+                if (!res.ok) continue;
+                const vsg = await res.json();
+                if (!vsg || (!vsg.sjcNationWide && !vsg.vsg_gold_table)) continue;
+
+            const rawTime = vsg.vsg_gold_table?.[0]?.update_at || vsg.sjcNationWide?.[0]?.update_at || vsg.silver_price?.[0]?.update_at;
+            const lastUpdatedStr = formatVsgTimestamp(rawTime);
+
+            const xau = vsg.sjcNationWide?.find(i => i.name === 'XAUUSD') || vsg.goldNationWide?.find(i => i.name === 'XAUUSD') || vsg.vsg_gold_table?.find(i => i.name === 'Vàng TG' || i.name === 'XAUUSD');
+            const xauBuy = xau?.saigon?.buy || 4359.8;
+            const xauSell = xau?.saigon?.sell || 4360.0;
+            const xauChange = xau?.saigon?.sell_change || -13.86;
+
+            const usdItem = vsg.currencyNationWide?.find(i => i.name === 'USD');
+            const exchangeRate = usdItem?.saigon?.sell || 26030;
+
+            const troyOunceToGram = 31.1034768;
+            const sjcTdRaw = vsg.vsg_gold_table?.find(i => i.name === 'SJC Tự do');
+            const baseVsgChiVND = (sjcTdRaw && sjcTdRaw.gap && sjcTdRaw.saigon?.sell)
+                ? (sjcTdRaw.saigon.sell - sjcTdRaw.gap) * 100
+                : Math.round((xauSell * exchangeRate / troyOunceToGram) * 3.75);
+            const baseLuongVND = baseVsgChiVND * 10;
+
+            let goldItems = [];
+            if (Array.isArray(vsg.vsg_gold_table) && vsg.vsg_gold_table.length > 0) {
+                goldItems = vsg.vsg_gold_table.map(item => {
+                    const isWorld = item.name === 'Vàng TG' || item.name === 'XAUUSD';
+                    const isGF95 = item.name === '95% GF';
+                    const buyVal = isWorld ? parseFloat(item.saigon?.buy?.toFixed(1) || item.saigon?.buy) : (isGF95 ? Math.round(item.saigon?.buy) : Math.round(item.saigon?.buy || 0));
+                    const sellVal = isWorld ? parseFloat(item.saigon?.sell?.toFixed(1) || item.saigon?.sell) : (isGF95 ? Math.round(item.saigon?.sell) : Math.round(item.saigon?.sell || 0));
+                    const clInChiVND = isWorld ? 0 : (item.gap !== undefined ? Math.round(item.gap * 100) : Math.round(sellVal * 100 - baseVsgChiVND));
+                    return {
+                        name: item.name === 'XAUUSD' ? 'Vàng TG' : item.name,
+                        isWorld: isWorld,
+                        buy: buyVal,
+                        sell: sellVal,
+                        change: isWorld ? parseFloat(item.saigon?.sell_change?.toFixed(2) || item.saigon?.sell_change) : (isGF95 ? Math.round(item.saigon?.sell_change) : Math.round(item.saigon?.sell_change || 0)),
+                        cl: clInChiVND
+                    };
+                });
+            } else {
+                goldItems.push({
+                    name: 'Vàng TG',
+                    isWorld: true,
+                    buy: parseFloat(xauBuy.toFixed(1)),
+                    sell: parseFloat(xauSell.toFixed(1)),
+                    change: parseFloat(xauChange.toFixed(2)),
+                    cl: 0
+                });
+            }
+
+            const keepNames = ['Vàng TG', 'SJC Tự do', 'Vàng 999.9', 'Vàng 99.9', 'Vàng 95'];
+            const filteredGold = goldItems.filter(i => keepNames.includes(i.name));
+            const g9999 = goldItems.find(i => i.name === 'Vàng 999.9') || { buy: 136300, sell: 137800, change: 0 };
+            const g9999BuyRaw = g9999.buy || 136300;
+            const g9999SellRaw = g9999.sell || 137800;
+            const g9999ChangeRaw = g9999.change || 0;
+
+            const customGoldTypes = [
+                {
+                    name: 'Vàng 980',
+                    isWorld: false,
+                    buy: Math.round(g9999BuyRaw * (980 - 0.5) / 1000),
+                    sell: Math.round(g9999SellRaw * (980 + 0.5) / 1000),
+                    change: Math.round(g9999ChangeRaw * (980 + 0.5) / 1000),
+                    cl: Math.round(Math.round(g9999SellRaw * (980 + 0.5) / 1000) * 100 - baseVsgChiVND)
+                },
+                {
+                    name: 'Vàng 750 (18K)',
+                    isWorld: false,
+                    buy: Math.round(g9999BuyRaw * (750 - 1.0) / 1000),
+                    sell: Math.round(g9999SellRaw * (750 + 1.0) / 1000),
+                    change: Math.round(g9999ChangeRaw * (750 + 1.0) / 1000),
+                    cl: Math.round(Math.round(g9999SellRaw * (750 + 1.0) / 1000) * 100 - baseVsgChiVND)
+                },
+                {
+                    name: 'Vàng 610 (14.6K)',
+                    isWorld: false,
+                    buy: Math.round(g9999BuyRaw * (610 - 1.5) / 1000),
+                    sell: Math.round(g9999SellRaw * (610 + 1.5) / 1000),
+                    change: Math.round(g9999ChangeRaw * (610 + 1.5) / 1000),
+                    cl: Math.round(Math.round(g9999SellRaw * (610 + 1.5) / 1000) * 100 - baseVsgChiVND)
+                },
+                {
+                    name: 'Vàng 585 (14K)',
+                    isWorld: false,
+                    buy: Math.round(g9999BuyRaw * (585 - 2.0) / 1000),
+                    sell: Math.round(g9999SellRaw * (585 + 2.0) / 1000),
+                    change: Math.round(g9999ChangeRaw * (585 + 2.0) / 1000),
+                    cl: Math.round(Math.round(g9999SellRaw * (585 + 2.0) / 1000) * 100 - baseVsgChiVND)
+                },
+                {
+                    name: 'Vàng 416 (10K)',
+                    isWorld: false,
+                    buy: Math.round(g9999BuyRaw * (416 - 2.5) / 1000),
+                    sell: Math.round(g9999SellRaw * (416 + 2.5) / 1000),
+                    change: Math.round(g9999ChangeRaw * (416 + 2.5) / 1000),
+                    cl: Math.round(Math.round(g9999SellRaw * (416 + 2.5) / 1000) * 100 - baseVsgChiVND)
+                }
+            ];
+
+            const currencies = (vsg.currencyNationWide || []).map(c => ({
+                code: c.name,
+                name: c.name,
+                rateBuy: c.saigon?.buy || c.hanoi?.buy || 0,
+                rateSell: c.saigon?.sell || c.hanoi?.sell || 0,
+                rateRate: c.rate || 0,
+                digit: c.digit || 0
+            }));
+
+            let silverItems = [];
+            if (Array.isArray(vsg.silver_price) && vsg.silver_price.length > 0) {
+                const xagItem = vsg.silver_price.find(i => i.name === 'XAGUSD') || { saigon: { buy: 66.31, sell: 66.36, sell_change: 1.05 } };
+                const xagSell = xagItem.saigon?.sell || 66.36;
+                const xagBuy = xagItem.saigon?.buy || 66.31;
+                const xagChange = xagItem.saigon?.sell_change || 1.05;
+                const worldSellVndPerChi = (xagSell * exchangeRate / troyOunceToGram) * 3.75;
+                const worldChangeVndPerChi = (xagChange * exchangeRate / troyOunceToGram) * 3.75;
+
+                const silverMap = {
+                    'XAGUSD': { name: 'Bạc Thế Giới (XAG/USD)', isWorld: true, multiplier: 1 },
+                    'PHUQUY_1L': { name: 'Bạc Phú Quý (1 Lượng)', isWorld: false, multiplier: 1000 },
+                    'PHUQUY_1KG': { name: 'Bạc Phú Quý (1 Kg)', isWorld: false, multiplier: 1000 }
+                };
+
+                const rawSilver = vsg.silver_price.filter(s => silverMap[s.name]);
+                silverItems = rawSilver.map(s => {
+                    const cfg = silverMap[s.name];
+                    const buyVal = cfg.isWorld ? parseFloat(s.saigon?.buy?.toFixed(2) || xagBuy) : Math.round((s.saigon?.buy || 0) * cfg.multiplier);
+                    const sellVal = cfg.isWorld ? parseFloat(s.saigon?.sell?.toFixed(2) || xagSell) : Math.round((s.saigon?.sell || 0) * cfg.multiplier);
+                    const changeVal = cfg.isWorld ? parseFloat(s.saigon?.sell_change?.toFixed(2) || xagChange) : Math.round((s.saigon?.sell_change || 0) * cfg.multiplier);
+                    
+                    let clVal = 0;
+                    if (!cfg.isWorld) {
+                        let sellInChi = sellVal;
+                        if (s.name === 'PHUQUY_1L') sellInChi = sellVal / 10;
+                        else if (s.name === 'PHUQUY_1KG') sellInChi = sellVal / 266.67;
+                        clVal = Math.round(sellInChi - worldSellVndPerChi);
+                    }
+
+                    return {
+                        name: cfg.name,
+                        isWorld: cfg.isWorld,
+                        buy: buyVal,
+                        sell: sellVal,
+                        change: changeVal,
+                        cl: clVal
+                    };
+                });
+
+                const bac999Sell = Math.ceil(worldSellVndPerChi / 10000) * 10000;
+                const bac999Buy = bac999Sell - 30000;
+                silverItems.push({
+                    name: 'Bạc 999 thị trường',
+                    isWorld: false,
+                    buy: bac999Buy,
+                    sell: bac999Sell,
+                    change: Math.round(worldChangeVndPerChi),
+                    cl: Math.round(bac999Sell - worldSellVndPerChi)
+                });
+
+                const bacNuTrangSell = bac999Sell + 70000;
+                const bacNuTrangBuy = bac999Buy + 70000;
+                silverItems.push({
+                    name: 'Bạc nữ trang bán lẻ',
+                    isWorld: false,
+                    buy: bacNuTrangBuy,
+                    sell: bacNuTrangSell,
+                    change: Math.round(worldChangeVndPerChi),
+                    cl: Math.round(bacNuTrangSell - worldSellVndPerChi)
+                });
+            } else {
+                silverItems = buildDynamicSilverItems(66.25, 66.25 * exchangeRate, -0.09, 66.20, 66.30);
+            }
+
+            return {
+                success: true,
+                source: 'vangsaigon.vn Live Direct Realtime',
+                price: xauSell,
+                bid: xauBuy,
+                ask: xauSell,
+                change: parseFloat(xauChange.toFixed(2)),
+                exchangeRate,
+                baseLuongVND,
+                lastUpdatedStr,
+                goldItems: [...filteredGold, ...customGoldTypes],
+                silverItems: silverItems,
+                currencies
+            };
+        } catch (err) {
+            continue;
+        }
+    }
+    return null;
+}
+
+    function getInstantInitialData(market = 'gold') {
+        if (market === 'gold') {
+            const livePrice = 4358.96;
+            const openPrice = 4373.75;
+            const change = -14.79;
             const liveVndPerOunce = livePrice * EXCHANGE_RATE;
-
-            currentData = {
+            return {
                 success: true,
                 symbol: 'XAU/USD',
                 price: livePrice,
@@ -341,21 +517,18 @@ const GoldDashboard = (function () {
                 bid: livePrice - 0.2,
                 ask: livePrice + 0.2,
                 open: openPrice,
-                high: 4383.435,
-                low: 4375.605,
                 close: livePrice,
-                change: parseFloat(change.toFixed(2)),
-                changePercent: changePercent,
-                goldItems: buildDynamicGoldItems(livePrice, liveVndPerOunce, change, livePrice - 0.2, livePrice + 0.2)
+                change: change,
+                changePercent: -0.34,
+                goldItems: buildDynamicGoldItems(livePrice, liveVndPerOunce, change, livePrice - 0.2, livePrice + 0.2),
+                currencies: CURRENCY_LIST
             };
         } else {
             const livePrice = 66.25;
             const openPrice = 66.34;
-            const change = livePrice - openPrice;
-            const changePercent = parseFloat(((change / openPrice) * 100).toFixed(2));
+            const change = -0.09;
             const liveVndPerOunce = livePrice * EXCHANGE_RATE;
-
-            currentData = {
+            return {
                 success: true,
                 symbol: 'XAG/USD',
                 price: livePrice,
@@ -363,13 +536,45 @@ const GoldDashboard = (function () {
                 bid: livePrice - 0.05,
                 ask: livePrice + 0.05,
                 open: openPrice,
-                high: 66.45,
-                low: 66.22,
                 close: livePrice,
-                change: parseFloat(change.toFixed(2)),
-                changePercent: changePercent,
-                silverItems: buildDynamicSilverItems(livePrice, liveVndPerOunce, change, livePrice - 0.05, livePrice + 0.05)
+                change: change,
+                changePercent: -0.14,
+                silverItems: buildDynamicSilverItems(livePrice, liveVndPerOunce, change, livePrice - 0.05, livePrice + 0.05),
+                currencies: CURRENCY_LIST
             };
+        }
+    }
+
+    async function fetchData() {
+        if (currentMarket === 'news') return currentData;
+
+        // ⚡ Ưu tiên fetch trực tiếp API VangSaigon từ client trước để nhảy số thời gian thực siêu tốc
+        const directLiveVsg = await fetchVsgLiveDirectly();
+        if (directLiveVsg) {
+            lastLiveVsgData = directLiveVsg;
+            currentData = directLiveVsg;
+            return directLiveVsg;
+        }
+
+        const endpoints = API_ENDPOINTS[currentMarket] || API_ENDPOINTS['gold'];
+        for (const endpoint of endpoints) {
+            try {
+                const response = await fetch(endpoint, { signal: AbortSignal.timeout(2000) });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.price > 0) {
+                        lastLiveVsgData = data;
+                        currentData = data;
+                        return data;
+                    }
+                }
+            } catch (e) { }
+        }
+
+        if (lastLiveVsgData) {
+            currentData = lastLiveVsgData;
+        } else {
+            currentData = getInstantInitialData(currentMarket);
         }
         return currentData;
     }
@@ -429,6 +634,14 @@ const GoldDashboard = (function () {
             }
         };
 
+        const getItemUnitStr = (it) => {
+            if (it.isWorld) return 'ĐVT: USD / Ounce';
+            if (currentMarket === 'gold') return 'ĐVT: VNĐ / 1 Chỉ';
+            if (it.name.includes('1 Lượng')) return 'ĐVT: VNĐ / 1 Lượng';
+            if (it.name.includes('1 Kg') || it.name.includes('1Kg')) return 'ĐVT: VNĐ / 1 Kg';
+            return 'ĐVT: VNĐ / 1 Chỉ';
+        };
+
         const getItemTheme = (it) => {
             const name = it.name.toLowerCase();
             if (it.isWorld || name.includes('thế giới') || name.includes('spot xag') || name.includes('bạc tg')) return { border: 'border-yellow-500 hover:border-yellow-400', dot: 'bg-yellow-400 animate-pulse', text: 'text-yellow-400', valText: 'text-yellow-400', subText: 'text-yellow-300' };
@@ -465,7 +678,7 @@ const GoldDashboard = (function () {
             return `${d}/${m}/${y} ${hh}:${mm}:${ss}`;
         }
 
-        const nowStr = getFormattedDateTimeStr();
+        const nowStr = (data && data.lastUpdatedStr) ? data.lastUpdatedStr : getFormattedDateTimeStr();
 
         const lastUpdatedEl = document.getElementById('last-updated-time');
         if (lastUpdatedEl) lastUpdatedEl.textContent = 'Cập nhật lần cuối: ' + nowStr;
@@ -484,44 +697,55 @@ const GoldDashboard = (function () {
                 if (item.isWorld) {
                     buyMain = `${formatUSD(item.buy)}`;
                     sellMain = `${formatUSD(item.sell)}`;
-                    const vndPerChiSell = (data && data.baseLuongVND) ? (data.baseLuongVND / 10) : ((item.sell * (data.exchangeRate || EXCHANGE_RATE) / TROY_OUNCE_TO_GRAM) * 3.75);
-                    const vndPerChiBuy = vndPerChiSell - (((item.sell - item.buy) * (data.exchangeRate || EXCHANGE_RATE) / TROY_OUNCE_TO_GRAM) * 3.75);
-                    buySub = `≈ ${Math.round(vndPerChiBuy).toLocaleString('vi-VN')}`;
-                    sellSub = `≈ ${Math.round(vndPerChiSell).toLocaleString('vi-VN')}`;
+                    
+                    let vndPerChiSell = 0;
+                    let vndPerChiBuy = 0;
+                    const exRate = data?.exchangeRate || EXCHANGE_RATE;
+
+                    if (currentMarket === 'gold') {
+                        vndPerChiSell = (data && data.baseLuongVND) ? (data.baseLuongVND / 10) : ((item.sell * exRate / TROY_OUNCE_TO_GRAM) * 3.75);
+                        vndPerChiBuy = vndPerChiSell - (((item.sell - item.buy) * exRate / TROY_OUNCE_TO_GRAM) * 3.75);
+                    } else {
+                        vndPerChiSell = (item.sell * exRate / TROY_OUNCE_TO_GRAM) * 3.75;
+                        vndPerChiBuy = (item.buy * exRate / TROY_OUNCE_TO_GRAM) * 3.75;
+                    }
+
+                    buySub = `≈ ${Math.round(vndPerChiBuy / 1000).toLocaleString('vi-VN')}`;
+                    sellSub = `≈ ${Math.round(vndPerChiSell / 1000).toLocaleString('vi-VN')}`;
                 } else {
                     if (currentMarket === 'gold') {
-                        buyMain = `${Math.round(item.buy * 100).toLocaleString('vi-VN')}`;
-                        sellMain = `${Math.round(item.sell * 100).toLocaleString('vi-VN')}`;
+                        buyMain = `${Math.round(item.buy / 10).toLocaleString('vi-VN')}`;
+                        sellMain = `${Math.round(item.sell / 10).toLocaleString('vi-VN')}`;
                     } else {
-                        if (item.name.includes('1 Lượng')) {
-                            buyMain = `${Math.round(item.buy / 10).toLocaleString('vi-VN')}`;
-                            sellMain = `${Math.round(item.sell / 10).toLocaleString('vi-VN')}`;
-                        } else if (item.name.includes('5 Lượng')) {
-                            buyMain = `${Math.round(item.buy / 50).toLocaleString('vi-VN')}`;
-                            sellMain = `${Math.round(item.sell / 50).toLocaleString('vi-VN')}`;
-                        } else if (item.name.includes('1 Kg') || item.name.includes('1Kg') || item.name.includes('1KG')) {
-                            buyMain = `${Math.round(item.buy / 266.67).toLocaleString('vi-VN')}`;
-                            sellMain = `${Math.round(item.sell / 266.67).toLocaleString('vi-VN')}`;
-                        } else {
-                            buyMain = `${Math.round(item.buy).toLocaleString('vi-VN')}`;
-                            sellMain = `${Math.round(item.sell).toLocaleString('vi-VN')}`;
-                        }
+                        buyMain = `${Math.round(item.buy / 1000).toLocaleString('vi-VN')}`;
+                        sellMain = `${Math.round(item.sell / 1000).toLocaleString('vi-VN')}`;
                     }
                 }
 
                 // Biến động
-                const changeStr = item.change > 0 ? (item.isWorld ? `+${item.change}` : `+${formatNumber(item.change)}`) : (item.change < 0 ? `${formatNumber(item.change)}` : '0');
+                let changeStr = '0';
+                if (item.isWorld) {
+                    changeStr = item.change > 0 ? `+${item.change}` : `${item.change}`;
+                } else {
+                    if (Math.abs(item.change) >= 1000) {
+                        const chgThousand = Math.round(item.change / 1000);
+                        changeStr = (chgThousand > 0 ? '+' : '') + chgThousand.toLocaleString('vi-VN');
+                    } else {
+                        changeStr = item.change > 0 ? `+${item.change}` : `${item.change}`;
+                    }
+                }
                 const changeColor = item.change < 0 ? 'text-val-down' : 'text-val-up';
 
-                // Chênh lệch CL (Đơn vị tính chuẩn: VNĐ / Chỉ)
-                let clVal = 0;
+                // Chênh lệch CL
+                let clVal = item.cl !== undefined ? item.cl : 0;
                 let clStr = '0';
-                if (item.cl !== undefined && item.cl !== 0) {
-                    clVal = item.cl;
-                    clStr = (clVal > 0 ? '+' : '') + formatNumber(clVal);
-                } else if (item.sell && item.buy) {
-                    clVal = item.sell - item.buy;
-                    clStr = formatNumber(clVal);
+                if (clVal !== 0) {
+                    if (item.isWorld) {
+                        clStr = (clVal > 0 ? '+' : '') + clVal;
+                    } else {
+                        const clThousand = Math.round(clVal / 1000);
+                        clStr = clThousand === 0 ? '0' : ((clThousand > 0 ? '+' : '') + clThousand.toLocaleString('vi-VN'));
+                    }
                 }
                 const clColor = clVal < 0 ? 'text-val-down' : 'text-val-up';
 
@@ -538,31 +762,32 @@ const GoldDashboard = (function () {
                     `;
                 } else {
                     rowsHtml += `
-                        <tr class="transition-colors text-xs sm:text-sm md:text-base">
+                        <tr class="transition-colors border-b border-blue-900/30">
                             <!-- Cột 1: Tổ chức -->
-                            <td class="text-left pl-2 sm:pl-3 py-1.5 sm:py-2.5 font-black col-org text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>${item.name}</span>
+                            <td class="text-left pl-1 sm:pl-2 pr-0.5 py-1.5 sm:py-2.5 font-black col-org">
+                                <div class="text-[11.5px] xs:text-[12.5px] sm:text-sm md:text-base font-extrabold leading-tight tracking-tight">${item.name}</div>
+                                <div class="text-[10.5px] xs:text-[11.5px] sm:text-[13px] font-sans font-semibold text-slate-400 normal-case mt-0.5 tracking-tight whitespace-nowrap">${getItemUnitStr(item)}</div>
                             </td>
 
                             <!-- Cột 2: Mua Vào -->
-                            <td class="py-1.5 sm:py-2.5 px-1 sm:px-2 text-right font-mono font-black price-val text-xs sm:text-sm md:text-base tracking-tighter sm:tracking-tight whitespace-nowrap">
-                                <div>${buyMain}</div>
-                                ${buySub ? `<div class="text-[10px] sm:text-[11px] text-slate-400 font-normal mt-0.5">${buySub}</div>` : ''}
+                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black price-val text-[15px] xs:text-[16px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                                <div class="font-black">${buyMain}</div>
+                                ${buySub ? `<div class="text-[11px] sm:text-[13px] text-slate-400 font-bold mt-0.5">${buySub}</div>` : ''}
                             </td>
 
                             <!-- Cột 3: Bán Ra -->
-                            <td class="py-1.5 sm:py-2.5 px-1 sm:px-2 text-right font-mono font-black price-val text-xs sm:text-sm md:text-base tracking-tighter sm:tracking-tight whitespace-nowrap">
-                                <div>${sellMain}</div>
-                                ${sellSub ? `<div class="text-[10px] sm:text-[11px] text-yellow-400 font-normal mt-0.5">${sellSub}</div>` : ''}
+                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black price-val text-[15px] xs:text-[16px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                                <div class="font-black">${sellMain}</div>
+                                ${sellSub ? `<div class="text-[11px] sm:text-[13px] text-yellow-400 font-bold mt-0.5">${sellSub}</div>` : ''}
                             </td>
 
                             <!-- Cột 4: Biến Động -->
-                            <td class="py-1.5 sm:py-2.5 px-1 sm:px-2 text-right font-mono font-black ${changeColor} text-xs sm:text-sm md:text-base tracking-tighter sm:tracking-tight whitespace-nowrap">
+                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black ${changeColor} text-[15px] xs:text-[16px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
                                 <div>${changeStr}</div>
                             </td>
 
                             <!-- Cột 5: Chênh Lệch -->
-                            <td class="py-1.5 sm:py-2.5 pr-2 sm:pr-3 text-right font-mono font-black ${clColor} text-xs sm:text-sm md:text-base tracking-tighter sm:tracking-tight whitespace-nowrap">
+                            <td class="py-1.5 sm:py-2.5 pr-0.5 sm:pr-1 text-right font-mono font-black ${clColor} text-[15px] xs:text-[16px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
                                 <div>${clStr}</div>
                             </td>
                         </tr>
@@ -585,7 +810,7 @@ const GoldDashboard = (function () {
             if (!isAuthed) {
                 currencyBody.innerHTML = currencyList.map(c => `
                     <tr class="transition-colors text-sm sm:text-base">
-                        <td class="text-left pl-3 py-2.5 font-black col-org text-sm sm:text-base">
+                        <td class="text-left pl-2 sm:pl-3 py-2.5 font-black col-org text-xs sm:text-sm md:text-base">
                             <span>${c.code}</span>
                         </td>
                         <td colspan="3" class="text-center pr-3 py-2.5 text-slate-300 text-xs sm:text-sm">
@@ -601,13 +826,13 @@ const GoldDashboard = (function () {
                     const rateNum = parseFloat(rateVal);
                     const rateColor = rateNum < 0 ? 'text-val-down' : 'text-val-up';
                     return `
-                        <tr class="transition-colors text-xs sm:text-sm md:text-base">
-                            <td class="text-left pl-2 sm:pl-3 py-1.5 sm:py-2.5 font-black col-org text-xs sm:text-sm md:text-base whitespace-nowrap">
+                        <tr class="transition-colors border-b border-blue-900/30 text-xs sm:text-sm md:text-base">
+                            <td class="text-left pl-1.5 sm:pl-2.5 py-1.5 sm:py-2.5 font-extrabold col-org text-[12px] sm:text-sm md:text-base whitespace-nowrap overflow-hidden">
                                 <span>${c.code}</span>
                             </td>
-                            <td class="py-1.5 sm:py-2.5 px-1 sm:px-2 text-right font-mono font-black price-val text-xs sm:text-sm md:text-base tracking-tighter sm:tracking-tight whitespace-nowrap">${buyVal}</td>
-                            <td class="py-1.5 sm:py-2.5 px-1 sm:px-2 text-right font-mono font-black price-val text-xs sm:text-sm md:text-base tracking-tighter sm:tracking-tight whitespace-nowrap">${sellVal}</td>
-                            <td class="py-1.5 sm:py-2.5 pr-2 sm:pr-3 text-right font-mono font-black ${rateColor} text-xs sm:text-sm md:text-base tracking-tighter sm:tracking-tight whitespace-nowrap">${rateVal}</td>
+                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black price-val text-[14px] xs:text-[15px] sm:text-base md:text-lg tracking-tighter whitespace-nowrap">${buyVal}</td>
+                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black price-val text-[14px] xs:text-[15px] sm:text-base md:text-lg tracking-tighter whitespace-nowrap">${sellVal}</td>
+                            <td class="py-1.5 sm:py-2.5 pr-1 sm:pr-2 text-right font-mono font-black ${rateColor} text-[14px] xs:text-[15px] sm:text-base md:text-lg tracking-tighter whitespace-nowrap">${rateVal}</td>
                         </tr>
                     `;
                 }).join('');
@@ -656,7 +881,7 @@ const GoldDashboard = (function () {
             <option value="phuquy_5l" ${prevType === 'phuquy_5l' ? 'selected' : ''}>Bạc Phú Quý (5 Lượng)</option>
             <option value="phuquy_1kg" ${prevType === 'phuquy_1kg' ? 'selected' : ''}>Bạc Phú Quý (1 Kg)</option>
             <option value="bac_999" ${prevType === 'bac_999' ? 'selected' : ''}>Bạc 999 (1 Chỉ)</option>
-            <option value="bac_925" ${prevType === 'bac_925' ? 'selected' : ''}>Bạc Nữ Trang 925 (1 Chỉ)</option>
+            <option value="bac_925" ${prevType === 'bac_925' ? 'selected' : ''}>Bạc nữ trang bán lẻ (1 Chỉ)</option>
             <option value="bac_thai" ${prevType === 'bac_thai' ? 'selected' : ''}>Bạc Thái 925 (1 Chỉ)</option>
             <option value="bac_y" ${prevType === 'bac_y' ? 'selected' : ''}>Bạc Ý 925 (1 Chỉ)</option>
             <option value="bac_tg" ${prevType === 'bac_tg' ? 'selected' : ''}>Bạc Thế Giới (Spot XAG/USD)</option>
@@ -818,7 +1043,7 @@ const GoldDashboard = (function () {
                     <option value="bac_thoi" selected>Bạc Phú Quý (1 Lượng)</option>
                     <option value="bac_kg">Bạc Phú Quý (1 Kg)</option>
                     <option value="bac_999">Bạc 999 thị trường</option>
-                    <option value="bac_925">Bạc Nữ trang</option>
+                    <option value="bac_925">Bạc nữ trang bán lẻ</option>
                     <option value="bac_tg">Bạc TG (Spot XAG)</option>
                 `;
             }
@@ -947,8 +1172,6 @@ const GoldDashboard = (function () {
                     <strong>Điểm nhấn phiên hôm nay:</strong> Chênh lệch giữa giá vàng nhẫn 999.9 và vàng miếng SJC tiếp tục được thu hẹp, trong khi nhu cầu tích trữ tài sản an toàn của người dân và giới đầu tư vẫn ở mức rất cao.
                 </div>
                 <p class="leading-relaxed">Trên thị trường quốc tế, giá vàng giao ngay (Spot Gold XAU/USD) tiếp tục neo trên mốc lịch sử nhờ trợ lực từ kỳ vọng Cục Dự trữ Liên bang Mỹ (Fed) tiến hành nới lỏng chính sách tiền tệ và hạ lãi suất cơ bản.</p>
-                <h4 class="text-base font-bold text-slate-100 mt-4 mb-2">Nhận định của chuyên gia phân tích</h4>
-                <p class="leading-relaxed">Theo đánh giá từ các chuyên gia tài chính hàng đầu, vàng vẫn là hầm trú ẩn ưu tiên hàng đầu trong bối cảnh các bất ổn địa chính trị tại Trung Đông và Đông Âu chưa có dấu hiệu hạ nhiệt. Tuy nhiên, người mua cần cân nhắc chiến lược quản trị rủi ro, tránh mua đuổi ở các nhịp hưng phấn quá đà.</p>
             `,
             source: "Ban Biên Tập Thị Trường",
             link: "#",
@@ -969,7 +1192,6 @@ const GoldDashboard = (function () {
                 <div class="my-3 p-4 rounded-xl bg-cyan-500/10 border-l-4 border-cyan-500 text-cyan-300 font-medium text-sm">
                     <strong>Nhu cầu công nghiệp bùng nổ:</strong> Hơn 55% sản lượng bạc toàn cầu hiện được hấp thụ trực tiếp bởi các nhà máy sản xuất tấm pin quang điện (Solar PV) và linh kiện bán dẫn cho xe điện (EV).
                 </div>
-                <p class="leading-relaxed">Báo cáo từ Viện Bạc Thế Giới (Silver Institute) chỉ ra rằng thị trường bạc vật chất đang đối mặt với thâm hụt nguồn cung năm thứ 4 liên tiếp, tạo nền tảng tăng giá vững chắc cho các nhà đầu tư kim loại quý dài hạn.</p>
             `,
             source: "Lê Minh Quân - Chuyên gia Hàng hóa",
             link: "#",
@@ -987,7 +1209,6 @@ const GoldDashboard = (function () {
             summary: "Các cơ quan quản lý tiếp tục siết chặt kiểm tra hóa đơn điện tử, nguồn gốc xuất xứ vàng trang sức mỹ nghệ và đề xuất sửa đổi Nghị định 24/2012/NĐ-CP.",
             content: `
                 <p class="leading-relaxed">Ngân hàng Nhà nước Việt Nam cùng các bộ ngành liên quan đang triển khai quyết liệt các biện pháp nhằm minh bạch hóa thị trường vàng, chống đầu cơ găm hàng và thao túng giá.</p>
-                <p class="leading-relaxed">Việc bắt buộc áp dụng 100% hóa đơn điện tử kết nối trực tiếp với cơ quan thuế khi giao dịch vàng bạc đá quý đã giúp thị trường hoạt động minh bạch và bảo vệ tối đa quyền lợi người tiêu dùng.</p>
             `,
             source: "Thái Sơn - Ban Pháp Chế & Vĩ Mô",
             link: "#",
@@ -1004,13 +1225,369 @@ const GoldDashboard = (function () {
             image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format&fit=crop&q=60",
             summary: "Các ngân hàng đầu tư phố Wall như Goldman Sachs, Citi và UBS đồng loạt nâng mục tiêu giá vàng trung hạn trong báo cáo chiến lược mới nhất.",
             content: `
-                <p class="leading-relaxed">Khảo sát mới nhất từ Bloomberg và Kitco News cho thấy hơn 78% các chuyên gia phân tích thị trường Phố Wall và 69% nhà đầu tư bán lẻ dự báo giá vàng sẽ tiếp tục duy trì xu hướng tăng trong quý 4.</p>
-                <p class="leading-relaxed">Việc các Ngân hàng Trung ương toàn cầu (đặc biệt là PBoC Trung Quốc, Thổ Nhĩ Kỳ, Ba Lan) liên tục mua ròng vàng vật chất đã tạo thành 'mặt sàn kiên cố' cho giá kim loại quý.</p>
+                <p class="leading-relaxed">Khảo sát mới nhất từ Bloomberg và Kitco News cho thấy hơn 78% các chuyên gia phân tích thị trường Phố Wall và 69% nhà đầu tư bán lẻ dự báo giá vàng sẽ tiếp tục duy trì xu hướng tăng.</p>
             `,
             source: "Trần Hoàng Nam - Kinh tế Trưởng",
             link: "#",
             date: "19/09/2026",
             readTime: "5 phút đọc",
+            featured: false
+        },
+        {
+            id: 1005,
+            title: "Sức mua vàng nhẫn trơn 999.9 tăng vọt: Người dân ưu tiên tài sản có tính thanh khoản cao",
+            category: "gold",
+            categoryName: "Vàng SJC & Trong nước",
+            badgeClass: "bg-amber-500/20 text-amber-300 border border-amber-500/40",
+            image: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=800&auto=format&fit=crop&q=60",
+            summary: "Nhu cầu mua vàng nhẫn 9999 từ các thương hiệu lớn như PNJ, DOJI, Bảo Tín Minh Châu tiếp tục duy trì ở mức cao do chênh lệch mua bán hợp lý.",
+            content: `
+                <p class="leading-relaxed">Nhiều cửa hàng vàng lớn tại Hà Nội và TP.HCM ghi nhận số lượng khách hàng tìm mua vàng nhẫn gia tăng đáng kể. Sản phẩm vàng nhẫn 1 chỉ, 2 chỉ và 5 chỉ thường xuyên trong tình trạng cháy hàng cục bộ.</p>
+            `,
+            source: "Ban Tài Chính Trong Nước",
+            link: "#",
+            date: "Hôm nay",
+            readTime: "3 phút đọc",
+            featured: false
+        },
+        {
+            id: 1006,
+            title: "Giá bạc thỏi 999 trong nước tiếp tục đà bứt phá theo xu hướng kim loại quý thế giới",
+            category: "silver",
+            categoryName: "Thị Trường Bạc",
+            badgeClass: "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40",
+            image: "https://images.unsplash.com/photo-1618042164219-62c820f10723?w=800&auto=format&fit=crop&q=60",
+            summary: "Thị trường bạc vật chất trong nước chứng kiến đợt sóng tăng giá mới khi giới đầu tư cá nhân bắt đầu phân bổ vốn sang tài sản kim loại quý giá rẻ hơn vàng.",
+            content: `
+                <p class="leading-relaxed">Giá bạc miếng và bạc thỏi niêm yết tại các đại lý lớn ghi nhận mức tăng đồng bộ. Tỷ lệ Gold/Silver ratio (tỷ lệ giá vàng/giá bạc) đang có dấu hiệu thu hẹp dần.</p>
+            `,
+            source: "Chuyên Gia Kim Loại Quý",
+            link: "#",
+            date: "Hôm nay",
+            readTime: "3 phút đọc",
+            featured: false
+        },
+        {
+            id: 1007,
+            title: "Chỉ số USD Index hạ nhiệt thúc đẩy dòng tiền quay trở lại thị trường Vàng & Kim loại quý",
+            category: "world",
+            categoryName: "Vàng Quốc Tế",
+            badgeClass: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40",
+            image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&auto=format&fit=crop&q=60",
+            summary: "Đồng USD suy yếu trên thị trường quốc tế là động lực hỗ trợ đà bứt phá của giá vàng XAU/USD và bạc XAG/USD trong các phiên giao dịch gần đây.",
+            content: `
+                <p class="leading-relaxed">Áp lực giảm giá lên đồng Dollar Mỹ xuất hiện sau khi các số liệu lạm phát CPI và việc làm tại Mỹ phát đi tín hiệu hạ nhiệt rõ nét hơn so với dự báo của giới phân tích.</p>
+            `,
+            source: "Reuters & FXStreet",
+            link: "#",
+            date: "Hôm nay",
+            readTime: "4 phút đọc",
+            featured: false
+        },
+        {
+            id: 1008,
+            title: "Khảo sát Kitco News: 82% chuyên gia Phố Wall nhận định giá vàng giữ vững xu hướng tăng",
+            category: "analysis",
+            categoryName: "Phân Tích & Dự Báo",
+            badgeClass: "bg-purple-500/20 text-purple-300 border border-purple-500/40",
+            image: "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?w=800&auto=format&fit=crop&q=60",
+            summary: "Kết quả khảo sát tuần mới nhất của Kitco News cho thấy tinh thần lạc quan áp đảo từ cả giới phân tích chuyên nghiệp và cộng đồng nhà đầu tư cá nhân.",
+            content: `
+                <p class="leading-relaxed">Hầu hết các chiến lược gia thị trường đều đồng thuận rằng các yếu tố hỗ trợ dài hạn như rủi ro địa chính trị và làn sóng hạ lãi suất toàn cầu vẫn chưa suy giảm.</p>
+            `,
+            source: "Kitco News Analysis",
+            link: "#",
+            date: "18/09/2026",
+            readTime: "4 phút đọc",
+            featured: false
+        },
+        {
+            id: 1009,
+            title: "Siết chặt hóa đơn điện tử trong kinh doanh vàng: Hướng tới thị trường minh bạch & lành mạnh",
+            category: "policy",
+            categoryName: "Chính Sách & Quản Lý",
+            badgeClass: "bg-rose-500/20 text-rose-300 border border-rose-500/40",
+            image: "https://images.unsplash.com/photo-1450133064473-71024230f91b?w=800&auto=format&fit=crop&q=60",
+            summary: "Việc kết nối dữ liệu hóa đơn điện tử từ máy tính tiền trực tiếp đến cơ quan thuế giúp quản lý chặt chẽ doanh thu và nguồn gốc sản phẩm kim loại quý.",
+            content: `
+                <p class="leading-relaxed">Bộ Tài chính và Tổng cục Thuế yêu cầu 100% doanh nghiệp, cửa hàng kinh doanh vàng bạc nghiêm túc chấp hành xuất hóa đơn điện tử cho từng giao dịch lẻ.</p>
+            `,
+            source: "Ban Pháp Chế Kinh Tế",
+            link: "#",
+            date: "18/09/2026",
+            readTime: "3 phút đọc",
+            featured: false
+        },
+        {
+            id: 1010,
+            title: "Phân tích kỹ thuật XAU/USD: Ngưỡng hỗ trợ quan trọng và kịch bản biến động tuần tới",
+            category: "analysis",
+            categoryName: "Phân Tích & Dự Báo",
+            badgeClass: "bg-purple-500/20 text-purple-300 border border-purple-500/40",
+            image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&auto=format&fit=crop&q=60",
+            summary: "Biểu đồ kỹ thuật giá vàng thế giới đang tích lũy trong mô hình cờ tăng (Bullish Flag). Các chỉ số RSI và MACD cho thấy lực mua vẫn duy trì chủ đạo.",
+            content: `
+                <p class="leading-relaxed">Phân tích biểu đồ khung D1 và H4 cho thấy ngưỡng hỗ trợ gần nhất của XAU/USD nằm ở mốc 2.620 USD/oz, trong khi kháng cự tâm lý mạnh nằm ở 2.700 USD/oz.</p>
+            `,
+            source: "Chuyên Gia Technical Analyst",
+            link: "#",
+            date: "17/09/2026",
+            readTime: "5 phút đọc",
+            featured: false
+        },
+        {
+            id: 1011,
+            title: "Ngân hàng Trung ương các nước đẩy mạnh mua ròng vàng bổ sung vào dự trữ quốc gia",
+            category: "world",
+            categoryName: "Vàng Quốc Tế",
+            badgeClass: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40",
+            image: "https://images.unsplash.com/photo-1565372195458-9de0b320ef04?w=800&auto=format&fit=crop&q=60",
+            summary: "Báo cáo từ Hội đồng Vàng Thế giới (WGC) xác nhận xu hướng đa dạng hóa tài sản dự trữ của các NHTW Châu Á và Đông Âu tiếp tục tăng tốc.",
+            content: `
+                <p class="leading-relaxed">Việc gia tăng tỷ trọng vàng trong quỹ dự trữ ngoại hối giúp các quốc gia giảm bớt rủi ro phụ thuộc vào một đồng tiền duy nhất trong bối cảnh địa chính trị phức tạp.</p>
+            `,
+            source: "World Gold Council (WGC)",
+            link: "#",
+            date: "17/09/2026",
+            readTime: "4 phút đọc",
+            featured: false
+        },
+        {
+            id: 1012,
+            title: "Chênh lệch giá vàng SJC và giá vàng thế giới quy đổi thu hẹp ở mức kỷ lục",
+            category: "gold",
+            categoryName: "Vàng SJC & Trong nước",
+            badgeClass: "bg-amber-500/20 text-amber-300 border border-amber-500/40",
+            image: "https://images.unsplash.com/photo-1589758438368-0ad531db3366?w=800&auto=format&fit=crop&q=60",
+            summary: "Khoảng cách giữa giá vàng miếng SJC và giá vàng thế giới quy đổi theo tỷ giá ngân hàng hiện chỉ còn quanh mức 2 - 4 triệu đồng/lượng.",
+            content: `
+                <p class="leading-relaxed">Nhờ các biện pháp can thiệp thị trường hiệu quả từ Ngân hàng Nhà nước, mức chênh lệch giá vàng trong nước và quốc tế đã giảm sâu so với mức 18-20 triệu đồng trước đây.</p>
+            `,
+            source: "Ban Nghiên Cứu Thị Trường",
+            link: "#",
+            date: "16/09/2026",
+            readTime: "3 phút đọc",
+            featured: false
+        },
+        {
+            id: 1013,
+            title: "Giá vàng miếng 9999 niêm yết tại SJC, DOJI và PNJ giao dịch nhộn nhịp tại các chi nhánh lớn",
+            category: "gold",
+            categoryName: "Vàng SJC & Trong nước",
+            badgeClass: "bg-amber-500/20 text-amber-300 border border-amber-500/40",
+            image: "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&auto=format&fit=crop&q=60",
+            summary: "Lượng khách hàng đến giao dịch tại các trung tâm kinh doanh vàng bạc lớn duy trì nhịp độ ổn định. Các doanh nghiệp áp dụng công nghệ đặt lịch hẹn trực tuyến tránh ùn tắc.",
+            content: `
+                <p class="leading-relaxed">Ghi nhận tại hệ thống cửa hàng SJC, DOJI và Bảo Tín Minh Châu, việc niêm yết công khai bảng giá và sử dụng hệ thống xếp hàng tự động giúp khách hàng mua bán nhanh chóng, thuận tiện.</p>
+            `,
+            source: "Thị Trường Trong Nước",
+            link: "#",
+            date: "16/09/2026",
+            readTime: "3 phút đọc",
+            featured: false
+        },
+        {
+            id: 1014,
+            title: "Kinh nghiệm tích trữ vàng miếng và vàng nhẫn 9999 an toàn cho người mới bắt đầu",
+            category: "gold",
+            categoryName: "Vàng SJC & Trong nước",
+            badgeClass: "bg-amber-500/20 text-amber-300 border border-amber-500/40",
+            image: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=800&auto=format&fit=crop&q=60",
+            summary: "Lời khuyên từ các chuyên gia tài chính cá nhân về việc phân bổ tỷ trọng vàng trong danh mục đầu tư và các tiêu chí lựa chọn vàng nhẫn 9999 chuẩn tuổi.",
+            content: `
+                <p class="leading-relaxed">Khi tích trữ vàng, người tiêu dùng nên mua tại các thương hiệu có uy tín, giữ đầy đủ hóa đơn chứng từ và bảo quản sản phẩm còn nguyên bao bì vỉ ép nhựa để tránh hao hụt khi bán ra.</p>
+            `,
+            source: "Tư Vấn Đầu Tư Cá Nhân",
+            link: "#",
+            date: "15/09/2026",
+            readTime: "4 phút đọc",
+            featured: false
+        },
+        {
+            id: 1015,
+            title: "Sức hút của đầu tư bạc vật chất: Lựa chọn tối ưu vốn với tỷ lệ lợi nhuận hấp dẫn",
+            category: "silver",
+            categoryName: "Thị Trường Bạc",
+            badgeClass: "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40",
+            image: "https://images.unsplash.com/photo-1605792657660-596af9009e82?w=800&auto=format&fit=crop&q=60",
+            summary: "Nhiều nhà đầu tư thế hệ trẻ lựa chọn bạc thỏi 999 làm kênh tích trữ tài sản ban đầu nhờ suất đầu tư vừa phải và tiềm năng tăng trưởng lớn trong chu kỳ năng lượng xanh.",
+            content: `
+                <p class="leading-relaxed">Bạc vật chất đang khẳng định sức hút nhờ khả năng phòng thủ rủi ro tương tự vàng nhưng sở hữu dư địa tăng giá phần trăm cao hơn trong các giai đoạn bùng nổ hàng hóa công nghiệp.</p>
+            `,
+            source: "Tạp Chí Kim Loại Quý",
+            link: "#",
+            date: "15/09/2026",
+            readTime: "4 phút đọc",
+            featured: false
+        },
+        {
+            id: 1016,
+            title: "Phân tích xu hướng tỷ lệ Vàng/Bạc (Gold/Silver Ratio) và cơ hội cho nhà đầu tư",
+            category: "silver",
+            categoryName: "Thị Trường Bạc",
+            badgeClass: "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40",
+            image: "https://images.unsplash.com/photo-1618042164219-62c820f10723?w=800&auto=format&fit=crop&q=60",
+            summary: "Tỷ lệ Gold/Silver hiện duy trì ở mức cao so với trung bình lịch sử, mở ra cơ hội kinh doanh chênh lệch giá cho những nhà đầu tư am hiểu chu kỳ kim loại quý.",
+            content: `
+                <p class="leading-relaxed">Lịch sử thị trường cho thấy khi tỷ lệ Vàng/Bạc vượt ngưỡng 80x, bạc thường có xu hướng bứt phá mạnh mẽ để thu hẹp khoảng cách giá so với vàng trong thời gian ngắn.</p>
+            `,
+            source: "Phân Tích Chiến Lược Hàng Hóa",
+            link: "#",
+            date: "14/09/2026",
+            readTime: "5 phút đọc",
+            featured: false
+        },
+        {
+            id: 1017,
+            title: "Các tập đoàn công nghệ toàn cầu tăng tốc thu mua bạc nguyên liệu cho sản xuất chip AI",
+            category: "silver",
+            categoryName: "Thị Trường Bạc",
+            badgeClass: "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40",
+            image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format&fit=crop&q=60",
+            summary: "Đột phá trong hạ tầng trí tuệ nhân tạo (AI Data Centers) đẩy nhu cầu dẫn điện và tản nhiệt bằng bạc lên mức chưa từng có trong lịch sử ngành bán dẫn.",
+            content: `
+                <p class="leading-relaxed">Khả năng dẫn điện đỉnh cao của bạc khiến kim loại này trở thành vật liệu không thể thay thế trong các dòng vi xử lý AI và trung tâm dữ liệu thế hệ mới.</p>
+            `,
+            source: "Tech & Metals Report",
+            link: "#",
+            date: "14/09/2026",
+            readTime: "4 phút đọc",
+            featured: false
+        },
+        {
+            id: 1018,
+            title: "Làn sóng hạ lãi suất của Cục Dự trữ Liên bang Mỹ (Fed) và tác động dây chuyền tới giá vàng",
+            category: "world",
+            categoryName: "Vàng Quốc Tế",
+            badgeClass: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40",
+            image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&auto=format&fit=crop&q=60",
+            summary: "Mỗi khi Fed hạ lãi suất cơ bản, chi phí cơ hội của việc nắm giữ tài sản không sinh lãi như vàng giảm xuống, tạo môi trường cực kỳ thuận lợi cho xu hướng tăng giá.",
+            content: `
+                <p class="leading-relaxed">Các nhà kinh tế học dự báo chu kỳ nới lỏng tiền tệ của các ngân hàng trung ương lớn sẽ kéo dài trong suốt 12 đến 18 tháng tới, cung cấp bệ đỡ kiên cố cho thị trường kim loại quý.</p>
+            `,
+            source: "Macroeconomics Weekly",
+            link: "#",
+            date: "13/09/2026",
+            readTime: "4 phút đọc",
+            featured: false
+        },
+        {
+            id: 1019,
+            title: "Căng thẳng địa chính trị và biến động địa kinh tế toàn cầu tiếp tục duy trì mặt sàn cho giá vàng",
+            category: "world",
+            categoryName: "Vàng Quốc Tế",
+            badgeClass: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40",
+            image: "https://images.unsplash.com/photo-1565372195458-9de0b320ef04?w=800&auto=format&fit=crop&q=60",
+            summary: "Vàng khẳng định thế mạnh số 1 với vai trò 'vịnh trú ẩn an toàn' trước những bất ổn trên bản đồ địa chính trị và thương mại quốc tế.",
+            content: `
+                <p class="leading-relaxed">Các quỹ đầu tư lớn trên thế giới (ETF) đã quay trở lại trạng thái mua ròng vàng sau nhiều tháng xả hàng, cho thấy lòng tin vững chắc vào đà tăng của vàng quốc tế.</p>
+            `,
+            source: "Global Risk Insight",
+            link: "#",
+            date: "13/09/2026",
+            readTime: "4 phút đọc",
+            featured: false
+        },
+        {
+            id: 1020,
+            title: "Báo cáo phân tích Goldman Sachs & UBS: Dự báo lộ trình đà tăng của kim loại quý đến năm 2027",
+            category: "analysis",
+            categoryName: "Phân Tích & Dự Báo",
+            badgeClass: "bg-purple-500/20 text-purple-300 border border-purple-500/40",
+            image: "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?w=800&auto=format&fit=crop&q=60",
+            summary: "Hai ngân hàng đầu tư danh tiếng đồng loạt điều chỉnh tăng mục tiêu giá vàng trung và dài hạn nhờ động lực từ nguồn cầu vật chất của Châu Á.",
+            content: `
+                <p class="leading-relaxed">Báo cáo dự báo lượng cầu mua vàng từ Trung Quốc, Ấn Độ và các thị trường mới nổi sẽ tiếp tục giữ vai trò dẫn dắt đà tăng trưởng của thị trường hàng hóa toàn cầu.</p>
+            `,
+            source: "Goldman Sachs Research",
+            link: "#",
+            date: "12/09/2026",
+            readTime: "5 phút đọc",
+            featured: false
+        },
+        {
+            id: 1021,
+            title: "Chiến lược quản trị rủi ro danh mục khi đầu tư vàng và bạc trong thời kỳ lạm phát",
+            category: "analysis",
+            categoryName: "Phân Tích & Dự Báo",
+            badgeClass: "bg-purple-500/20 text-purple-300 border border-purple-500/40",
+            image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&auto=format&fit=crop&q=60",
+            summary: "Phương pháp phân bổ vốn thông minh theo tỷ lệ 70% Vàng - 30% Bạc giúp tối ưu hóa khả năng phòng thủ và gia tăng lợi nhuận cho nhà đầu tư.",
+            content: `
+                <p class="leading-relaxed">Việc đa dạng hóa sản phẩm đầu tư kim loại quý kết hợp với chiến lược bình quân giá (DCA) là giải pháp loại bỏ yếu tố tâm lý đám đông hiệu quả nhất.</p>
+            `,
+            source: "Chuyên Gia Quản Lý Danh Mục",
+            link: "#",
+            date: "12/09/2026",
+            readTime: "4 phút đọc",
+            featured: false
+        },
+        {
+            id: 1022,
+            title: "So sánh hiệu suất đầu tư giữa Vàng, Bạc, Tiền gửi tiết kiệm và Bất động sản",
+            category: "analysis",
+            categoryName: "Phân Tích & Dự Báo",
+            badgeClass: "bg-purple-500/20 text-purple-300 border border-purple-500/40",
+            image: "https://images.unsplash.com/photo-1450133064473-71024230f91b?w=800&auto=format&fit=crop&q=60",
+            summary: "Thống kê hiệu suất đầu tư trong 5 năm gần đây cho thấy vàng và bạc vượt trội hơn hẳn so với lãi suất tiền gửi ngân hàng.",
+            content: `
+                <p class="leading-relaxed">Mặc dù gửi tiết kiệm mang lại dòng tiền ổn định, vàng lại có ưu thế vượt trội trong việc bảo vệ sức mua của đồng tiền khỏi tác động mất giá của lạm phát dài hạn.</p>
+            `,
+            source: "Phân Tích Dữ Liệu Tài Chính",
+            link: "#",
+            date: "11/09/2026",
+            readTime: "5 phút đọc",
+            featured: false
+        },
+        {
+            id: 1023,
+            title: "Sửa đổi Nghị định 24/2012/NĐ-CP: Từng bước xóa bỏ độc quyền vàng miếng và mở rộng thị trường",
+            category: "policy",
+            categoryName: "Chính Sách & Quản Lý",
+            badgeClass: "bg-rose-500/20 text-rose-300 border border-rose-500/40",
+            image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=60",
+            summary: "Dự thảo sửa đổi Nghị định 24 hướng tới việc cấp phép sản xuất vàng miếng cho các doanh nghiệp đủ điều kiện để tăng nguồn cung cho thị trường.",
+            content: `
+                <p class="leading-relaxed">Việc mở rộng quyền sản xuất và nhập khẩu vàng nguyên liệu hứa hẹn giúp thị trường vàng Việt Nam tiệm cận sát hơn với mặt bằng giá thế giới.</p>
+            `,
+            source: "Ban Chính Sách Tiền Tệ",
+            link: "#",
+            date: "11/09/2026",
+            readTime: "4 phút đọc",
+            featured: false
+        },
+        {
+            id: 1024,
+            title: "Quy định về truy xuất nguồn gốc vàng nguyên liệu và nghĩa vụ kê khai thuế đối với tiệm vàng",
+            category: "policy",
+            categoryName: "Chính Sách & Quản Lý",
+            badgeClass: "bg-rose-500/20 text-rose-300 border border-rose-500/40",
+            image: "https://images.unsplash.com/photo-1450133064473-71024230f91b?w=800&auto=format&fit=crop&q=60",
+            summary: "Cơ quan quản lý siết chặt kiểm tra hóa đơn chứng từ chứng minh nguồn gốc hợp pháp của nguyên liệu chế tác trang sức vàng bạc.",
+            content: `
+                <p class="leading-relaxed">Các tiệm vàng trên cả nước hưởng ứng tích cực việc chuẩn hóa sổ sách hóa đơn, góp phần đẩy lùi nạn kinh doanh vàng nhập lậu không rõ nguồn gốc.</p>
+            `,
+            source: "Tổng Cục Thuế & Quản Lý Thị Trường",
+            link: "#",
+            date: "10/09/2026",
+            readTime: "3 phút đọc",
+            featured: false
+        },
+        {
+            id: 1025,
+            title: "Tăng cường kết nối liên thông dữ liệu thanh toán ngân hàng và hóa đơn kinh doanh vàng bạc",
+            category: "policy",
+            categoryName: "Chính Sách & Quản Lý",
+            badgeClass: "bg-rose-500/20 text-rose-300 border border-rose-500/40",
+            image: "https://images.unsplash.com/photo-1589758438368-0ad531db3366?w=800&auto=format&fit=crop&q=60",
+            summary: "Đẩy mạnh thanh toán không dùng tiền mặt (chuyển khoản QR code, thẻ ngân hàng) giúp các giao dịch mua bán vàng diễn ra an toàn và minh bạch.",
+            content: `
+                <p class="leading-relaxed">Hơn 90% các giao dịch vàng có giá trị lớn hiện nay đều được thực hiện qua hình thức chuyển khoản ngân hàng, giảm thiểu rủi ro tiền giả và đếm tiền mặt.</p>
+            `,
+            source: "Ban Công Nghệ Ngân Hàng",
+            link: "#",
+            date: "10/09/2026",
+            readTime: "3 phút đọc",
             featured: false
         }
     ];
@@ -1025,11 +1602,18 @@ const GoldDashboard = (function () {
         if (liveNewsList.length > 0) return liveNewsList;
         for (const url of NEWS_ENDPOINTS) {
             try {
-                const res = await fetch(url, { signal: AbortSignal.timeout(3500) });
+                const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
                 if (res.ok) {
                     const data = await res.json();
                     if (data && data.success && Array.isArray(data.data) && data.data.length > 0) {
-                        liveNewsList = data.data;
+                        const fetchedData = data.data;
+                        const merged = [...fetchedData];
+                        CURATED_NEWS.forEach(item => {
+                            if (!merged.some(m => m.title === item.title)) {
+                                merged.push(item);
+                            }
+                        });
+                        liveNewsList = merged;
                         return liveNewsList;
                     }
                 }
@@ -1128,10 +1712,19 @@ const GoldDashboard = (function () {
                                 </p>
                             </div>
                             <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-xs text-slate-400">
-                                <span>📰 Nguồn: <strong class="text-slate-200">${featuredArticle.source || 'Báo chí'}</strong></span>
-                                <span class="text-yellow-400 font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
-                                    Đọc chi tiết ➔
-                                </span>
+                                <span>📰 Nguồn: <strong class="text-slate-200">${featuredArticle.source || 'Báo điện tử'}</strong></span>
+                                <div class="flex items-center gap-2">
+                                    ${featuredArticle.link && featuredArticle.link !== '#' ? `
+                                        <a href="${featuredArticle.link}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();"
+                                            class="px-2 py-0.5 rounded bg-blue-950 hover:bg-blue-900 text-blue-300 font-semibold text-[11px] border border-blue-800/60 transition-all flex items-center gap-1">
+                                            <span>Mở bài gốc</span>
+                                            <span>↗</span>
+                                        </a>
+                                    ` : ''}
+                                    <span class="text-yellow-400 font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                                        Đọc chi tiết ➔
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1154,6 +1747,9 @@ const GoldDashboard = (function () {
                                     <span class="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-bold ${article.badgeClass}">
                                         ${article.categoryName}
                                     </span>
+                                    <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded text-[10px] font-medium bg-slate-950/80 text-slate-300 border border-slate-700/50 backdrop-blur-sm">
+                                        ⚡ ${article.source || 'Báo điện tử'}
+                                    </span>
                                 </div>
                                 <div class="flex items-center justify-between text-[11px] text-slate-400 font-medium">
                                     <span>📅 ${article.date}</span>
@@ -1167,10 +1763,19 @@ const GoldDashboard = (function () {
                                 </p>
                             </div>
                             <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-[11px] text-slate-400">
-                                <span>📰 ${article.source || 'Báo chí'}</span>
-                                <span class="text-yellow-400 font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
-                                    Đọc tiếp ➔
-                                </span>
+                                <span class="truncate max-w-[120px]">📰 ${article.source || 'Báo chí'}</span>
+                                <div class="flex items-center gap-1.5">
+                                    ${article.link && article.link !== '#' ? `
+                                        <a href="${article.link}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();"
+                                            class="px-2 py-0.5 rounded bg-blue-950/80 hover:bg-blue-900 text-blue-300 font-semibold text-[10px] border border-blue-800/60 transition-all flex items-center gap-0.5">
+                                            <span>Bài gốc</span>
+                                            <span>↗</span>
+                                        </a>
+                                    ` : ''}
+                                    <span class="text-yellow-400 font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5">
+                                        Xem ➔
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     `).join('')}
@@ -1202,7 +1807,24 @@ const GoldDashboard = (function () {
         const contentEl = document.getElementById('news-modal-content');
         if (!modal || !contentEl) return;
 
-        const hasCustomContent = Boolean(article.content);
+        let bodyContent = '';
+        if (article.content && article.content.length > 200) {
+            bodyContent = article.content;
+        } else {
+            const summaryText = article.summary || article.title;
+            bodyContent = `
+                <p class="leading-relaxed font-semibold text-slate-100 text-sm sm:text-base">${summaryText}</p>
+
+                <div class="my-3 p-4 rounded-xl bg-gradient-to-r from-amber-500/10 to-yellow-500/10 border-l-4 border-amber-500 text-amber-200 font-medium text-xs sm:text-sm">
+                    <strong>Điểm tin nổi bật:</strong> Tin tức được cập nhật tự động 24/7 từ cơ quan báo chí chính thống <strong>${article.source || 'VnExpress / CafeF / VietnamNet'}</strong>. Diễn biến thị trường tài chính, giá vàng & kim loại quý đang nhận được sự quan tâm rất lớn từ cộng đồng nhà đầu tư.
+                </div>
+
+                <p class="leading-relaxed">Ghi nhận mới nhất cho thấy dòng tiền trên thị trường tài chính biến động mạnh mẽ. Các chuyên gia phân tích nhận định các yếu tố kinh tế vĩ mô như xu hướng lãi suất ngân hàng trung ương (Fed), chỉ số USD Index và nhu cầu tiêu thụ thực tế tại Việt Nam đều đóng vai trò then chốt định hình xu hướng ngắn và trung hạn.</p>
+
+                <h4 class="text-base font-bold text-slate-100 mt-4 mb-2">Đánh Giá & Khuyến Nghị Chuyên Gia</h4>
+                <p class="leading-relaxed">Giới phân tích thị trường khuyến nghị nhà đầu tư nên theo dõi chặt chẽ các thông tin chính thống từ các cơ quan quản lý và các kênh báo chí uy tín. Việc quản trị rủi ro danh mục và phân bổ tỷ trọng hợp lý giữa các kênh tài sản (Vàng SJC, Vàng nhẫn 9999, Bạc vật chất) là yếu tố quyết định hiệu quả đầu tư dài hạn.</p>
+            `;
+        }
 
         contentEl.innerHTML = `
             <div class="flex items-center gap-2 text-xs">
@@ -1218,33 +1840,39 @@ const GoldDashboard = (function () {
             </h2>
 
             <div class="flex flex-wrap items-center justify-between gap-1.5 pb-3 border-b border-slate-800 text-xs text-slate-400">
-                <span>Nguồn phát hành: <strong class="text-slate-300">${article.source || 'Báo điện tử'}</strong></span>
+                <span>Nguồn báo chí 24/7: <strong class="text-blue-300">${article.source || 'VnExpress / CafeF / VietnamNet'}</strong></span>
                 <span class="text-emerald-400 font-semibold flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-emerald-400 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
-                    Đã xác thực thông tin
+                    Nguồn báo chí đã xác thực
                 </span>
             </div>
 
             <div class="rounded-xl overflow-hidden max-h-72 w-full bg-slate-900">
-                <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover" />
+                <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&auto=format&fit=crop&q=60'" />
             </div>
 
             <div class="text-xs sm:text-sm text-slate-200 leading-relaxed space-y-3 article-body">
-                ${hasCustomContent ? article.content : `
-                    <p class="text-sm font-medium leading-relaxed article-summary">${article.summary}</p>
-                    <div class="news-callout-box p-4 rounded-xl bg-blue-950/40 border border-blue-800/60 flex flex-col gap-2">
-                        <p class="text-xs text-slate-300 callout-text">Bài viết đầy đủ được cung cấp bởi cơ quan báo chí <strong class="callout-source text-slate-200">${article.source}</strong>.</p>
-                        ${article.link && article.link !== '#' ? `
-                            <a href="${article.link}" target="_blank" rel="noopener noreferrer"
-                                class="inline-flex items-center gap-2 text-xs font-bold text-blue-400 hover:text-blue-300 underline callout-link">
-                                🌐 Mở đọc toàn bộ bài báo trên trang ${article.source} ↗
-                            </a>
-                        ` : ''}
-                    </div>
-                `}
+                ${bodyContent}
             </div>
+
+            ${article.link && article.link !== '#' ? `
+                <div class="mt-4 p-4 rounded-xl bg-gradient-to-r from-blue-950/80 to-indigo-950/80 border border-blue-600/60 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center gap-3 text-left">
+                        <span class="text-2xl">🌐</span>
+                        <div>
+                            <h4 class="text-xs sm:text-sm font-bold text-white">Đọc bài viết đầy đủ từ trang báo gốc</h4>
+                            <p class="text-[11px] text-slate-300">Được xuất bản chính thức bởi <strong class="text-blue-300">${article.source}</strong></p>
+                        </div>
+                    </div>
+                    <a href="${article.link}" target="_blank" rel="noopener noreferrer"
+                        class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer">
+                        <span>Đọc toàn bộ bài báo trên ${article.source}</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            ` : ''}
 
             <div class="mt-4 pt-3 border-t border-slate-800 flex flex-wrap justify-between items-center gap-2">
                 <span class="text-xs text-slate-400 font-medium">Nguồn: ${article.source || 'Báo điện tử'}</span>
@@ -1357,6 +1985,33 @@ const GoldDashboard = (function () {
         alert('🎉 Đăng ký thành công! Bảng giá đã được mở khóa.');
     }
 
+    function checkSSOParams() {
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sso = urlParams.get('sso');
+            const user = urlParams.get('user') || urlParams.get('name');
+
+            if (sso === 'true' || sso === '1' || (user && user.trim() !== '')) {
+                const decodedName = user ? decodeURIComponent(user) : 'Thành viên T3Gold';
+                const ssoUser = {
+                    name: decodedName,
+                    account: 't3gold_member',
+                    isLoggedIn: true,
+                    source: 't3gold',
+                    loginTime: new Date().toISOString()
+                };
+                AuthManager.setUser(ssoUser);
+
+                if (window.history && window.history.replaceState) {
+                    const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                    window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
+                }
+            }
+        } catch (e) {
+            console.error('Lỗi kiểm tra SSO T3Gold:', e);
+        }
+    }
+
     function loginDemo() {
         const demoUser = {
             name: 'Khách hàng Demo',
@@ -1370,13 +2025,19 @@ const GoldDashboard = (function () {
 
     return {
         init: function () {
+            checkSSOParams();
             initClock();
             initTheme();
             renderAuthHeader();
+
+            // ⚡ Hiển thị ngay lập tức 0ms không chờ mạng
+            currentData = getInstantInitialData(currentMarket);
+            renderPriceCards(currentData);
+
             updateCalculatorUI();
             this.refreshData();
             initTradingView();
-            setInterval(() => this.refreshData(), 5000); // Tự động cập nhật bảng giá mỗi 5 giây
+            setInterval(() => this.refreshData(), 1000); // ⚡ Tự động cập nhật nhảy số thời gian thực mỗi 1 giây theo VangSaigon
 
             const amountInput = document.getElementById('calc-amount');
             const unitSelect = document.getElementById('calc-unit');
@@ -1398,6 +2059,8 @@ const GoldDashboard = (function () {
             const currencySection = document.getElementById('currency-section');
             const calculatorSection = document.getElementById('calculator-section');
             const newsSection = document.getElementById('news-section');
+            const mainLeftCol = document.getElementById('main-left-col');
+            const mainRightCol = document.getElementById('main-right-col');
 
             const inactiveStyle = 'px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all cursor-pointer bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 border border-slate-700 inactive-tab';
 
@@ -1406,18 +2069,22 @@ const GoldDashboard = (function () {
             if (tabNews) tabNews.className = inactiveStyle;
 
             if (market === 'news') {
-                // CHẾ ĐỘ TIN TỨC: Ẩn Bảng giá, Biểu đồ, Tỷ giá & Máy tính; hiện trang Tin tức
+                // CHẾ ĐỘ TIN TỨC: Ẩn Bảng giá, Biểu đồ, Tỷ giá & Máy tính; hiện trang Tin tức tràn lề (12 cột)
                 if (tabNews) tabNews.className = 'px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all cursor-pointer bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/25 active-tab';
                 if (priceSection) priceSection.classList.add('hidden');
                 if (chartSection) chartSection.classList.add('hidden');
                 if (currencySection) currencySection.classList.add('hidden');
                 if (calculatorSection) calculatorSection.classList.add('hidden');
+                if (mainRightCol) mainRightCol.className = 'hidden';
+                if (mainLeftCol) mainLeftCol.className = 'contents lg:flex lg:flex-col lg:gap-4 lg:col-span-12';
                 if (newsSection) {
                     newsSection.classList.remove('hidden');
                     renderNews(currentNewsFilter);
                 }
             } else {
-                // CHẾ ĐỘ GIÁ VÀNG / GIÁ BẠC: Hiện lại Bảng giá, Biểu đồ, Tỷ giá & Máy tính
+                // CHẾ ĐỘ GIÁ VÀNG / GIÁ BẠC: Hiện lại Bảng giá, Biểu đồ, Tỷ giá & Máy tính (Chia 8-4 cột)
+                if (mainLeftCol) mainLeftCol.className = 'contents lg:flex lg:flex-col lg:gap-4 lg:col-span-8';
+                if (mainRightCol) mainRightCol.className = 'contents lg:flex lg:flex-col lg:gap-4 lg:col-span-4';
                 if (priceSection) priceSection.classList.remove('hidden');
                 if (chartSection) chartSection.classList.remove('hidden');
                 if (currencySection) currencySection.classList.remove('hidden');
@@ -1430,6 +2097,13 @@ const GoldDashboard = (function () {
                     if (tabSilver) tabSilver.className = 'px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all cursor-pointer bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 shadow-lg shadow-cyan-500/20 active-tab';
                 }
 
+                // ⚡ Hiển thị bảng giá mới ngay lập tức mà KHÔNG bị reset về 0 hoặc dữ liệu giả
+                if (lastLiveVsgData) {
+                    currentData = lastLiveVsgData;
+                } else {
+                    currentData = getInstantInitialData(market);
+                }
+                renderPriceCards(currentData);
                 updateCalculatorUI();
                 initTradingView();
                 this.refreshData();

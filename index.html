@@ -54,11 +54,11 @@
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 
     <!-- File CSS tùy chỉnh -->
-    <link rel="stylesheet" href="style.css?v=35">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="style.css?v=49">
+    <link rel="stylesheet" href="assets/css/style.css?v=49">
 </head>
 
-<body class="min-h-screen p-2.5 sm:p-4 md:p-6 flex flex-col gap-3.5 sm:gap-5">
+<body class="min-h-screen p-1.5 sm:p-4 md:p-6 flex flex-col gap-3 sm:gap-5">
 
     <!-- Thanh Tiêu Đề (Header) -->
     <header
@@ -71,7 +71,7 @@
             <div>
                 <h1
                     class="text-base sm:text-xl md:text-2xl font-extrabold tracking-tight flex flex-wrap items-center gap-1.5">
-                    Cập Nhật Bảng Giá Nguyên Liệu Vàng Bạc <span class="text-yellow-400 font-extrabold">T3Gold</span>
+                    Giá Vàng Hôm Nay <span class="text-yellow-400 font-extrabold">T3Gold</span>
                 </h1>
                 <p class="text-[11px] sm:text-xs text-slate-400 hidden sm:block">Cập nhật giá vàng SJC, vàng nhẫn, vàng
                     thế giới & tỷ giá ngoại tệ trực tuyến</p>
@@ -112,11 +112,14 @@
         <div id="main-left-col" class="contents lg:flex lg:flex-col lg:gap-4 lg:col-span-8">
             <!-- 1. BẢNG GIÁ VÀNG / BẠC (Hiện ngay đầu trang ở cả Mobile & Desktop) -->
             <div id="price-section" class="order-1 lg:order-none flex flex-col gap-2">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0 px-1">
-                    <h2 id="table-heading"
-                        class="section-title text-sm sm:text-base md:text-lg font-black uppercase tracking-tight">
-                        <span id="table-title">GIÁ VÀNG THAM KHẢO</span>
-                    </h2>
+                <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-0 px-1">
+                    <div class="flex items-baseline gap-1.5 flex-wrap">
+                        <h2 id="table-heading"
+                            class="section-title text-sm sm:text-base md:text-lg font-black uppercase tracking-tight">
+                            <span id="table-title">GIÁ VÀNG THAM KHẢO</span>
+                        </h2>
+                        <span class="text-[11px] sm:text-xs font-normal text-slate-400 italic lowercase tracking-normal">(không mang tính chất chuyên gia)</span>
+                    </div>
                     <div id="last-updated-time" class="timestamp-text text-xs sm:text-sm font-semibold font-mono">
                         Cập nhật lần cuối: 14:09:18
                     </div>
@@ -129,21 +132,21 @@
                         <table class="modern-table w-full text-right">
                             <thead>
                                 <tr
-                                    class="bg-[#002b9e] text-white font-black text-xs sm:text-sm md:text-base uppercase tracking-wider">
-                                    <th
-                                        class="text-left pl-2 sm:pl-3 py-2 sm:py-2.5 w-[26%] sm:w-[28%] whitespace-nowrap">
+                                    class="bg-[#002b9e] text-white font-black text-xs sm:text-base md:text-lg uppercase tracking-tight">
+                                    <th id="table-col-name"
+                                        class="text-left pl-1 sm:pl-2 py-2 sm:py-2.5 w-[34%] sm:w-[32%] whitespace-nowrap">
                                         Tổ chức</th>
-                                    <th class="py-2 px-1 sm:px-2 text-right w-[20%] sm:w-[22%] whitespace-nowrap">MUA
+                                    <th class="py-2 px-0.5 sm:px-1.5 text-right w-[18%] sm:w-[19%] whitespace-nowrap">MUA
                                     </th>
-                                    <th class="py-2 px-1 sm:px-2 text-right w-[20%] sm:w-[22%] whitespace-nowrap">BÁN
+                                    <th class="py-2 px-0.5 sm:px-1.5 text-right w-[18%] sm:w-[19%] whitespace-nowrap">BÁN
                                     </th>
-                                    <th class="py-2 px-1 sm:px-2 text-right w-[17%] sm:w-[14%] whitespace-nowrap">+/-
+                                    <th class="py-2 px-0.5 sm:px-1.5 text-right w-[15%] sm:w-[15%] whitespace-nowrap">+/-
                                     </th>
-                                    <th class="py-2 pr-2 sm:pr-3 text-right w-[17%] sm:w-[14%] whitespace-nowrap">CL
+                                    <th class="py-2 pr-0.5 sm:pr-2 text-right w-[15%] sm:w-[15%] whitespace-nowrap">CL
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody id="price-table-body" class="text-xs sm:text-sm font-semibold">
+                            <tbody id="price-table-body" class="text-sm sm:text-base font-bold">
                                 <!-- Dữ liệu render bằng JavaScript -->
                             </tbody>
                         </table>
@@ -160,17 +163,17 @@
             <nav id="market-tabs"
                 class="order-5 lg:order-none flex items-center justify-center gap-2 sm:gap-3 flex-wrap w-full my-2 pt-2 border-t border-slate-800/60">
                 <button id="tab-gold" onclick="GoldDashboard.switchMarket('gold')"
-                    class="px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 shadow-lg shadow-yellow-500/20 active-tab">
+                    class="px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-xl font-black text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 shadow-lg shadow-yellow-500/20 active-tab">
                     <span class="text-base">🥇</span>
-                    <span>Thị Trường Vàng</span>
+                    <span>Bảng giá Vàng</span>
                 </button>
                 <button id="tab-silver" onclick="GoldDashboard.switchMarket('silver')"
-                    class="px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 border border-slate-700 inactive-tab">
+                    class="px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-xl font-black text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 border border-slate-700 inactive-tab">
                     <span class="text-base">🥈</span>
-                    <span>Thị Trường Bạc</span>
+                    <span>Bảng giá Bạc</span>
                 </button>
                 <button id="tab-news" onclick="GoldDashboard.switchMarket('news')"
-                    class="px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 border border-slate-700 inactive-tab">
+                    class="px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-xl font-black text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 border border-slate-700 inactive-tab">
                     <span class="text-base">📰</span>
                     <span>Tin Tức Thị Trường</span>
                 </button>
@@ -220,11 +223,11 @@
                             <thead>
                                 <tr
                                     class="bg-[#002b9e] text-white font-black text-xs sm:text-sm md:text-base uppercase tracking-wider">
-                                    <th class="text-left pl-2 sm:pl-3 py-2 sm:py-2.5 w-[30%] whitespace-nowrap">Tiền tệ
+                                    <th class="text-left pl-1.5 sm:pl-2.5 py-2 sm:py-2.5 w-[25%] whitespace-nowrap">Tiền tệ
                                     </th>
-                                    <th class="py-2 px-1 sm:px-2 text-right w-[24%] whitespace-nowrap">MUA</th>
-                                    <th class="py-2 px-1 sm:px-2 text-right w-[24%] whitespace-nowrap">BÁN</th>
-                                    <th class="py-2 pr-2 sm:pr-3 text-right w-[22%] whitespace-nowrap">Tỷ giá</th>
+                                    <th class="py-2 px-1 sm:px-1.5 text-right w-[25%] whitespace-nowrap">MUA</th>
+                                    <th class="py-2 px-1 sm:px-1.5 text-right w-[25%] whitespace-nowrap">BÁN</th>
+                                    <th class="py-2 pr-1.5 sm:pr-2.5 text-right w-[25%] whitespace-nowrap">Tỷ giá</th>
                                 </tr>
                             </thead>
                             <tbody id="currency-table-body" class="text-xs sm:text-sm font-semibold">
@@ -332,8 +335,7 @@
     </div>
 
     <!-- File JavaScript -->
-    <script src="app.js?v=45"></script>
-    <script src="assets/js/app.js?v=45"></script>
+    <script src="app.js?v=49"></script>
 </body>
 
 </html>
