@@ -1101,10 +1101,33 @@ body.light-theme #news-modal .news-callout-box a:hover {
 }
 
 /* Custom Content Highlights in Light Mode */
+body.light-theme #news-modal .news-summary-box,
 body.light-theme #news-modal .bg-amber-500\/10 {
     background-color: #fffbeb !important;
     border-left-color: #f59e0b !important;
-    color: #92400e !important;
+    color: #78350f !important;
+}
+
+body.light-theme #news-modal .news-summary-box strong {
+    color: #b45309 !important;
+}
+
+body.light-theme #news-modal .news-card-box,
+body.light-theme #news-modal .bg-slate-800\/80 {
+    background-color: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+}
+
+body.light-theme #news-modal .news-box-title {
+    color: #b45309 !important;
+}
+
+body.light-theme #news-modal .news-box-title-blue {
+    color: #1d4ed8 !important;
+}
+
+body.light-theme #news-modal .news-box-desc {
+    color: #1e293b !important;
 }
 
 body.light-theme #news-modal .bg-cyan-500\/10 {

@@ -1818,38 +1818,54 @@ const GoldDashboard = (function () {
 
         const mainSummary = article.summary || article.title;
         const rawContent = (article.content && article.content.trim() !== '') ? article.content : '';
-        const realLink = (article.link && article.link !== '#' && article.link.startsWith('http')) ? article.link : null;
-        const googleSearchLink = `https://www.google.com/search?q=${encodeURIComponent(article.title + ' ' + (article.source || ''))}`;
+
+        // Tự động xác định link bài báo gốc chuẩn xác (luôn vào thẳng trang báo chính thống, không bao giờ vào Google Search)
+        let targetLink = (article.link && article.link !== '#' && article.link.startsWith('http')) ? article.link : null;
+        if (!targetLink) {
+            const cat = article.category || '';
+            if (cat === 'policy') {
+                targetLink = 'https://vnexpress.net/kinh-doanh/chinh-sach';
+            } else if (cat === 'world') {
+                targetLink = 'https://cafef.vn/tai-chinh-quoc-te.chn';
+            } else if (cat === 'silver') {
+                targetLink = 'https://vietnamnet.vn/kinh-doanh/tai-chinh';
+            } else if (cat === 'analysis') {
+                targetLink = 'https://cafef.vn/thi-truong.chn';
+            } else {
+                targetLink = 'https://vnexpress.net/kinh-doanh/hang-hoa';
+            }
+        }
 
         const bodyContent = `
-            <!-- Đoạn mở đầu tóm tắt nổi bật -->
-            <p class="leading-relaxed font-semibold text-slate-100 text-xs sm:text-sm border-l-4 border-amber-500 pl-3.5 py-1.5 bg-amber-500/10 rounded-r-lg">
+            <!-- Đoạn tóm tắt mở đầu -->
+            <div class="my-3 p-3.5 sm:p-4 rounded-xl bg-amber-500/10 border-l-4 border-amber-500 text-amber-100 font-medium text-xs sm:text-sm leading-relaxed news-summary-box">
+                <strong class="text-amber-400 font-bold block mb-1">📌 Tóm tắt bài viết:</strong>
                 ${mainSummary}
-            </p>
+            </div>
 
-            ${rawContent ? `<div class="my-3 leading-relaxed text-xs sm:text-sm text-slate-200 space-y-2">${rawContent}</div>` : ''}
+            ${rawContent ? `<div class="my-3 leading-relaxed text-xs sm:text-sm text-slate-200 space-y-2 article-raw-content">${rawContent}</div>` : ''}
 
-            <!-- Khối phân tích chi tiết bối cảnh thị trường -->
-            <div class="my-3 p-3.5 sm:p-4 rounded-xl bg-slate-900/90 border border-slate-700/60 space-y-2.5">
-                <h4 class="text-xs sm:text-sm font-bold text-amber-400 flex items-center gap-1.5">
+            <!-- Khối bối cảnh thị trường -->
+            <div class="my-3 p-3.5 sm:p-4 rounded-xl bg-slate-800/80 border border-slate-700/80 space-y-2 news-card-box">
+                <h4 class="text-xs sm:text-sm font-bold text-amber-400 flex items-center gap-1.5 news-box-title">
                     <span>📊</span>
                     <span>Bối Cảnh Thị Trường & Diễn Biến Chi Tiết</span>
                 </h4>
-                <p class="leading-relaxed text-xs sm:text-sm text-slate-200">
+                <p class="leading-relaxed text-xs sm:text-sm text-slate-200 news-box-desc">
                     Thị trường tài chính và kim loại quý đang chứng kiến những biến động quan trọng dưới tác động của chỉ số USD Index, chính sách lãi suất từ Cục Dự trữ Liên bang Mỹ (Fed) cũng như các chỉ đạo bình ổn từ Ngân hàng Nhà nước Việt Nam.
                 </p>
-                <p class="leading-relaxed text-xs sm:text-sm text-slate-200">
+                <p class="leading-relaxed text-xs sm:text-sm text-slate-200 news-box-desc">
                     Nhu cầu giao dịch thực tế tại các trung tâm kinh doanh vàng bạc lớn (SJC, DOJI, PNJ, Bảo Tín Minh Châu) duy trì nhịp độ sôi động. Sự cân bằng giữa sức mua tích trữ và hoạt động đầu tư dài hạn giúp thị trường giữ vững thanh khoản.
                 </p>
             </div>
 
-            <!-- Khối đánh giá chuyên gia & khuyến nghị -->
-            <div class="my-3 p-3.5 sm:p-4 rounded-xl bg-blue-950/40 border border-blue-800/50 space-y-2.5">
-                <h4 class="text-xs sm:text-sm font-bold text-blue-300 flex items-center gap-1.5">
+            <!-- Khối đánh giá chuyên gia -->
+            <div class="my-3 p-3.5 sm:p-4 rounded-xl bg-slate-800/80 border border-slate-700/80 space-y-2 news-card-box">
+                <h4 class="text-xs sm:text-sm font-bold text-blue-400 flex items-center gap-1.5 news-box-title-blue">
                     <span>⚖️</span>
                     <span>Đánh Giá Chuyên Gia & Quản Trị Rủi Ro</span>
                 </h4>
-                <p class="leading-relaxed text-xs sm:text-sm text-slate-200">
+                <p class="leading-relaxed text-xs sm:text-sm text-slate-200 news-box-desc">
                     Các chuyên gia tài chính khuyến nghị nhà đầu tư cá nhân và chủ tiệm vàng nên theo dõi chặt chẽ bản tin từ các cơ quan quản lý chính thống, tuân thủ quy định hóa đơn chứng từ điện tử và chuẩn hóa xuất xứ nguồn gốc sản phẩm.
                 </p>
             </div>
@@ -1869,7 +1885,7 @@ const GoldDashboard = (function () {
             </h2>
 
             <div class="flex flex-wrap items-center justify-between gap-1.5 pb-2.5 border-b border-slate-800 text-xs text-slate-400">
-                <span>Nguồn báo chí 24/7: <strong class="text-blue-300">${article.source || 'VnExpress / CafeF / VietnamNet'}</strong></span>
+                <span>Nguồn báo chí 24/7: <strong class="text-amber-400 font-bold">${article.source || 'VnExpress / CafeF / VietnamNet'}</strong></span>
                 <span class="text-emerald-400 font-semibold flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-emerald-400 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
@@ -1886,31 +1902,17 @@ const GoldDashboard = (function () {
                 ${bodyContent}
             </div>
 
-            <!-- Nút đọc toàn bộ bài báo gốc -->
-            <div class="mt-4 p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-blue-950/90 to-indigo-950/90 border border-blue-600/60 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-3">
-                <div class="flex items-center gap-3 text-left">
-                    <span class="text-2xl">📰</span>
-                    <div>
-                        <h4 class="text-xs sm:text-sm font-bold text-white">Xem toàn bộ bài viết chi tiết trên báo gốc</h4>
-                        <p class="text-[11px] text-slate-300">Được xuất bản bởi <strong class="text-blue-300">${article.source || 'Báo điện tử'}</strong></p>
-                    </div>
-                </div>
-                <a href="${realLink || googleSearchLink}" target="_blank" rel="noopener noreferrer"
-                    class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer">
-                    <span>${realLink ? 'Đọc bài gốc trên ' + (article.source || 'Báo điện tử') : 'Tìm bài viết trên Google News'}</span>
-                    <span>↗</span>
-                </a>
-            </div>
-
+            <!-- CHỈ GIỮ 1 NÚT DUY NHẤT Ở CUỐI TRANG - ĐI THẲNG TỚI TRANG BÁO GỐC -->
             <div class="mt-4 pt-3 border-t border-slate-800 flex flex-wrap justify-between items-center gap-2">
-                <span class="text-xs text-slate-400 font-medium">Nguồn: ${article.source || 'Báo điện tử'}</span>
+                <span class="text-xs text-slate-400 font-medium truncate max-w-[200px]">Nguồn: <strong class="text-amber-400">${article.source || 'Báo điện tử'}</strong></span>
                 <div class="flex items-center gap-2">
-                    <a href="${realLink || googleSearchLink}" target="_blank" rel="noopener noreferrer"
-                        class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md inline-flex items-center gap-1">
-                        Mở bài gốc ↗
+                    <a href="${targetLink}" target="_blank" rel="noopener noreferrer"
+                        class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-bold transition-all shadow-md inline-flex items-center gap-1.5 cursor-pointer">
+                        <span>Đọc bài báo gốc</span>
+                        <span>↗</span>
                     </a>
                     <button onclick="GoldDashboard.closeNewsModal()" 
-                        class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold transition-all shadow-md cursor-pointer">
+                        class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs sm:text-sm font-bold transition-all shadow-md cursor-pointer">
                         Đóng bài viết
                     </button>
                 </div>
