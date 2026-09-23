@@ -725,8 +725,8 @@ const GoldDashboard = (function () {
                 if (item.isWorld) {
                     const buyNum = Number(item.buy) || 0;
                     const sellNum = Number(item.sell) || 0;
-                    buyMain = `${Math.round(buyNum).toLocaleString('en-US')}`;
-                    sellMain = `${Math.round(sellNum).toLocaleString('en-US')}`;
+                    buyMain = `${Math.floor(buyNum).toLocaleString('en-US')}`;
+                    sellMain = `${Math.floor(sellNum).toLocaleString('en-US')}`;
                     
                     let vndPerChiSell = 0;
                     let vndPerChiBuy = 0;
@@ -744,8 +744,8 @@ const GoldDashboard = (function () {
                     sellSub = `≈ ${Math.round(vndPerChiSell / 1000).toLocaleString('vi-VN')}`;
                 } else {
                     if (currentMarket === 'gold') {
-                        buyMain = `${Math.round(item.buy / 10).toLocaleString('vi-VN')}`;
-                        sellMain = `${Math.round(item.sell / 10).toLocaleString('vi-VN')}`;
+                        buyMain = `${Math.floor(item.buy / 10).toLocaleString('vi-VN')}`;
+                        sellMain = `${Math.floor(item.sell / 10).toLocaleString('vi-VN')}`;
                     } else {
                         buyMain = `${Math.round(item.buy / 1000).toLocaleString('vi-VN')}`;
                         sellMain = `${Math.round(item.sell / 1000).toLocaleString('vi-VN')}`;
