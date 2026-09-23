@@ -725,8 +725,8 @@ const GoldDashboard = (function () {
                 if (item.isWorld) {
                     const buyNum = Number(item.buy) || 0;
                     const sellNum = Number(item.sell) || 0;
-                    buyMain = `${Math.floor(buyNum).toLocaleString('en-US')}`;
-                    sellMain = `${Math.floor(sellNum).toLocaleString('en-US')}`;
+                    buyMain = buyNum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    sellMain = sellNum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                     
                     let vndPerChiSell = 0;
                     let vndPerChiBuy = 0;
