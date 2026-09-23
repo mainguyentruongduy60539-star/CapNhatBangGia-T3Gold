@@ -635,11 +635,11 @@ const GoldDashboard = (function () {
         };
 
         const getItemUnitStr = (it) => {
-            if (it.isWorld) return 'USD / Ounce';
-            if (currentMarket === 'gold') return 'VNĐ / 1 Chỉ';
-            if (it.name.includes('1 Lượng')) return 'VNĐ / 1 Lượng';
-            if (it.name.includes('1 Kg') || it.name.includes('1Kg')) return 'VNĐ / 1 Kg';
-            return 'VNĐ / 1 Chỉ';
+            if (it.isWorld) return 'ĐVT: USD / Ounce';
+            if (currentMarket === 'gold') return 'ĐVT: VNĐ / 1 Chỉ';
+            if (it.name.includes('1 Lượng')) return 'ĐVT: VNĐ / 1 Lượng';
+            if (it.name.includes('1 Kg') || it.name.includes('1Kg')) return 'ĐVT: VNĐ / 1 Kg';
+            return 'ĐVT: VNĐ / 1 Chỉ';
         };
 
         const getItemTheme = (it) => {
@@ -765,8 +765,8 @@ const GoldDashboard = (function () {
                         <tr class="transition-colors border-b border-blue-900/30">
                             <!-- Cột 1: Tổ chức -->
                             <td class="text-left pl-1 sm:pl-2 pr-0.5 py-1.5 sm:py-2.5 font-black col-org">
-                                <div class="text-[11px] xs:text-[12px] sm:text-sm md:text-base font-extrabold leading-tight tracking-tight">${item.name}</div>
-                                <div class="text-[10px] xs:text-[11px] sm:text-[12.5px] font-sans font-medium text-slate-400 normal-case mt-0.5 tracking-tight whitespace-nowrap">${getItemUnitStr(item)}</div>
+                                <div class="text-[12px] xs:text-[13px] sm:text-sm md:text-base font-extrabold leading-tight">${item.name}</div>
+                                <div class="text-[10.5px] xs:text-[11.5px] sm:text-[13px] font-sans font-semibold text-slate-400 normal-case mt-0.5 tracking-tight whitespace-nowrap">${getItemUnitStr(item)}</div>
                             </td>
 
                             <!-- Cột 2: Mua Vào -->
