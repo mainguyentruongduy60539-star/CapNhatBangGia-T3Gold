@@ -341,7 +341,12 @@ app.get(['/api/gold', '/gold', '/api/v1/gold'], async (req, res) => {
                 { name: 'Vàng 416 (10K)', isWorld: false, buy: Math.round(g9999BuyRaw * 0.4135), sell: Math.round(g9999SellRaw * 0.4185), change: 0, cl: Math.round(Math.round(g9999SellRaw * 0.4185) * 100 - baseVsgChiVND) }
             ],
             currencies: [
-                { code: 'USD', name: 'Đô la Mỹ', rateBuy: 25940, rateSell: 26040, rateRate: 0, digit: 0 }
+                { code: 'USD', name: 'Đô la Mỹ', rateBuy: 25750, rateSell: 26150, rateRate: 0, digit: 0 },
+                { code: 'EUR', name: 'Euro Châu Âu', rateBuy: 27800, rateSell: 28400, rateRate: 0, digit: 0 },
+                { code: 'GBP', name: 'Bảng Anh', rateBuy: 32900, rateSell: 33700, rateRate: 0, digit: 0 },
+                { code: 'JPY', name: 'Yên Nhật (100 JPY)', rateBuy: 17200, rateSell: 17800, rateRate: 0, digit: 0 },
+                { code: 'SGD', name: 'Đô la Singapore', rateBuy: 19800, rateSell: 20400, rateRate: 0, digit: 0 },
+                { code: 'AUD', name: 'Đô la Úc', rateBuy: 16800, rateSell: 17400, rateRate: 0, digit: 0 }
             ]
         });
     } catch (error) {

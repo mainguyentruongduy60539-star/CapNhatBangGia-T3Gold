@@ -504,9 +504,19 @@ const GoldDashboard = (function () {
 }
 
     function getInstantInitialData(market = 'gold') {
+        try {
+            const saved = localStorage.getItem('t3gold_live_cache_' + market);
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                if (parsed && (parsed.goldItems || parsed.silverItems)) {
+                    return parsed;
+                }
+            }
+        } catch (e) {}
+
         if (market === 'gold') {
-            const livePrice = 4358.96;
-            const openPrice = 4373.75;
+            const livePrice = 4339.20;
+            const openPrice = 4353.99;
             const change = -14.79;
             const liveVndPerOunce = livePrice * EXCHANGE_RATE;
             return {
@@ -545,6 +555,18 @@ const GoldDashboard = (function () {
         }
     }
 
+    async function fetchSpotTicker() {
+        try {
+            const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT', { signal: AbortSignal.timeout(2000) });
+            if (res.ok) {
+                const data = await res.json();
+                const px = parseFloat(data.price);
+                if (px > 2000 && px < 10000) return px;
+            }
+        } catch (e) {}
+        return null;
+    }
+
     async function fetchData() {
         if (currentMarket === 'news') return currentData;
 
@@ -553,27 +575,46 @@ const GoldDashboard = (function () {
         if (directLiveVsg) {
             lastLiveVsgData = directLiveVsg;
             currentData = directLiveVsg;
-            return directLiveVsg;
+            try {
+                localStorage.setItem('t3gold_live_cache_' + currentMarket, JSON.stringify(directLiveVsg));
+            } catch (e) {}
         }
 
-        const endpoints = API_ENDPOINTS[currentMarket] || API_ENDPOINTS['gold'];
-        for (const endpoint of endpoints) {
-            try {
-                const response = await fetch(endpoint, { signal: AbortSignal.timeout(2000) });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success && data.price > 0) {
-                        lastLiveVsgData = data;
-                        currentData = data;
-                        return data;
+        if (!currentData) {
+            const endpoints = API_ENDPOINTS[currentMarket] || API_ENDPOINTS['gold'];
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint, { signal: AbortSignal.timeout(3000) });
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success && data.price > 0) {
+                            lastLiveVsgData = data;
+                            currentData = data;
+                            try {
+                                localStorage.setItem('t3gold_live_cache_' + currentMarket, JSON.stringify(data));
+                            } catch (e) {}
+                            break;
+                        }
                     }
+                } catch (e) { }
+            }
+        }
+
+        // ⚡ Cập nhật live tickerSpot XAU/USD để số nhảy liên tục thời gian thực theo biểu đồ
+        if (currentMarket === 'gold' && currentData && currentData.goldItems) {
+            const liveSpot = await fetchSpotTicker();
+            if (liveSpot) {
+                const worldItem = currentData.goldItems.find(i => i.isWorld || i.name === 'Vàng TG');
+                if (worldItem) {
+                    worldItem.buy = parseFloat((liveSpot - 0.2).toFixed(2));
+                    worldItem.sell = parseFloat((liveSpot + 0.2).toFixed(2));
                 }
-            } catch (e) { }
+            }
         }
 
         if (lastLiveVsgData) {
             currentData = lastLiveVsgData;
-        } else {
+        } else if (!currentData) {
             currentData = getInstantInitialData(currentMarket);
         }
         return currentData;
