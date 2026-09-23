@@ -576,16 +576,14 @@ const GoldDashboard = (function () {
     async function fetchData() {
         if (currentMarket === 'news') return currentData;
 
-        // ⚡ Ưu tiên fetch trực tiếp API VangSaigon từ client trước để nhảy số thời gian thực siêu tốc
+        // 1. Ưu tiên fetch trực tiếp API VangSaigon từ client trước
         const directLiveVsg = await fetchVsgLiveDirectly();
         if (directLiveVsg) {
             lastLiveVsgData = directLiveVsg;
             currentData = directLiveVsg;
-            try {
-                localStorage.setItem('t3gold_live_cache_' + currentMarket, JSON.stringify(directLiveVsg));
-            } catch (e) {}
         }
 
+        // 2. Nếu chưa có dữ liệu, thử gọi các server endpoints
         if (!currentData) {
             const endpoints = API_ENDPOINTS[currentMarket] || API_ENDPOINTS['gold'];
             for (const endpoint of endpoints) {
@@ -593,12 +591,9 @@ const GoldDashboard = (function () {
                     const response = await fetch(endpoint, { signal: AbortSignal.timeout(3000) });
                     if (response.ok) {
                         const data = await response.json();
-                        if (data.success && data.price > 0) {
+                        if (data && data.success && data.price > 0) {
                             lastLiveVsgData = data;
                             currentData = data;
-                            try {
-                                localStorage.setItem('t3gold_live_cache_' + currentMarket, JSON.stringify(data));
-                            } catch (e) {}
                             break;
                         }
                     }
@@ -606,23 +601,31 @@ const GoldDashboard = (function () {
             }
         }
 
-        // ⚡ Cập nhật live tickerSpot XAU/USD để số nhảy liên tục thời gian thực theo biểu đồ
+        // 3. Dự phòng dữ liệu gần nhất hoặc dữ liệu mặc định
+        if (!currentData) {
+            currentData = lastLiveVsgData || getInstantInitialData(currentMarket);
+        }
+
+        // 4. ⚡ Cập nhật live tickerSpot XAU/USD để số nhảy liên tục thời gian thực chuẩn 100% theo biểu đồ
         if (currentMarket === 'gold' && currentData && currentData.goldItems) {
             const liveSpot = await fetchSpotTicker();
             if (liveSpot) {
                 const worldItem = currentData.goldItems.find(i => i.isWorld || i.name === 'Vàng TG');
                 if (worldItem) {
-                    worldItem.buy = parseFloat((liveSpot).toFixed(2));
-                    worldItem.sell = parseFloat((liveSpot + 0.05).toFixed(2));
+                    worldItem.buy = parseFloat(liveSpot.toFixed(2));
+                    worldItem.sell = parseFloat(liveSpot.toFixed(2));
+                    currentData.price = liveSpot;
                 }
             }
         }
 
-        if (lastLiveVsgData) {
-            currentData = lastLiveVsgData;
-        } else if (!currentData) {
-            currentData = getInstantInitialData(currentMarket);
-        }
+        // 5. Lưu vào localStorage cache cho F5
+        try {
+            if (currentData) {
+                localStorage.setItem('t3gold_live_cache_' + currentMarket, JSON.stringify(currentData));
+            }
+        } catch (e) {}
+
         return currentData;
     }
 
