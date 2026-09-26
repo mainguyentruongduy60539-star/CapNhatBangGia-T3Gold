@@ -278,7 +278,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                     cl: Math.round((Math.round(g9999SellRaw * (980 + 0.5) / 1000) / 10) - baseVsgChiVND)
                 },
                 {
-                    name: 'Vàng 750 (18K)',
+                    name: 'Vàng 750',
                     isWorld: false,
                     buy: Math.round(g9999BuyRaw * (750 - 1.0) / 1000),
                     sell: Math.round(g9999SellRaw * (750 + 1.0) / 1000),
@@ -286,7 +286,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                     cl: Math.round((Math.round(g9999SellRaw * (750 + 1.0) / 1000) / 10) - baseVsgChiVND)
                 },
                 {
-                    name: 'Vàng 610 (14.6K)',
+                    name: 'Vàng 610',
                     isWorld: false,
                     buy: Math.round(g9999BuyRaw * (610 - 1.5) / 1000),
                     sell: Math.round(g9999SellRaw * (610 + 1.5) / 1000),
@@ -294,7 +294,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                     cl: Math.round((Math.round(g9999SellRaw * (610 + 1.5) / 1000) / 10) - baseVsgChiVND)
                 },
                 {
-                    name: 'Vàng 585 (14K)',
+                    name: 'Vàng 585',
                     isWorld: false,
                     buy: Math.round(g9999BuyRaw * (585 - 2.0) / 1000),
                     sell: Math.round(g9999SellRaw * (585 + 2.0) / 1000),
@@ -302,7 +302,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                     cl: Math.round((Math.round(g9999SellRaw * (585 + 2.0) / 1000) / 10) - baseVsgChiVND)
                 },
                 {
-                    name: 'Vàng 416 (10K)',
+                    name: 'Vàng 416',
                     isWorld: false,
                     buy: Math.round(g9999BuyRaw * (416 - 2.5) / 1000),
                     sell: Math.round(g9999SellRaw * (416 + 2.5) / 1000),
@@ -371,10 +371,10 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                 { name: 'Vàng 99.9', isWorld: false, buy: Math.round(g9999BuyRaw * 0.998), sell: Math.round(g9999SellRaw * 0.998), change: 0, cl: Math.round(Math.round(g9999SellRaw * 0.998) * 100 - baseVsgChiVND) },
                 { name: 'Vàng 95', isWorld: false, buy: Math.round(g9999BuyRaw * 0.945), sell: Math.round(g9999SellRaw * 0.945), change: 0, cl: Math.round(Math.round(g9999SellRaw * 0.945) * 100 - baseVsgChiVND) },
                 { name: 'Vàng 980', isWorld: false, buy: Math.round(g9999BuyRaw * 0.9795), sell: Math.round(g9999SellRaw * 0.9805), change: 0, cl: Math.round(Math.round(g9999SellRaw * 0.9805) * 100 - baseVsgChiVND) },
-                { name: 'Vàng 750 (18K)', isWorld: false, buy: Math.round(g9999BuyRaw * 0.749), sell: Math.round(g9999SellRaw * 0.751), change: 0, cl: Math.round(Math.round(g9999SellRaw * 0.751) * 100 - baseVsgChiVND) },
-                { name: 'Vàng 610 (14.6K)', isWorld: false, buy: Math.round(g9999BuyRaw * 0.6085), sell: Math.round(g9999SellRaw * 0.6115), change: 0, cl: Math.round(Math.round(g9999SellRaw * 0.6115) * 100 - baseVsgChiVND) },
-                { name: 'Vàng 585 (14K)', isWorld: false, buy: Math.round(g9999BuyRaw * 0.583), sell: Math.round(g9999SellRaw * 0.587), change: 0, cl: Math.round(Math.round(g9999SellRaw * 0.587) * 100 - baseVsgChiVND) },
-                { name: 'Vàng 416 (10K)', isWorld: false, buy: Math.round(g9999BuyRaw * 0.4135), sell: Math.round(g9999SellRaw * 0.4185), change: 0, cl: Math.round(Math.round(g9999SellRaw * 0.4185) * 100 - baseVsgChiVND) }
+                { name: 'Vàng 750', isWorld: false, buy: Math.round(g9999BuyRaw * 0.749), sell: Math.round(g9999SellRaw * 0.751), change: 0, cl: Math.round(Math.round(g9999SellRaw * 0.751) * 100 - baseVsgChiVND) },
+                { name: 'Vàng 610', isWorld: false, buy: Math.round(g9999BuyRaw * 0.6085), sell: Math.round(g9999SellRaw * 0.6115), change: 0, cl: Math.round(Math.round(g9999SellRaw * 0.6115) * 100 - baseVsgChiVND) },
+                { name: 'Vàng 585', isWorld: false, buy: Math.round(g9999BuyRaw * 0.583), sell: Math.round(g9999SellRaw * 0.587), change: 0, cl: Math.round(Math.round(g9999SellRaw * 0.587) * 100 - baseVsgChiVND) },
+                { name: 'Vàng 416', isWorld: false, buy: Math.round(g9999BuyRaw * 0.4135), sell: Math.round(g9999SellRaw * 0.4185), change: 0, cl: Math.round(Math.round(g9999SellRaw * 0.4185) * 100 - baseVsgChiVND) }
             ],
             currencies: [
                 { code: 'USD', name: 'Đô la Mỹ', rateBuy: 25750, rateSell: 26150, rateRate: 0, digit: 0 },

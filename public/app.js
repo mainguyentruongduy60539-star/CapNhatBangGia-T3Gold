@@ -146,9 +146,9 @@ const GoldDashboard = (function () {
         const nameMap = {
             'Vàng TG': 'Vàng TG (XAU/USD)',
             'SJC Tự do': 'Vàng SJC Tự Do',
-            'Vàng 999.9': 'Vàng 999.9 (24K)',
-            'Vàng 99.9': 'Vàng 99.9 (22K)',
-            'Vàng 95': 'Vàng 95 (18K)',
+            'Vàng 999.9': 'Vàng 999.9',
+            'Vàng 99.9': 'Vàng 99.9',
+            'Vàng 95': 'Vàng 95',
             'Bạc Thế Giới (XAG/USD)': 'Bạc TG (XAG/USD)'
         };
         return nameMap[name] || name;
@@ -234,7 +234,7 @@ const GoldDashboard = (function () {
                 cl: Math.round(Math.round(g9999SellRaw * 0.9805) / 10 - (baseVsgChiVND / 10))
             },
             {
-                name: 'Vàng 750 (18K)',
+                name: 'Vàng 750',
                 isWorld: false,
                 buy: Math.round(g9999BuyRaw * 0.749),
                 sell: Math.round(g9999SellRaw * 0.751),
@@ -242,7 +242,7 @@ const GoldDashboard = (function () {
                 cl: Math.round(Math.round(g9999SellRaw * 0.751) / 10 - (baseVsgChiVND / 10))
             },
             {
-                name: 'Vàng 610 (14.6K)',
+                name: 'Vàng 610',
                 isWorld: false,
                 buy: Math.round(g9999BuyRaw * 0.6085),
                 sell: Math.round(g9999SellRaw * 0.6115),
@@ -250,7 +250,7 @@ const GoldDashboard = (function () {
                 cl: Math.round(Math.round(g9999SellRaw * 0.6115) / 10 - (baseVsgChiVND / 10))
             },
             {
-                name: 'Vàng 585 (14K)',
+                name: 'Vàng 585',
                 isWorld: false,
                 buy: Math.round(g9999BuyRaw * 0.583),
                 sell: Math.round(g9999SellRaw * 0.587),
@@ -258,7 +258,7 @@ const GoldDashboard = (function () {
                 cl: Math.round(Math.round(g9999SellRaw * 0.587) / 10 - (baseVsgChiVND / 10))
             },
             {
-                name: 'Vàng 416 (10K)',
+                name: 'Vàng 416',
                 isWorld: false,
                 buy: Math.round(g9999BuyRaw * 0.4135),
                 sell: Math.round(g9999SellRaw * 0.4185),
@@ -456,7 +456,7 @@ const GoldDashboard = (function () {
                     cl: Math.round((Math.round(g9999SellRaw * (980 + 0.5) / 1000) / 10) - baseVsgChiVND)
                 },
                 {
-                    name: 'Vàng 750 (18K)',
+                    name: 'Vàng 750',
                     isWorld: false,
                     buy: Math.round(g9999BuyRaw * (750 - 1.0) / 1000),
                     sell: Math.round(g9999SellRaw * (750 + 1.0) / 1000),
@@ -464,7 +464,7 @@ const GoldDashboard = (function () {
                     cl: Math.round((Math.round(g9999SellRaw * (750 + 1.0) / 1000) / 10) - baseVsgChiVND)
                 },
                 {
-                    name: 'Vàng 610 (14.6K)',
+                    name: 'Vàng 610',
                     isWorld: false,
                     buy: Math.round(g9999BuyRaw * (610 - 1.5) / 1000),
                     sell: Math.round(g9999SellRaw * (610 + 1.5) / 1000),
@@ -472,7 +472,7 @@ const GoldDashboard = (function () {
                     cl: Math.round((Math.round(g9999SellRaw * (610 + 1.5) / 1000) / 10) - baseVsgChiVND)
                 },
                 {
-                    name: 'Vàng 585 (14K)',
+                    name: 'Vàng 585',
                     isWorld: false,
                     buy: Math.round(g9999BuyRaw * (585 - 2.0) / 1000),
                     sell: Math.round(g9999SellRaw * (585 + 2.0) / 1000),
@@ -480,7 +480,7 @@ const GoldDashboard = (function () {
                     cl: Math.round((Math.round(g9999SellRaw * (585 + 2.0) / 1000) / 10) - baseVsgChiVND)
                 },
                 {
-                    name: 'Vàng 416 (10K)',
+                    name: 'Vàng 416',
                     isWorld: false,
                     buy: Math.round(g9999BuyRaw * (416 - 2.5) / 1000),
                     sell: Math.round(g9999SellRaw * (416 + 2.5) / 1000),
@@ -1019,14 +1019,14 @@ const GoldDashboard = (function () {
         const typeOptions = `
             <optgroup label="--- VÀNG ---">
                 <option value="sjc" ${prevType === 'sjc' ? 'selected' : ''}>Vàng Miếng SJC (SJC Tự do)</option>
-                <option value="24k" ${prevType === '24k' ? 'selected' : ''}>Vàng 999.9 (24K)</option>
-                <option value="22k" ${prevType === '22k' ? 'selected' : ''}>Vàng 99.9 (22K)</option>
+                <option value="24k" ${prevType === '24k' ? 'selected' : ''}>Vàng 999.9</option>
+                <option value="22k" ${prevType === '22k' ? 'selected' : ''}>Vàng 99.9</option>
                 <option value="980" ${prevType === '980' ? 'selected' : ''}>Vàng 980</option>
-                <option value="750" ${prevType === '750' ? 'selected' : ''}>Vàng 750 (18K)</option>
-                <option value="610" ${prevType === '610' ? 'selected' : ''}>Vàng 610 (14.6K)</option>
-                <option value="585" ${prevType === '585' ? 'selected' : ''}>Vàng 585 (14K)</option>
-                <option value="416" ${prevType === '416' ? 'selected' : ''}>Vàng 416 (10K)</option>
-                <option value="18k" ${prevType === '18k' ? 'selected' : ''}>Vàng 95 (18K)</option>
+                <option value="750" ${prevType === '750' ? 'selected' : ''}>Vàng 750</option>
+                <option value="610" ${prevType === '610' ? 'selected' : ''}>Vàng 610</option>
+                <option value="585" ${prevType === '585' ? 'selected' : ''}>Vàng 585</option>
+                <option value="416" ${prevType === '416' ? 'selected' : ''}>Vàng 416</option>
+                <option value="18k" ${prevType === '18k' ? 'selected' : ''}>Vàng 95</option>
                 <option value="tg" ${prevType === 'tg' ? 'selected' : ''}>Vàng TG (Quốc tế)</option>
             </optgroup>
             <optgroup label="--- BẠC ---">
@@ -1191,10 +1191,10 @@ const GoldDashboard = (function () {
             else if (type === '24k') selectedItem = goldItems.find(i => i.name === 'Vàng 999.9');
             else if (type === '22k') selectedItem = goldItems.find(i => i.name === 'Vàng 99.9');
             else if (type === '980') selectedItem = goldItems.find(i => i.name === 'Vàng 980');
-            else if (type === '750') selectedItem = goldItems.find(i => i.name === 'Vàng 750 (18K)');
-            else if (type === '610') selectedItem = goldItems.find(i => i.name === 'Vàng 610 (14.6K)');
-            else if (type === '585') selectedItem = goldItems.find(i => i.name === 'Vàng 585 (14K)');
-            else if (type === '416') selectedItem = goldItems.find(i => i.name === 'Vàng 416 (10K)');
+            else if (type === '750') selectedItem = goldItems.find(i => i.name === 'Vàng 750');
+            else if (type === '610') selectedItem = goldItems.find(i => i.name === 'Vàng 610');
+            else if (type === '585') selectedItem = goldItems.find(i => i.name === 'Vàng 585');
+            else if (type === '416') selectedItem = goldItems.find(i => i.name === 'Vàng 416');
             else if (type === '18k') selectedItem = goldItems.find(i => i.name === 'Vàng 95');
             else if (type === 'tg') selectedItem = goldItems.find(i => i.name === 'Vàng TG');
             else selectedItem = goldItems[0];
