@@ -5,18 +5,9 @@ const path = require('path');
 const app = express();
 app.use(cors());
 app.use(express.json());
+// Static files configuration
 app.use(express.static(path.join(process.cwd(), 'public')));
 app.use(express.static(process.cwd()));
-
-app.get('/', (req, res) => {
-    const publicIndex = path.join(process.cwd(), 'public', 'index.html');
-    const rootIndex = path.join(process.cwd(), 'index.html');
-    if (require('fs').existsSync(publicIndex)) {
-        res.sendFile(publicIndex);
-    } else {
-        res.sendFile(rootIndex);
-    }
-});
 
 const VSG_API = 'https://services.vang247.vn/ws-prices/api/v1/c_prices';
 const GOLDPRICE_DEV_BASE = 'https://api.goldprice.dev/v1';
@@ -119,8 +110,8 @@ function buildSilverItemsFromVsg(vsg) {
         };
     });
 
-    // 2. Bạc 999 thị trường: Giá bán là làm tròn của giá bán bạc thế giới, giá mua lệch 30k so với giá bán
-    const bac999Sell = Math.ceil(worldSellVndPerChi / 10000) * 10000;
+    // 2. Bạc 999 thị trường: Giá bán là giá bán bạc thế giới + 5% và làm tròn theo nghìn, giá mua lệch 30k so với giá bán
+    const bac999Sell = Math.round((worldSellVndPerChi * 1.05) / 1000) * 1000;
     const bac999Buy = bac999Sell - 30000;
     items.push({
         name: 'Bạc 999 thị trường',
@@ -131,9 +122,9 @@ function buildSilverItemsFromVsg(vsg) {
         cl: Math.round(bac999Sell - worldSellVndPerChi)
     });
 
-    // 3. Bạc nữ trang bán lẻ: Giá mua, bán là +70k của bạc 999 thị trường
+    // 3. Bạc nữ trang bán lẻ: Giá bán là +70k của bạc 999 thị trường, giá mua là 60% của giá bán nữ trang
     const bacNuTrangSell = bac999Sell + 70000;
-    const bacNuTrangBuy = bac999Buy + 70000;
+    const bacNuTrangBuy = Math.round(bacNuTrangSell * 0.6);
     items.push({
         name: 'Bạc nữ trang bán lẻ',
         isWorld: false,
@@ -146,16 +137,56 @@ function buildSilverItemsFromVsg(vsg) {
     return items;
 }
 
-// 1. ENDPOINT LẤY BẢNG GIÁ VÀNG CHUẨN 100% VANGSAIGON.VN
-app.get(['/api/gold', '/gold', '/api/v1/gold'], async (req, res) => {
+async function fetchTvLivePrice() {
     try {
-        const vsg = await fetchVsgData();
+        const res = await fetch('https://scanner.tradingview.com/global/scan', {
+            method: 'POST',
+            body: JSON.stringify({
+                symbols: { tickers: ['OANDA:XAUUSD', 'OANDA:XAGUSD'] },
+                columns: ['close', 'bid', 'ask', 'change', 'change_abs']
+            }),
+            headers: { 'Content-Type': 'application/json' },
+            signal: AbortSignal.timeout(3000)
+        });
+        if (res.ok) {
+            const data = await res.json();
+            const xau = data?.data?.find(item => item.s === 'OANDA:XAUUSD');
+            const xag = data?.data?.find(item => item.s === 'OANDA:XAGUSD');
+            return {
+                xau: xau ? { close: xau.d[0], bid: xau.d[0], ask: xau.d[0], change: xau.d[4] !== undefined ? xau.d[4] : xau.d[3] } : null,
+                xag: xag ? { close: xag.d[0], bid: xag.d[0], ask: xag.d[0], change: xag.d[4] !== undefined ? xag.d[4] : xag.d[3] } : null
+            };
+        }
+    } catch (e) {}
+    return null;
+}
+
+app.get(['/api/tv-price', '/tv-price', '/api/index.js/tv-price'], async (req, res) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    const tv = await fetchTvLivePrice();
+    return res.json({ success: true, data: tv });
+});
+
+app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (req, res) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    try {
+        const [vsg, tvPrice] = await Promise.all([fetchVsgData(), fetchTvLivePrice()]);
 
         if (vsg) {
             const xau = vsg.sjcNationWide?.find(i => i.name === 'XAUUSD') || vsg.goldNationWide?.find(i => i.name === 'XAUUSD') || vsg.vsg_gold_table?.find(i => i.name === 'Vàng TG' || i.name === 'XAUUSD');
-            const xauBuy = xau?.saigon?.buy || 4378.6;
-            const xauSell = xau?.saigon?.sell || 4378.8;
-            const xauChange = xau?.saigon?.sell_change || 35.41;
+            let xauBuy = xau?.saigon?.buy || 4378.6;
+            let xauSell = xau?.saigon?.sell || 4378.8;
+            let xauChange = xau?.saigon?.sell_change || 35.41;
+
+            if (tvPrice?.xau && !xau?.saigon?.buy) {
+                xauBuy = tvPrice.xau.close;
+                xauSell = tvPrice.xau.close;
+                xauChange = tvPrice.xau.change;
+            }
 
             const usdItem = vsg.currencyNationWide?.find(i => i.name === 'USD');
             const exchangeRate = usdItem?.saigon?.sell || 26030;
@@ -163,11 +194,11 @@ app.get(['/api/gold', '/gold', '/api/v1/gold'], async (req, res) => {
             const troyOunceToGram = 31.1034768;
             const gramToLuong = 37.5;
 
-            // 1. Tính giá gốc VangSaigon per chỉ (VNĐ/Chỉ)
+            // 1. Tính giá gốc VangSaigon per chỉ (nghìn VNĐ/Chỉ)
             const sjcTdRaw = vsg.vsg_gold_table?.find(i => i.name === 'SJC Tự do');
             const baseVsgChiVND = (sjcTdRaw && sjcTdRaw.gap && sjcTdRaw.saigon?.sell)
-                ? (sjcTdRaw.saigon.sell - sjcTdRaw.gap) * 100
-                : Math.round((xauSell * exchangeRate / troyOunceToGram) * 3.75);
+                ? (sjcTdRaw.saigon.sell - sjcTdRaw.gap) / 10
+                : Math.round((xauSell * exchangeRate / troyOunceToGram) * 0.375);
             const baseLuongVND = baseVsgChiVND * 10;
             const worldSellVndPerChi = baseVsgChiVND;
 
@@ -177,16 +208,24 @@ app.get(['/api/gold', '/gold', '/api/v1/gold'], async (req, res) => {
                 goldItems = vsg.vsg_gold_table.map(item => {
                     const isWorld = item.name === 'Vàng TG' || item.name === 'XAUUSD';
                     const isGF95 = item.name === '95% GF';
-                    const buyVal = isWorld ? parseFloat((item.saigon?.buy || 0).toFixed(2)) : (isGF95 ? Math.round(item.saigon?.buy) : Math.round(item.saigon?.buy || 0));
-                    const sellVal = isWorld ? parseFloat((item.saigon?.sell || 0).toFixed(2)) : (isGF95 ? Math.round(item.saigon?.sell) : Math.round(item.saigon?.sell || 0));
+                    let buyVal = isWorld ? parseFloat((item.saigon?.buy || 0).toFixed(2)) : (isGF95 ? Math.round(item.saigon?.buy) : Math.round(item.saigon?.buy || 0));
+                    let sellVal = isWorld ? parseFloat((item.saigon?.sell || 0).toFixed(2)) : (isGF95 ? Math.round(item.saigon?.sell) : Math.round(item.saigon?.sell || 0));
+                    let changeVal = isWorld ? parseFloat(item.saigon?.sell_change?.toFixed(2) || item.saigon?.sell_change) : (isGF95 ? Math.round(item.saigon?.sell_change) : Math.round(item.saigon?.sell_change || 0));
+
+                    if (isWorld && tvPrice?.xau && (!item.saigon || !item.saigon.buy)) {
+                        buyVal = parseFloat(tvPrice.xau.close.toFixed(2));
+                        sellVal = parseFloat(tvPrice.xau.close.toFixed(2));
+                        changeVal = parseFloat(tvPrice.xau.change.toFixed(2));
+                    }
+
                     // item.gap từ API VangSaigon là nghìn VNĐ / Lượng -> quy đổi VNĐ / Chỉ: gap * 1000 / 10 = gap * 100
-                    const clInChiVND = isWorld ? 0 : (item.gap !== undefined ? Math.round(item.gap * 100) : Math.round(sellVal * 100 - baseVsgChiVND));
+                    const clInChiVND = isWorld ? 0 : (item.gap !== undefined ? Math.round(item.gap) : Math.round((sellVal / 10) - (baseVsgChiVND / 10)));
                     return {
                         name: item.name === 'XAUUSD' ? 'Vàng TG' : item.name,
                         isWorld: isWorld,
                         buy: buyVal,
                         sell: sellVal,
-                        change: isWorld ? parseFloat(item.saigon?.sell_change?.toFixed(2) || item.saigon?.sell_change) : (isGF95 ? Math.round(item.saigon?.sell_change) : Math.round(item.saigon?.sell_change || 0)),
+                        change: changeVal,
                         cl: clInChiVND
                     };
                 });
@@ -209,11 +248,12 @@ app.get(['/api/gold', '/gold', '/api/v1/gold'], async (req, res) => {
                     buy: sjcTdBuy,
                     sell: sjcTdSell,
                     change: sjcTdChange,
-                    cl: sjcTd?.gap !== undefined ? Math.round(sjcTd.gap * 100) : Math.round(sjcTdSell * 100 - baseVsgChiVND)
+                    cl: sjcTd?.gap !== undefined ? Math.round(sjcTd.gap) : Math.round((sjcTdSell / 10) - (baseVsgChiVND / 10))
                 });
             }
 
             // 1. Bỏ 99,99% GF, 95% GF, Vàng nhẫn SJC theo yêu cầu
+            // 2. Tìm vàng 999.9 làm gốc để tính các loại vàng tây/trang sức
             const keepNames = [
                 'Vàng TG',
                 'SJC Tự do',
@@ -223,15 +263,11 @@ app.get(['/api/gold', '/gold', '/api/v1/gold'], async (req, res) => {
             ];
             const filteredGold = goldItems.filter(i => keepNames.includes(i.name));
 
-            // 2. Tìm vàng 999.9 làm gốc để tính các loại vàng tây/trang sức
             const g9999 = goldItems.find(i => i.name === 'Vàng 999.9') || { buy: 136300, sell: 137800, change: 0 };
             const g9999BuyRaw = g9999.buy || 136300;
             const g9999SellRaw = g9999.sell || 137800;
             const g9999ChangeRaw = g9999.change || 0;
 
-            // 3. Tính toán các loại vàng tây theo chuẩn VNĐ / Chỉ:
-            // buy, sell: scale sao cho khi nhân 100 ở frontend sẽ ra đúng VNĐ / Chỉ (ví dụ 135113 -> 13.511.300 VNĐ/chỉ)
-            // cl: (sell * 100) - baseVsgChiVND (đơn vị VNĐ / Chỉ)
             const customGoldTypes = [
                 {
                     name: 'Vàng 980',
@@ -239,7 +275,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold'], async (req, res) => {
                     buy: Math.round(g9999BuyRaw * (980 - 0.5) / 1000),
                     sell: Math.round(g9999SellRaw * (980 + 0.5) / 1000),
                     change: Math.round(g9999ChangeRaw * (980 + 0.5) / 1000),
-                    cl: Math.round(Math.round(g9999SellRaw * (980 + 0.5) / 1000) * 100 - baseVsgChiVND)
+                    cl: Math.round((Math.round(g9999SellRaw * (980 + 0.5) / 1000) / 10) - baseVsgChiVND)
                 },
                 {
                     name: 'Vàng 750 (18K)',
@@ -247,7 +283,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold'], async (req, res) => {
                     buy: Math.round(g9999BuyRaw * (750 - 1.0) / 1000),
                     sell: Math.round(g9999SellRaw * (750 + 1.0) / 1000),
                     change: Math.round(g9999ChangeRaw * (750 + 1.0) / 1000),
-                    cl: Math.round(Math.round(g9999SellRaw * (750 + 1.0) / 1000) * 100 - baseVsgChiVND)
+                    cl: Math.round((Math.round(g9999SellRaw * (750 + 1.0) / 1000) / 10) - baseVsgChiVND)
                 },
                 {
                     name: 'Vàng 610 (14.6K)',
@@ -255,7 +291,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold'], async (req, res) => {
                     buy: Math.round(g9999BuyRaw * (610 - 1.5) / 1000),
                     sell: Math.round(g9999SellRaw * (610 + 1.5) / 1000),
                     change: Math.round(g9999ChangeRaw * (610 + 1.5) / 1000),
-                    cl: Math.round(Math.round(g9999SellRaw * (610 + 1.5) / 1000) * 100 - baseVsgChiVND)
+                    cl: Math.round((Math.round(g9999SellRaw * (610 + 1.5) / 1000) / 10) - baseVsgChiVND)
                 },
                 {
                     name: 'Vàng 585 (14K)',
@@ -263,7 +299,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold'], async (req, res) => {
                     buy: Math.round(g9999BuyRaw * (585 - 2.0) / 1000),
                     sell: Math.round(g9999SellRaw * (585 + 2.0) / 1000),
                     change: Math.round(g9999ChangeRaw * (585 + 2.0) / 1000),
-                    cl: Math.round(Math.round(g9999SellRaw * (585 + 2.0) / 1000) * 100 - baseVsgChiVND)
+                    cl: Math.round((Math.round(g9999SellRaw * (585 + 2.0) / 1000) / 10) - baseVsgChiVND)
                 },
                 {
                     name: 'Vàng 416 (10K)',
@@ -271,7 +307,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold'], async (req, res) => {
                     buy: Math.round(g9999BuyRaw * (416 - 2.5) / 1000),
                     sell: Math.round(g9999SellRaw * (416 + 2.5) / 1000),
                     change: Math.round(g9999ChangeRaw * (416 + 2.5) / 1000),
-                    cl: Math.round(Math.round(g9999SellRaw * (416 + 2.5) / 1000) * 100 - baseVsgChiVND)
+                    cl: Math.round((Math.round(g9999SellRaw * (416 + 2.5) / 1000) / 10) - baseVsgChiVND)
                 }
             ];
 
@@ -357,6 +393,9 @@ app.get(['/api/gold', '/gold', '/api/v1/gold'], async (req, res) => {
 
 // 2. ENDPOINT LẤY BẢNG GIÁ BẠC
 app.get(['/api/silver', '/silver', '/api/v1/silver'], async (req, res) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     try {
         const vsg = await fetchVsgData();
         if (vsg && vsg.silver_price) {

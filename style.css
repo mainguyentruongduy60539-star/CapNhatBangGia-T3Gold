@@ -131,17 +131,17 @@ body.light-theme #currency-updated-time {
 /* Bảng giá (Modern Table) - Chuẩn Điện Thoại & Layout Mẫu */
 .modern-table {
     width: 100% !important;
-    table-layout: fixed !important;
+    table-layout: auto !important;
     border-collapse: collapse;
     border-spacing: 0;
 }
 
 .modern-table th {
     text-transform: uppercase;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     letter-spacing: -0.02em;
     color: #ffffff !important;
-    padding: 0.55rem 0.05rem;
+    padding: 0.55rem 0.2rem;
     background-color: #002b9e !important;
     border: 1px solid #002b9e !important;
     font-weight: 900;
@@ -157,7 +157,7 @@ body.light-theme #currency-updated-time {
 }
 
 .modern-table td {
-    padding: 0.45rem 0.05rem;
+    padding: 0.45rem 0.2rem;
     border: 1px solid rgba(59, 130, 246, 0.25);
     color: #f8fafc;
     transition: background-color 0.15s ease;
@@ -1166,4 +1166,131 @@ body.light-theme span[class*="bg-rose-500/20"] {
     background-color: #ffe4e6 !important;
     color: #9f1239 !important;
     border-color: #fda4af !important;
+}
+
+/* =========================================================
+   ULTRA-NARROW MOBILE SCREEN SAFETY (320px - 360px)
+   ========================================================= */
+@media (max-width: 360px) {
+    .modern-table th {
+        font-size: 0.65rem !important;
+        padding: 0.35rem 0.1rem !important;
+    }
+    .modern-table td {
+        padding: 0.3rem 0.1rem !important;
+    }
+}
+
+/* =========================================================
+   GOLD CARD BANNER (UNIVERSAL HIGH-CONTRAST GOLD THEME)
+   ========================================================= */
+.gold-card-bg {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%) !important;
+    border: 2px solid #fef08a !important;
+    box-shadow: 0 6px 25px rgba(245, 158, 11, 0.45) !important;
+    color: #020617 !important;
+}
+
+.gold-card-bg:hover {
+    background: linear-gradient(135deg, #fde047 0%, #fbbf24 50%, #f59e0b 100%) !important;
+    box-shadow: 0 8px 32px rgba(245, 158, 11, 0.65) !important;
+}
+
+/* Force 100% Legibility in both Light and Dark Mode */
+.gold-card-bg,
+.gold-card-bg *,
+.gold-card-bg h3,
+.gold-card-bg div,
+.gold-card-bg span:not(.dark-pill-btn):not(.dark-badge),
+body.light-theme .gold-card-bg,
+body.light-theme .gold-card-bg *,
+body.light-theme .gold-card-bg h3,
+body.light-theme .gold-card-bg div,
+body.light-theme .gold-card-bg span:not(.dark-pill-btn):not(.dark-badge) {
+    color: #020617 !important;
+}
+
+.gold-card-bg .dark-pill-btn,
+.gold-card-bg .dark-badge,
+body.light-theme .gold-card-bg .dark-pill-btn,
+body.light-theme .gold-card-bg .dark-badge {
+    background-color: #020617 !important;
+    color: #fbbf24 !important;
+    border: 1px solid rgba(251, 191, 36, 0.5) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.gold-card-bg .dark-pill-btn *,
+.gold-card-bg .dark-badge *,
+.gold-card-bg .dark-pill-btn i,
+.gold-card-bg .dark-badge i,
+body.light-theme .gold-card-bg .dark-pill-btn *,
+body.light-theme .gold-card-bg .dark-badge *,
+body.light-theme .gold-card-bg .dark-pill-btn i,
+body.light-theme .gold-card-bg .dark-badge i {
+    color: #fbbf24 !important;
+    background-color: transparent !important;
+}
+
+.logo-drop-shadow {
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.55));
+}
+
+/* =========================================================
+   T3GOLD PROMO BANNER (THEME ADAPTIVE - DARK NAVY & VIBRANT GOLD)
+   ========================================================= */
+/* DARK THEME BANNER (Default Dark Mode) */
+.t3gold-banner-dark {
+    background-color: #0b1329 !important;
+    border: 1px solid rgba(245, 158, 11, 0.55) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+}
+
+.t3gold-banner-dark .text-light-fix,
+.t3gold-banner-dark .text-light-fix * {
+    color: #ffffff !important;
+}
+
+.t3gold-banner-dark .text-gold-fix,
+.t3gold-banner-dark .text-gold-fix * {
+    color: #facc15 !important;
+}
+
+.t3gold-banner-dark .btn-gold-fix {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
+    color: #020617 !important;
+    border: none !important;
+    box-shadow: 0 3px 10px rgba(245, 158, 11, 0.35) !important;
+}
+
+.t3gold-banner-dark .btn-gold-fix * {
+    color: #020617 !important;
+}
+
+/* LIGHT THEME BANNER (Clean White Glass Theme - Airy, Elegant & High Contrast) */
+body.light-theme .t3gold-banner-dark {
+    background: #ffffff !important;
+    border: 1.5px solid rgba(245, 158, 11, 0.6) !important;
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.12) !important;
+}
+
+body.light-theme .t3gold-banner-dark .text-light-fix,
+body.light-theme .t3gold-banner-dark .text-light-fix * {
+    color: #0f172a !important; /* Deep Obsidian Slate */
+}
+
+body.light-theme .t3gold-banner-dark .text-gold-fix,
+body.light-theme .t3gold-banner-dark .text-gold-fix * {
+    color: #d97706 !important; /* Warm Rich Gold */
+}
+
+body.light-theme .t3gold-banner-dark .btn-gold-fix {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
+    color: #020617 !important;
+    border: none !important;
+    box-shadow: 0 3px 10px rgba(245, 158, 11, 0.3) !important;
+}
+
+body.light-theme .t3gold-banner-dark .btn-gold-fix * {
+    color: #020617 !important;
 }

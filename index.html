@@ -9,6 +9,10 @@
     <meta name="description" content="Cập nhật bảng giá vàng hôm nay trực tuyến mới nhất. Tra cứu giá vàng SJC, vàng 9999, vàng nữ trang 18K/14K, giá bạc và tỷ giá ngoại tệ. Giải pháp phần mềm quản lý tiệm vàng T3Gold." />
     <meta name="keywords" content="giá vàng hôm nay, gia vang hom nay, bảng giá vàng, giá vàng sjc, giá vàng 9999, giá vàng 18k, giá vàng t3gold, giá bạc hôm nay, tỷ giá ngoại tệ, phần mềm tiệm vàng" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <link rel="icon" type="image/png" href="/logo.png?v=11" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=11" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=11" />
+    <link rel="apple-touch-icon" href="/logo.png?v=11" />
     <link rel="canonical" href="https://cap-nhat-bang-gia-t3-gold.vercel.app/" />
 
     <!-- Open Graph / Facebook -->
@@ -63,7 +67,8 @@
     <!-- Thanh Tiêu Đề (Header) -->
     <header
         class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800/80 pb-3">
-        <div class="flex items-center gap-2.5">
+        <!-- 1. Bên Trái: Logo & Tiêu đề -->
+        <div class="flex items-center gap-2.5 shrink-0">
             <div
                 class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-tr from-amber-600 via-yellow-500 to-amber-300 flex items-center justify-center shadow-lg shadow-yellow-500/25 border border-yellow-300/40 text-slate-950 shrink-0">
                 <i class="fa-solid fa-coins text-lg sm:text-xl"></i>
@@ -78,7 +83,37 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-2">
+        <!-- 2. Ở Giữa (DESKTOP WEB): Capsule Bar chuẩn như Hình 1 -->
+        <div class="hidden md:flex items-center justify-center flex-1 mx-4">
+            <a href="https://www.t3gold.vn/cac-goi-phan-mem"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Xem chi tiết các gói phần mềm quản lý tiệm vàng T3Gold"
+                class="t3gold-banner-dark group relative px-5 py-2.5 rounded-full bg-[#0b1329] border border-amber-500/50 shadow-lg shadow-amber-500/10 hover:border-amber-400 hover:scale-[1.02] active:scale-98 flex items-center gap-4 transition-all">
+                
+                <!-- Logo T3Gold Mới (Bự 48px tự nhiên chuẩn layout flexbox, không bị tràn) -->
+                <div class="flex items-center justify-center shrink-0 pr-1">
+                    <img src="logo-slogan-transparent.png" alt="T3Gold" class="h-[48px] w-auto object-contain shrink-0" style="height: 48px; max-height: 48px;" />
+                </div>
+                
+                <!-- Vạch ngăn cách vertical -->
+                <div class="h-7 w-px bg-slate-700/80 shrink-0"></div>
+                
+                <!-- Nội dung chữ -->
+                <div class="flex items-center gap-2.5 whitespace-nowrap pl-1">
+                    <span class="text-light-fix text-xs sm:text-sm font-semibold tracking-normal">Khám phá</span>
+                    <strong class="text-gold-fix text-xs sm:text-sm font-black tracking-wide">Các Gói Phần Mềm T3Gold</strong>
+                </div>
+                
+                <!-- Nút Vàng XEM NGAY ➔ -->
+                <span class="btn-gold-fix px-3.5 py-1.5 rounded-full text-slate-950 text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5 shadow-md shadow-amber-500/25 shrink-0 group-hover:brightness-110 transition-all">
+                    XEM NGAY <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-0.5 transition-transform"></i>
+                </span>
+            </a>
+        </div>
+
+        <!-- 3. Bên Phải: Theme Switch + Auth -->
+        <div class="flex items-center gap-2 shrink-0">
             <!-- Nút Chuyển Đổi Chế Độ Sáng / Tối -->
             <button id="theme-toggle-btn" onclick="GoldDashboard.toggleTheme()" title="Chuyển chế độ Sáng / Tối"
                 class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all cursor-pointer flex items-center gap-1.5 text-xs shadow-sm">
@@ -92,6 +127,38 @@
             </div>
         </div>
     </header>
+
+    <!-- 2. Băng Rôn Quảng Cáo Dành Cho Mobile (Chuẩn như Hình 2) -->
+    <div class="md:hidden w-full my-2">
+        <a href="https://www.t3gold.vn/cac-goi-phan-mem"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Xem chi tiết các gói phần mềm quản lý tiệm vàng T3Gold"
+            class="t3gold-banner-dark group relative block p-3 sm:p-3.5 rounded-2xl bg-[#0b1329] border border-amber-500/50 shadow-lg shadow-amber-500/10 active:scale-98 transition-all overflow-hidden">
+            
+            <div class="flex items-center justify-between gap-3">
+                <!-- Logo Trái (Bự 52px cực nét và nổi bật) -->
+                <div class="flex items-center shrink-0 pr-1">
+                    <img src="logo-slogan-transparent.png" alt="T3Gold" class="h-[52px] sm:h-[56px] w-auto object-contain shrink-0" style="height: 52px; max-height: 56px;" />
+                </div>
+                
+                <!-- Chữ Ở Giữa (Đẩy chữ giãn ra bên phải pl-2, gap-1.5 thoáng mát) -->
+                <div class="flex flex-col text-left flex-1 min-w-0 gap-1.5 justify-center pl-2">
+                    <span class="text-gold-fix text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider block leading-tight">
+                        PHẦN MỀM TIỆM VÀNG
+                    </span>
+                    <strong class="text-light-fix text-[11px] sm:text-xs font-black uppercase tracking-wide block truncate leading-tight">
+                        CÁC GÓI PHẦN MỀM T3GOLD
+                    </strong>
+                </div>
+                
+                <!-- Nút Vàng Bên Phải: XEM ➔ -->
+                <span class="btn-gold-fix px-3 py-1.5 rounded-full text-slate-950 text-[11px] font-black uppercase tracking-wider flex items-center gap-1 shadow-md shadow-amber-500/25 shrink-0 group-hover:brightness-110">
+                    XEM <i class="fa-solid fa-arrow-right text-[9px]"></i>
+                </span>
+            </div>
+        </a>
+    </div>
 
     <!-- Khối ẩn Đồng Hồ & Nút Làm Mới (Theo yêu cầu: giữ DOM cho JS nhưng ẩn hoàn toàn khỏi màn hình) -->
     <div class="hidden" style="display: none !important;" aria-hidden="true">
@@ -107,16 +174,16 @@
     </div>
 
     <!-- Khu Vực Nội Dung Chính (Bảng Giá & Biểu Đồ & Tỷ Giá) -->
-    <main id="main-container" class="flex flex-col lg:grid lg:grid-cols-12 gap-4 sm:gap-5 flex-grow">
-        <!-- Cột Trái: Bảng Giá + Máy Tính Quy Đổi + Tab Thị Trường (8 cột trên Desktop) -->
+    <main id="main-container" class="flex flex-col lg:grid lg:grid-cols-12 gap-4 sm:gap-6 flex-grow mb-6">
+        <!-- Cột Trái (Web: 8 cột | Mobile: unwrapped qua contents CSS) -->
         <div id="main-left-col" class="contents lg:flex lg:flex-col lg:gap-4 lg:col-span-8">
-            <!-- 1. BẢNG GIÁ VÀNG / BẠC (Hiện ngay đầu trang ở cả Mobile & Desktop) -->
-            <div id="price-section" class="order-1 lg:order-none flex flex-col gap-2">
+
+            <!-- 1. BẢNG GIÁ VÀNG THAM KHẢO (Mobile Order 1 | Web: Top Cột Trái) -->
+            <div id="gold-price-section" class="order-1 lg:order-none flex flex-col gap-2">
                 <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-0 px-1">
                     <div class="flex items-baseline gap-1.5 flex-wrap">
-                        <h2 id="table-heading"
-                            class="section-title text-sm sm:text-base md:text-lg font-black uppercase tracking-tight">
-                            <span id="table-title">GIÁ VÀNG THAM KHẢO</span>
+                        <h2 class="section-title text-sm sm:text-base md:text-lg font-black uppercase tracking-tight">
+                            <span>GIÁ VÀNG THAM KHẢO</span>
                         </h2>
                         <span class="text-[11px] sm:text-xs font-normal text-slate-400 italic lowercase tracking-normal">(không mang tính chất chuyên gia)</span>
                     </div>
@@ -125,106 +192,205 @@
                     </div>
                 </div>
 
-                <!-- Bảng Giá Dạng Bảng (Chuẩn vangsaigon.vn) -->
-                <div
-                    class="dashboard-card overflow-hidden rounded-xl border-2 border-[#002b9e] dark:border-blue-900/60 shadow-lg">
+                <!-- Bảng Giá Vàng Dạng Bảng -->
+                <div class="dashboard-card overflow-hidden rounded-xl border-2 border-[#002b9e] dark:border-blue-900/60 shadow-lg">
                     <div class="overflow-x-auto">
                         <table class="modern-table w-full text-right">
                             <thead>
-                                <tr
-                                    class="bg-[#002b9e] text-white font-black text-xs sm:text-base md:text-lg uppercase tracking-tight">
-                                    <th id="table-col-name"
-                                        class="text-left pl-1 sm:pl-2 py-2 sm:py-2.5 w-[26%] sm:w-[28%] whitespace-nowrap">
-                                        Tổ chức</th>
-                                    <th class="py-2 px-0.5 sm:px-1.5 text-right w-[20%] sm:w-[19%] whitespace-nowrap">MUA
-                                    </th>
-                                    <th class="py-2 px-0.5 sm:px-1.5 text-right w-[20%] sm:w-[19%] whitespace-nowrap">BÁN
-                                    </th>
-                                    <th class="py-2 px-0.5 sm:px-1.5 text-right w-[17%] sm:w-[17%] whitespace-nowrap">+/-
-                                    </th>
-                                    <th class="py-2 pr-0.5 sm:pr-2 text-right w-[17%] sm:w-[17%] whitespace-nowrap">CL
-                                    </th>
+                                <tr class="bg-[#002b9e] text-white font-black text-xs sm:text-base md:text-lg uppercase tracking-tight">
+                                    <th class="text-left pl-1 sm:pl-2 py-2 sm:py-2.5 w-[26%] sm:w-[28%] whitespace-nowrap">Tổ chức</th>
+                                    <th class="py-2 px-0.5 sm:px-1.5 text-right w-[20%] sm:w-[19%] whitespace-nowrap">MUA</th>
+                                    <th class="py-2 px-0.5 sm:px-1.5 text-right w-[20%] sm:w-[19%] whitespace-nowrap">BÁN</th>
+                                    <th class="py-2 px-0.5 sm:px-1.5 text-right w-[17%] sm:w-[17%] whitespace-nowrap">+/-</th>
+                                    <th class="py-2 pr-0.5 sm:pr-2 text-right w-[17%] sm:w-[17%] whitespace-nowrap">CL</th>
                                 </tr>
                             </thead>
                             <tbody id="price-table-body" class="text-sm sm:text-base font-bold">
-                                <!-- Dữ liệu render bằng JavaScript -->
+                                <!-- JS render bảng giá Vàng -->
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- 4. MÁY TÍNH QUY ĐỔI (Vị trí 4 trên Mobile, ngay dưới bảng giá ở Desktop) -->
-            <div id="calculator-section" class="order-4 lg:order-none mt-1">
-                <!-- JS render Calculator Card -->
-            </div>
-
-            <!-- 5. TAB ĐỔI THỊ TRƯỜNG (Vị trí 5 cuối cùng trên Mobile, dưới máy tính ở Desktop) -->
-            <nav id="market-tabs"
-                class="order-5 lg:order-none flex items-center justify-center gap-2 sm:gap-3 flex-wrap w-full my-2 pt-2 border-t border-slate-800/60">
-                <button id="tab-gold" onclick="GoldDashboard.switchMarket('gold')"
-                    class="px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-xl font-black text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 shadow-lg shadow-yellow-500/20 active-tab">
-                    <span class="text-base">🥇</span>
-                    <span>Bảng giá Vàng</span>
-                </button>
-                <button id="tab-silver" onclick="GoldDashboard.switchMarket('silver')"
-                    class="px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-xl font-black text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 border border-slate-700 inactive-tab">
-                    <span class="text-base">🥈</span>
-                    <span>Bảng giá Bạc</span>
-                </button>
-                <button id="tab-news" onclick="GoldDashboard.switchMarket('news')"
-                    class="px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-xl font-black text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 border border-slate-700 inactive-tab">
-                    <span class="text-base">📰</span>
-                    <span>Tin Tức Thị Trường</span>
-                </button>
-            </nav>
-
-            <!-- KHU VỰC TIN TỨC THỊ TRƯỜNG (Hiện khi bấm Tab Tin Tức) -->
-            <div id="news-section" class="hidden order-6 lg:order-none flex flex-col gap-4">
-                <!-- JS render nội dung tin tức -->
-            </div>
-        </div>
-
-        <!-- Cột Phải: Biểu Đồ + Giá Ngoại Tệ (4 cột trên Desktop) -->
-        <div id="main-right-col" class="contents lg:flex lg:flex-col lg:gap-4 lg:col-span-4">
-            <!-- 2. BIỂU ĐỒ GIÁ THẾ GIỚI (Vị trí 2 trên Mobile, top cột phải trên Desktop) -->
-            <div id="chart-section" class="order-2 lg:order-none flex flex-col gap-2">
-                <div class="flex justify-between items-center px-1">
-                    <h2 class="section-title text-sm sm:text-base font-bold flex items-center gap-2">
-                        <span id="chart-indicator" class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                        <span id="chart-title">Biểu Đồ Giá Vàng Thế Giới (XAU/USD)</span>
-                    </h2>
-                    <span class="text-[11px] text-slate-400 font-mono">1 Giờ / Nến</span>
+            <!-- 3. BẢNG GIÁ BẠC THAM KHẢO (Mobile Order 3 | Web: Dưới Bảng Giá Vàng ở Cột Trái) -->
+            <div id="silver-price-section" class="order-3 lg:order-none flex flex-col gap-2 mt-1">
+                <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-0 px-1">
+                    <div class="flex items-baseline gap-1.5 flex-wrap">
+                        <h2 class="section-title text-sm sm:text-base md:text-lg font-black uppercase tracking-tight text-cyan-400">
+                            <span>GIÁ BẠC THAM KHẢO</span>
+                        </h2>
+                        <span class="text-[11px] sm:text-xs font-normal text-slate-400 italic lowercase tracking-normal">(không mang tính chất chuyên gia)</span>
+                    </div>
+                    <div id="silver-updated-time" class="timestamp-text text-xs sm:text-sm font-semibold font-mono">
+                        Cập nhật lần cuối: 14:09:18
+                    </div>
                 </div>
 
-                <div
-                    class="dashboard-card h-[310px] overflow-hidden relative rounded-xl border border-slate-800 shadow-md">
-                    <div class="tradingview-widget-container h-full w-full">
-                        <div id="tv_chart" class="h-full w-full"></div>
+                <!-- Bảng Giá Bạc Dạng Bảng -->
+                <div class="dashboard-card overflow-hidden rounded-xl border-2 border-cyan-800 dark:border-cyan-900/60 shadow-lg">
+                    <div class="overflow-x-auto">
+                        <table class="modern-table w-full text-right">
+                            <thead>
+                                <tr class="bg-cyan-900 text-white font-black text-xs sm:text-base md:text-lg uppercase tracking-tight">
+                                    <th class="text-left pl-1 sm:pl-2 py-2 sm:py-2.5 w-[26%] sm:w-[28%] whitespace-nowrap">Tổ chức</th>
+                                    <th class="py-2 px-0.5 sm:px-1.5 text-right w-[20%] sm:w-[19%] whitespace-nowrap">MUA</th>
+                                    <th class="py-2 px-0.5 sm:px-1.5 text-right w-[20%] sm:w-[19%] whitespace-nowrap">BÁN</th>
+                                    <th class="py-2 px-0.5 sm:px-1.5 text-right w-[17%] sm:w-[17%] whitespace-nowrap">+/-</th>
+                                    <th class="py-2 pr-0.5 sm:pr-2 text-right w-[17%] sm:w-[17%] whitespace-nowrap">CL</th>
+                                </tr>
+                            </thead>
+                            <tbody id="silver-price-table-body" class="text-sm sm:text-base font-bold">
+                                <!-- JS render bảng giá Bạc -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. GIÁ NGOẠI TỆ THAM KHẢO (Vị trí 3 trên Mobile, dưới biểu đồ ở Desktop) -->
-            <div id="currency-section" class="order-3 lg:order-none flex flex-col gap-2">
+            <!-- 6. MÁY TÍNH QUY ĐỔI TIỀN VÀNG & BẠC (Mobile Order 6 | Web: Cuối Cột Trái) -->
+            <div id="calculator-section" class="order-6 lg:order-none mt-1">
+                <div id="calc-card" class="dashboard-card p-5 flex flex-col justify-between border-l-4 border-amber-500 hover:border-amber-400 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300">
+                    <!-- Top: Tên công cụ + Subtitle + Huy hiệu -->
+                    <div class="flex justify-between items-start mb-2.5">
+                        <div class="pr-2">
+                            <div class="flex items-center gap-2 font-black uppercase tracking-wide text-yellow-400 text-base sm:text-lg">
+                                <span class="w-2.5 h-2.5 rounded-full bg-yellow-400 animate-pulse"></span>
+                                <span id="calc-title">MÁY TÍNH QUY ĐỔI TIỀN VÀNG & BẠC</span>
+                            </div>
+                            <div id="calc-desc" class="text-xs sm:text-sm text-slate-400 mt-0.5 font-medium">Nhập số lượng & chọn loại vàng/bạc để tính tiền VNĐ</div>
+                        </div>
+                        <div class="flex flex-col items-end shrink-0">
+                            <span class="text-[11px] sm:text-xs text-slate-400 font-mono">Công cụ</span>
+                            <span class="text-xs sm:text-sm font-mono font-bold px-2.5 py-1 rounded border bg-yellow-500/10 text-yellow-400 border-yellow-500/30">QUY ĐỔI</span>
+                        </div>
+                    </div>
+
+                    <!-- Middle: Form nhập và hiển thị kết quả -->
+                    <div class="bg-slate-950/50 p-3.5 rounded-xl border border-slate-800/60 my-1.5 flex flex-col gap-2.5">
+                        <!-- Hàng 1: Số lượng & Đơn vị -->
+                        <div class="grid grid-cols-12 gap-2">
+                            <div class="col-span-5 relative">
+                                <input type="number" id="calc-amount" value="1" min="0.1" step="0.1"
+                                    oninput="GoldDashboard.calculate()"
+                                    class="w-full bg-slate-900 border border-slate-700 focus:border-yellow-500 text-white font-mono font-bold text-center px-2 py-1.5 rounded-lg outline-none text-base transition-colors" />
+                            </div>
+                            <div class="col-span-7">
+                                <select id="calc-unit" onchange="GoldDashboard.calculate()"
+                                    class="w-full bg-slate-900 border border-slate-700 focus:border-yellow-500 text-yellow-400 font-semibold text-xs sm:text-sm rounded-lg px-2.5 py-2 outline-none cursor-pointer">
+                                    <option value="chi" selected>Chỉ (3.75g)</option>
+                                    <option value="luong">Lượng / Cây (37.5g)</option>
+                                    <option value="kg">Kilogram (1000g)</option>
+                                    <option value="gram">Gram (g)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Hàng 2: Chọn Loại vàng / Bạc -->
+                        <div>
+                            <select id="calc-type" onchange="GoldDashboard.calculate()"
+                                class="w-full bg-slate-900 border border-slate-700 focus:border-yellow-500 text-slate-200 font-medium text-xs sm:text-sm rounded-lg px-2.5 py-2 outline-none cursor-pointer">
+                                <optgroup label="--- VÀNG ---">
+                                <option value="sjc" selected>Vàng Miếng SJC (SJC Tự do)</option>
+                                    <option value="24k">Vàng 999.9 (24K)</option>
+                                    <option value="22k">Vàng 99.9 (22K)</option>
+                                    <option value="980">Vàng 980</option>
+                                    <option value="750">Vàng 750 (18K)</option>
+                                    <option value="610">Vàng 610 (14.6K)</option>
+                                    <option value="585">Vàng 585 (14K)</option>
+                                    <option value="416">Vàng 416 (10K)</option>
+                                    <option value="18k">Vàng 95 (18K)</option>
+                                    <option value="tg">Vàng TG (Quốc tế)</option>
+                                </optgroup>
+                                <optgroup label="--- BẠC ---">
+                                    <option value="phuquy_1l">Bạc Phú Quý (1 Lượng)</option>
+                                    <option value="phuquy_1kg">Bạc Phú Quý (1 Kg)</option>
+                                    <option value="bac_999">Bạc 999 thị trường</option>
+                                    <option value="bac_925">Bạc nữ trang bán lẻ</option>
+                                    <option value="bac_tg">Bạc TG (Spot XAG/USD)</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <!-- Hàng 3: Thành tiền -->
+                        <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between">
+                            <span class="text-xs sm:text-sm text-slate-400 font-bold uppercase tracking-wider">THÀNH TIỀN:</span>
+                            <div class="text-right">
+                                <div id="calc-result" class="text-lg sm:text-xl lg:text-2xl font-black text-amber-400 font-mono tracking-tight whitespace-nowrap">Đang tính...</div>
+                                <div id="calc-result-usd" class="text-xs text-slate-400 font-mono"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom: Chân thẻ -->
+                    <div class="mt-2.5 pt-2.5 border-t border-slate-800/80 flex justify-between items-center text-xs sm:text-sm font-mono">
+                        <div>
+                            <span class="text-slate-400 font-medium">Quy chuẩn:</span>
+                            <strong class="text-slate-200 font-bold ml-1">Thời gian thực</strong>
+                        </div>
+                        <div class="text-slate-400 text-xs sm:text-sm">
+                            1 Lượng = 10 Chỉ · 1 Kg = 26.66 Lượng
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Cột Phải (Web: 4 cột | Mobile: unwrapped qua contents CSS) -->
+        <div id="main-right-col" class="contents lg:flex lg:flex-col lg:gap-4 lg:col-span-4">
+
+            <!-- 2. BIỂU ĐỒ GIÁ VÀNG THẾ GIỚI (Mobile Order 2 | Web: Top Cột Phải) -->
+            <div id="gold-chart-section" class="order-2 lg:order-none flex flex-col gap-2">
+                <div class="flex justify-between items-center px-1">
+                    <h2 class="section-title text-sm sm:text-base font-bold flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                        <span>Biểu Đồ Giá Vàng Thế Giới (XAU/USD)</span>
+                    </h2>
+                    <span class="text-[11px] text-slate-400 font-mono">1 Giờ / Nến</span>
+                </div>
+
+                <div class="dashboard-card h-[290px] overflow-hidden relative rounded-xl border border-slate-800 shadow-md">
+                    <div class="tradingview-widget-container h-full w-full">
+                        <div id="tv_chart_gold" class="h-full w-full"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. BIỂU ĐỒ GIÁ BẠC THẾ GIỚI (Mobile Order 4 | Web: Giữa Biểu Đồ Vàng & Ngoại Tệ ở Cột Phải) -->
+            <div id="silver-chart-section" class="order-4 lg:order-none flex flex-col gap-2 mt-1">
+                <div class="flex justify-between items-center px-1">
+                    <h2 class="section-title text-sm sm:text-base font-bold flex items-center gap-2 text-cyan-400">
+                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+                        <span>Biểu Đồ Giá Bạc Thế Giới (XAG/USD)</span>
+                    </h2>
+                    <span class="text-[11px] text-slate-400 font-mono">1 Giờ / Nến</span>
+                </div>
+
+                <div class="dashboard-card h-[290px] overflow-hidden relative rounded-xl border border-slate-800 shadow-md">
+                    <div class="tradingview-widget-container h-full w-full">
+                        <div id="tv_chart_silver" class="h-full w-full"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. GIÁ NGOẠI TỆ THAM KHẢO (Mobile Order 5 | Web: Dưới Biểu Đồ Bạc ở Cột Phải) -->
+            <div id="currency-section" class="order-5 lg:order-none flex flex-col gap-2 mt-1">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0 px-1">
                     <h2 class="section-title text-sm sm:text-base md:text-lg font-black uppercase tracking-tight">
                         GIÁ NGOẠI TỆ THAM KHẢO
                     </h2>
                     <div id="currency-updated-time" class="timestamp-text text-xs sm:text-sm font-semibold font-mono">
-                        Cập nhật lần cuối: 20/09/2026 14:09:18
+                        Cập nhật lần cuối: 14:09:18
                     </div>
                 </div>
 
-                <div
-                    class="dashboard-card overflow-hidden rounded-xl border-2 border-[#002b9e] dark:border-blue-900/60 shadow-lg">
+                <div class="dashboard-card overflow-hidden rounded-xl border-2 border-[#002b9e] dark:border-blue-900/60 shadow-lg">
                     <div class="overflow-x-auto">
                         <table class="modern-table w-full text-right">
                             <thead>
-                                <tr
-                                    class="bg-[#002b9e] text-white font-black text-xs sm:text-sm md:text-base uppercase tracking-wider">
-                                    <th class="text-left pl-1.5 sm:pl-2.5 py-2 sm:py-2.5 w-[25%] whitespace-nowrap">Tiền tệ
-                                    </th>
+                                <tr class="bg-[#002b9e] text-white font-black text-xs sm:text-sm md:text-base uppercase tracking-wider">
+                                    <th class="text-left pl-1.5 sm:pl-2.5 py-2 sm:py-2.5 w-[25%] whitespace-nowrap">Tiền tệ</th>
                                     <th class="py-2 px-1 sm:px-1.5 text-right w-[25%] whitespace-nowrap">MUA</th>
                                     <th class="py-2 px-1 sm:px-1.5 text-right w-[25%] whitespace-nowrap">BÁN</th>
                                     <th class="py-2 pr-1.5 sm:pr-2.5 text-right w-[25%] whitespace-nowrap">Tỷ giá</th>
@@ -237,7 +403,14 @@
                     </div>
                 </div>
             </div>
+
         </div>
+
+        <!-- 7. TIN TỨC THỊ TRƯỜNG (Mobile Order 7 | Web: 12 cột tràn lề ở cuối trang) -->
+        <div id="news-section" class="order-7 lg:order-none lg:col-span-12 flex flex-col gap-4 mt-4 pt-4 border-t border-slate-800">
+            <!-- JS render tin tức nổi bật + nút xem thêm -->
+        </div>
+
     </main>
 
     <!-- Chú Thích Quy Đổi & Chân Trang (Footer) -->

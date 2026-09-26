@@ -1,7 +1,7 @@
 const GoldDashboard = (function () {
     const API_ENDPOINTS = {
-        gold: ['/api/gold', '/gold'],
-        silver: ['/api/silver', '/silver']
+        gold: ['/gold', '/api/gold', '/api'],
+        silver: ['/silver', '/api/silver', '/api/v1/silver']
     };
 
     // Tỷ giá quy đổi thị trường thực tế
@@ -31,6 +31,17 @@ const GoldDashboard = (function () {
     const getColorClass = (num) => num > 0 ? 'text-emerald-400' : (num < 0 ? 'text-rose-400' : 'text-slate-400');
     const getBgColorClass = (num) => num > 0 ? 'bg-emerald-950/60 text-emerald-300 border-emerald-800/50' : (num < 0 ? 'bg-rose-950/60 text-rose-300 border-rose-800/50' : 'bg-slate-800 text-slate-400 border-slate-700');
     const getSign = (num) => num > 0 ? '+' : '';
+
+    function getFormattedDateTimeStr() {
+        const now = new Date();
+        const d = String(now.getDate()).padStart(2, '0');
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const y = now.getFullYear();
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        const ss = String(now.getSeconds()).padStart(2, '0');
+        return `${d}/${m}/${y} ${hh}:${mm}:${ss}`;
+    }
 
     let currentMarket = 'gold'; // 'gold' | 'silver'
     let currentData = null;
@@ -128,6 +139,37 @@ const GoldDashboard = (function () {
     // ==========================================
     // 3. TÍNH TOÁN DỮ LIỆU ĐỘNG
     // ==========================================
+
+    // Hàm hiển thị tên sản phẩm trong bảng giá
+    function getItemDisplayName(name) {
+        if (!name) return '';
+        const nameMap = {
+            'Vàng TG': 'Vàng TG (XAU/USD)',
+            'SJC Tự do': 'Vàng SJC Tự Do',
+            'Vàng 999.9': 'Vàng 999.9 (24K)',
+            'Vàng 99.9': 'Vàng 99.9 (22K)',
+            'Vàng 95': 'Vàng 95 (18K)',
+            'Bạc Thế Giới (XAG/USD)': 'Bạc TG (XAG/USD)'
+        };
+        return nameMap[name] || name;
+    }
+
+    // Hàm hiển thị đơn vị trong bảng giá (khớp với cách renderTableRows chia giá trị)
+    function getItemUnitStr(item) {
+        if (!item) return '';
+        if (item.isWorld) {
+            return 'USD / oz';
+        }
+        const name = item.name || '';
+        // Bạc Phú Quý: giá tính theo lượng hoặc kg
+        if (name.includes('1 Lượng') || name.includes('5 Lượng')) return 'Ngàn VNĐ / Lượng';
+        if (name.includes('1 Kg')) return 'Ngàn VNĐ / Kg';
+        // Bạc 999 & Bạc nữ trang: tính theo chỉ
+        if (name.includes('Bạc')) return 'Ngàn VNĐ / Chỉ';
+        // Vàng: giá hiển thị = raw ÷ 10 → ngàn VNĐ / chỉ
+        return 'Ngàn VNĐ / Chỉ';
+    }
+
     function buildDynamicGoldItems(priceUsd, priceVnd, changeUsd, bid, ask) {
         const liveUsdBid = bid !== undefined ? parseFloat(bid) : (priceUsd - 0.2);
         const liveUsdAsk = ask !== undefined ? parseFloat(ask) : (priceUsd + 0.2);
@@ -146,8 +188,8 @@ const GoldDashboard = (function () {
             {
                 name: 'Vàng TG',
                 isWorld: true,
-                buy: parseFloat(liveUsdBid.toFixed(2)),
-                sell: parseFloat(liveUsdAsk.toFixed(2)),
+                buy: parseFloat(priceUsd.toFixed(2)),
+                sell: parseFloat(priceUsd.toFixed(2)),
                 change: parseFloat((changeUsd || 0).toFixed(2)),
                 cl: 0
             },
@@ -157,7 +199,7 @@ const GoldDashboard = (function () {
                 buy: sjcTdBuy,
                 sell: sjcTdSell,
                 change: baseChangeChiRaw,
-                cl: Math.round(sjcTdSell * 100 - baseVsgChiVND)
+                cl: Math.round((sjcTdSell / 10) - (baseVsgChiVND / 10))
             },
             {
                 name: 'Vàng 999.9',
@@ -165,7 +207,7 @@ const GoldDashboard = (function () {
                 buy: g9999BuyRaw,
                 sell: g9999SellRaw,
                 change: baseChangeChiRaw,
-                cl: Math.round(g9999SellRaw * 100 - baseVsgChiVND)
+                cl: Math.round((g9999SellRaw / 10) - (baseVsgChiVND / 10))
             },
             {
                 name: 'Vàng 99.9',
@@ -173,7 +215,7 @@ const GoldDashboard = (function () {
                 buy: Math.round(g9999BuyRaw * 0.998),
                 sell: Math.round(g9999SellRaw * 0.998),
                 change: Math.round(baseChangeChiRaw * 0.998),
-                cl: Math.round(Math.round(g9999SellRaw * 0.998) * 100 - baseVsgChiVND)
+                cl: Math.round(Math.round(g9999SellRaw * 0.998) / 10 - (baseVsgChiVND / 10))
             },
             {
                 name: 'Vàng 95',
@@ -181,7 +223,7 @@ const GoldDashboard = (function () {
                 buy: Math.round(g9999BuyRaw * 0.945),
                 sell: Math.round(g9999SellRaw * 0.945),
                 change: Math.round(baseChangeChiRaw * 0.945),
-                cl: Math.round(Math.round(g9999SellRaw * 0.945) * 100 - baseVsgChiVND)
+                cl: Math.round(Math.round(g9999SellRaw * 0.945) / 10 - (baseVsgChiVND / 10))
             },
             {
                 name: 'Vàng 980',
@@ -189,7 +231,7 @@ const GoldDashboard = (function () {
                 buy: Math.round(g9999BuyRaw * 0.9795),
                 sell: Math.round(g9999SellRaw * 0.9805),
                 change: Math.round(baseChangeChiRaw * 0.9805),
-                cl: Math.round(Math.round(g9999SellRaw * 0.9805) * 100 - baseVsgChiVND)
+                cl: Math.round(Math.round(g9999SellRaw * 0.9805) / 10 - (baseVsgChiVND / 10))
             },
             {
                 name: 'Vàng 750 (18K)',
@@ -197,7 +239,7 @@ const GoldDashboard = (function () {
                 buy: Math.round(g9999BuyRaw * 0.749),
                 sell: Math.round(g9999SellRaw * 0.751),
                 change: Math.round(baseChangeChiRaw * 0.751),
-                cl: Math.round(Math.round(g9999SellRaw * 0.751) * 100 - baseVsgChiVND)
+                cl: Math.round(Math.round(g9999SellRaw * 0.751) / 10 - (baseVsgChiVND / 10))
             },
             {
                 name: 'Vàng 610 (14.6K)',
@@ -205,7 +247,7 @@ const GoldDashboard = (function () {
                 buy: Math.round(g9999BuyRaw * 0.6085),
                 sell: Math.round(g9999SellRaw * 0.6115),
                 change: Math.round(baseChangeChiRaw * 0.6115),
-                cl: Math.round(Math.round(g9999SellRaw * 0.6115) * 100 - baseVsgChiVND)
+                cl: Math.round(Math.round(g9999SellRaw * 0.6115) / 10 - (baseVsgChiVND / 10))
             },
             {
                 name: 'Vàng 585 (14K)',
@@ -213,7 +255,7 @@ const GoldDashboard = (function () {
                 buy: Math.round(g9999BuyRaw * 0.583),
                 sell: Math.round(g9999SellRaw * 0.587),
                 change: Math.round(baseChangeChiRaw * 0.587),
-                cl: Math.round(Math.round(g9999SellRaw * 0.587) * 100 - baseVsgChiVND)
+                cl: Math.round(Math.round(g9999SellRaw * 0.587) / 10 - (baseVsgChiVND / 10))
             },
             {
                 name: 'Vàng 416 (10K)',
@@ -221,7 +263,7 @@ const GoldDashboard = (function () {
                 buy: Math.round(g9999BuyRaw * 0.4135),
                 sell: Math.round(g9999SellRaw * 0.4185),
                 change: Math.round(baseChangeChiRaw * 0.4185),
-                cl: Math.round(Math.round(g9999SellRaw * 0.4185) * 100 - baseVsgChiVND)
+                cl: Math.round(Math.round(g9999SellRaw * 0.4185) / 10 - (baseVsgChiVND / 10))
             }
         ];
     }
@@ -238,10 +280,10 @@ const GoldDashboard = (function () {
 
         const phuquy1lSell = Math.round(baseLuongVND * 1.00);
         const phuquy1kgSell = Math.round(baseKgVND * 1.00);
-        const bac999Sell = Math.ceil(baseChiVNDWorldSell / 10000) * 10000;
+        const bac999Sell = Math.round((baseChiVNDWorldSell * 1.05) / 1000) * 1000;
         const bac999Buy = bac999Sell - 30000;
         const bacNuTrangSell = bac999Sell + 70000;
-        const bacNuTrangBuy = bac999Buy + 70000;
+        const bacNuTrangBuy = Math.round(bacNuTrangSell * 0.6);
 
         return [
             {
@@ -307,7 +349,7 @@ const GoldDashboard = (function () {
         ];
         for (const url of vsgUrls) {
             try {
-                const res = await fetch(url, { signal: AbortSignal.timeout(4000) });
+                const res = await fetch(url, { cache: 'no-store', signal: AbortSignal.timeout(4000) });
                 if (!res.ok) continue;
                 const vsg = await res.json();
                 if (!vsg || (!vsg.sjcNationWide && !vsg.vsg_gold_table)) continue;
@@ -326,24 +368,65 @@ const GoldDashboard = (function () {
             const troyOunceToGram = 31.1034768;
             const sjcTdRaw = vsg.vsg_gold_table?.find(i => i.name === 'SJC Tự do');
             const baseVsgChiVND = (sjcTdRaw && sjcTdRaw.gap && sjcTdRaw.saigon?.sell)
-                ? (sjcTdRaw.saigon.sell - sjcTdRaw.gap) * 100
-                : Math.round((xauSell * exchangeRate / troyOunceToGram) * 3.75);
+                ? (sjcTdRaw.saigon.sell - sjcTdRaw.gap) / 10
+                : Math.round((xauSell * exchangeRate / troyOunceToGram) * 0.375);
             const baseLuongVND = baseVsgChiVND * 10;
+
+            let tvPrice = null;
+            try {
+                const tvRes = await fetch('https://scanner.tradingview.com/global/scan', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        symbols: { tickers: ['OANDA:XAUUSD', 'OANDA:XAGUSD'] },
+                        columns: ['close', 'bid', 'ask', 'change', 'change_abs']
+                    }),
+                    headers: { 'Content-Type': 'application/json' },
+                    signal: AbortSignal.timeout(2500)
+                });
+                if (tvRes.ok) {
+                    const tvJson = await tvRes.json();
+                    const xauData = tvJson?.data?.find(item => item.s === 'OANDA:XAUUSD');
+                    if (xauData && xauData.d) {
+                        tvPrice = {
+                            close: xauData.d[0],
+                            bid: xauData.d[0],
+                            ask: xauData.d[0],
+                            change: xauData.d[4] !== undefined ? xauData.d[4] : xauData.d[3]
+                        };
+                    }
+                }
+            } catch(e) {
+                try {
+                    const tvRes2 = await fetch('/api/tv-price', { signal: AbortSignal.timeout(2000) });
+                    if (tvRes2.ok) {
+                        const tvJson2 = await tvRes2.json();
+                        if (tvJson2 && tvJson2.data && tvJson2.data.xau) tvPrice = tvJson2.data.xau;
+                    }
+                } catch(e2) {}
+            }
 
             let goldItems = [];
             if (Array.isArray(vsg.vsg_gold_table) && vsg.vsg_gold_table.length > 0) {
                 goldItems = vsg.vsg_gold_table.map(item => {
                     const isWorld = item.name === 'Vàng TG' || item.name === 'XAUUSD';
                     const isGF95 = item.name === '95% GF';
-                    const buyVal = isWorld ? parseFloat((item.saigon?.buy || 0).toFixed(2)) : (isGF95 ? Math.round(item.saigon?.buy) : Math.round(item.saigon?.buy || 0));
-                    const sellVal = isWorld ? parseFloat((item.saigon?.sell || 0).toFixed(2)) : (isGF95 ? Math.round(item.saigon?.sell) : Math.round(item.saigon?.sell || 0));
-                    const clInChiVND = isWorld ? 0 : (item.gap !== undefined ? Math.round(item.gap * 100) : Math.round(sellVal * 100 - baseVsgChiVND));
+                    let buyVal = isWorld ? parseFloat((item.saigon?.buy || 0).toFixed(2)) : (isGF95 ? Math.round(item.saigon?.buy) : Math.round(item.saigon?.buy || 0));
+                    let sellVal = isWorld ? parseFloat((item.saigon?.sell || 0).toFixed(2)) : (isGF95 ? Math.round(item.saigon?.sell) : Math.round(item.saigon?.sell || 0));
+                    let changeVal = isWorld ? parseFloat(item.saigon?.sell_change?.toFixed(2) || item.saigon?.sell_change) : (isGF95 ? Math.round(item.saigon?.sell_change) : Math.round(item.saigon?.sell_change || 0));
+
+                    if (isWorld && tvPrice && (!item.saigon || !item.saigon.buy)) {
+                        buyVal = parseFloat((tvPrice.close || tvPrice.bid).toFixed(2));
+                        sellVal = parseFloat((tvPrice.close || tvPrice.ask).toFixed(2));
+                        changeVal = parseFloat((tvPrice.change || 0).toFixed(2));
+                    }
+
+                    const clInChiVND = isWorld ? 0 : (item.gap !== undefined ? Math.round(item.gap) : Math.round((sellVal / 10) - (baseVsgChiVND / 10)));
                     return {
                         name: item.name === 'XAUUSD' ? 'Vàng TG' : item.name,
                         isWorld: isWorld,
                         buy: buyVal,
                         sell: sellVal,
-                        change: isWorld ? parseFloat(item.saigon?.sell_change?.toFixed(2) || item.saigon?.sell_change) : (isGF95 ? Math.round(item.saigon?.sell_change) : Math.round(item.saigon?.sell_change || 0)),
+                        change: changeVal,
                         cl: clInChiVND
                     };
                 });
@@ -351,15 +434,13 @@ const GoldDashboard = (function () {
                 goldItems.push({
                     name: 'Vàng TG',
                     isWorld: true,
-                    buy: parseFloat(xauBuy.toFixed(2)),
-                    sell: parseFloat(xauSell.toFixed(2)),
-                    change: parseFloat(xauChange.toFixed(2)),
+                    buy: tvPrice ? parseFloat((tvPrice.bid || tvPrice.close).toFixed(2)) : parseFloat(xauBuy.toFixed(2)),
+                    sell: tvPrice ? parseFloat((tvPrice.ask || tvPrice.close).toFixed(2)) : parseFloat(xauSell.toFixed(2)),
+                    change: tvPrice ? parseFloat((tvPrice.change || 0).toFixed(2)) : parseFloat(xauChange.toFixed(2)),
                     cl: 0
                 });
             }
 
-            const keepNames = ['Vàng TG', 'SJC Tự do', 'Vàng 999.9', 'Vàng 99.9', 'Vàng 95'];
-            const filteredGold = goldItems.filter(i => keepNames.includes(i.name));
             const g9999 = goldItems.find(i => i.name === 'Vàng 999.9') || { buy: 136300, sell: 137800, change: 0 };
             const g9999BuyRaw = g9999.buy || 136300;
             const g9999SellRaw = g9999.sell || 137800;
@@ -372,7 +453,7 @@ const GoldDashboard = (function () {
                     buy: Math.round(g9999BuyRaw * (980 - 0.5) / 1000),
                     sell: Math.round(g9999SellRaw * (980 + 0.5) / 1000),
                     change: Math.round(g9999ChangeRaw * (980 + 0.5) / 1000),
-                    cl: Math.round(Math.round(g9999SellRaw * (980 + 0.5) / 1000) * 100 - baseVsgChiVND)
+                    cl: Math.round((Math.round(g9999SellRaw * (980 + 0.5) / 1000) / 10) - baseVsgChiVND)
                 },
                 {
                     name: 'Vàng 750 (18K)',
@@ -380,7 +461,7 @@ const GoldDashboard = (function () {
                     buy: Math.round(g9999BuyRaw * (750 - 1.0) / 1000),
                     sell: Math.round(g9999SellRaw * (750 + 1.0) / 1000),
                     change: Math.round(g9999ChangeRaw * (750 + 1.0) / 1000),
-                    cl: Math.round(Math.round(g9999SellRaw * (750 + 1.0) / 1000) * 100 - baseVsgChiVND)
+                    cl: Math.round((Math.round(g9999SellRaw * (750 + 1.0) / 1000) / 10) - baseVsgChiVND)
                 },
                 {
                     name: 'Vàng 610 (14.6K)',
@@ -388,7 +469,7 @@ const GoldDashboard = (function () {
                     buy: Math.round(g9999BuyRaw * (610 - 1.5) / 1000),
                     sell: Math.round(g9999SellRaw * (610 + 1.5) / 1000),
                     change: Math.round(g9999ChangeRaw * (610 + 1.5) / 1000),
-                    cl: Math.round(Math.round(g9999SellRaw * (610 + 1.5) / 1000) * 100 - baseVsgChiVND)
+                    cl: Math.round((Math.round(g9999SellRaw * (610 + 1.5) / 1000) / 10) - baseVsgChiVND)
                 },
                 {
                     name: 'Vàng 585 (14K)',
@@ -396,7 +477,7 @@ const GoldDashboard = (function () {
                     buy: Math.round(g9999BuyRaw * (585 - 2.0) / 1000),
                     sell: Math.round(g9999SellRaw * (585 + 2.0) / 1000),
                     change: Math.round(g9999ChangeRaw * (585 + 2.0) / 1000),
-                    cl: Math.round(Math.round(g9999SellRaw * (585 + 2.0) / 1000) * 100 - baseVsgChiVND)
+                    cl: Math.round((Math.round(g9999SellRaw * (585 + 2.0) / 1000) / 10) - baseVsgChiVND)
                 },
                 {
                     name: 'Vàng 416 (10K)',
@@ -404,7 +485,7 @@ const GoldDashboard = (function () {
                     buy: Math.round(g9999BuyRaw * (416 - 2.5) / 1000),
                     sell: Math.round(g9999SellRaw * (416 + 2.5) / 1000),
                     change: Math.round(g9999ChangeRaw * (416 + 2.5) / 1000),
-                    cl: Math.round(Math.round(g9999SellRaw * (416 + 2.5) / 1000) * 100 - baseVsgChiVND)
+                    cl: Math.round((Math.round(g9999SellRaw * (416 + 2.5) / 1000) / 10) - baseVsgChiVND)
                 }
             ];
 
@@ -457,7 +538,7 @@ const GoldDashboard = (function () {
                     };
                 });
 
-                const bac999Sell = Math.ceil(worldSellVndPerChi / 10000) * 10000;
+                const bac999Sell = Math.round((worldSellVndPerChi * 1.05) / 1000) * 1000;
                 const bac999Buy = bac999Sell - 30000;
                 silverItems.push({
                     name: 'Bạc 999 thị trường',
@@ -469,7 +550,7 @@ const GoldDashboard = (function () {
                 });
 
                 const bacNuTrangSell = bac999Sell + 70000;
-                const bacNuTrangBuy = bac999Buy + 70000;
+                const bacNuTrangBuy = Math.round(bacNuTrangSell * 0.6);
                 silverItems.push({
                     name: 'Bạc nữ trang bán lẻ',
                     isWorld: false,
@@ -482,6 +563,10 @@ const GoldDashboard = (function () {
                 silverItems = buildDynamicSilverItems(66.25, 66.25 * exchangeRate, -0.09, 66.20, 66.30);
             }
 
+            const keepNames = ['Vàng TG', 'SJC Tự do', 'Vàng 999.9', 'Vàng 99.9', 'Vàng 95'];
+            const filteredGold = goldItems.filter(i => keepNames.includes(i.name));
+            const finalGoldItems = [...filteredGold, ...customGoldTypes];
+
             return {
                 success: true,
                 source: 'vangsaigon.vn Live Direct Realtime',
@@ -492,7 +577,7 @@ const GoldDashboard = (function () {
                 exchangeRate,
                 baseLuongVND,
                 lastUpdatedStr,
-                goldItems: [...filteredGold, ...customGoldTypes],
+                goldItems: finalGoldItems,
                 silverItems: silverItems,
                 currencies
             };
@@ -504,98 +589,79 @@ const GoldDashboard = (function () {
 }
 
     function getInstantInitialData(market = 'gold') {
+        // Luôn build cả goldItems lẫn silverItems để trang hiển thị đầy đủ cả 2 bảng
+        const goldPrice = 4339.20;
+        const goldChange = -14.79;
+        const goldVndPerOunce = goldPrice * EXCHANGE_RATE;
+        const silverPrice = 66.25;
+        const silverChange = -0.09;
+        const silverVndPerOunce = silverPrice * EXCHANGE_RATE;
+
         try {
-            const saved = localStorage.getItem('t3gold_live_cache_' + market);
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                if (parsed && (parsed.goldItems || parsed.silverItems)) {
-                    return parsed;
-                }
-            }
+            const savedGold = localStorage.getItem('t3gold_live_cache_gold');
+            const savedSilver = localStorage.getItem('t3gold_live_cache_silver');
+            const parsedGold = savedGold ? JSON.parse(savedGold) : null;
+            const parsedSilver = savedSilver ? JSON.parse(savedSilver) : null;
+
+            const goldItems = (parsedGold?.goldItems?.length > 0) ? parsedGold.goldItems
+                : buildDynamicGoldItems(goldPrice, goldVndPerOunce, goldChange, goldPrice - 0.2, goldPrice + 0.2);
+            const silverItems = (parsedSilver?.silverItems?.length > 0) ? parsedSilver.silverItems
+                : buildDynamicSilverItems(silverPrice, silverVndPerOunce, silverChange, silverPrice - 0.05, silverPrice + 0.05);
+            const currencies = parsedGold?.currencies || parsedSilver?.currencies || CURRENCY_LIST;
+            const exchangeRate = parsedGold?.exchangeRate || parsedSilver?.exchangeRate || EXCHANGE_RATE;
+            const baseLuongVND = parsedGold?.baseLuongVND || (goldPrice * exchangeRate / TROY_OUNCE_TO_GRAM * 37.5);
+
+            return {
+                success: true,
+                goldItems,
+                silverItems,
+                currencies,
+                exchangeRate,
+                baseLuongVND
+            };
         } catch (e) {}
 
-        if (market === 'gold') {
-            const livePrice = 4339.20;
-            const openPrice = 4353.99;
-            const change = -14.79;
-            const liveVndPerOunce = livePrice * EXCHANGE_RATE;
-            return {
-                success: true,
-                symbol: 'XAU/USD',
-                price: livePrice,
-                priceVndPerOunce: liveVndPerOunce,
-                bid: livePrice - 0.2,
-                ask: livePrice + 0.2,
-                open: openPrice,
-                close: livePrice,
-                change: change,
-                changePercent: -0.34,
-                goldItems: buildDynamicGoldItems(livePrice, liveVndPerOunce, change, livePrice - 0.2, livePrice + 0.2),
-                currencies: CURRENCY_LIST
-            };
-        } else {
-            const livePrice = 66.25;
-            const openPrice = 66.34;
-            const change = -0.09;
-            const liveVndPerOunce = livePrice * EXCHANGE_RATE;
-            return {
-                success: true,
-                symbol: 'XAG/USD',
-                price: livePrice,
-                priceVndPerOunce: liveVndPerOunce,
-                bid: livePrice - 0.05,
-                ask: livePrice + 0.05,
-                open: openPrice,
-                close: livePrice,
-                change: change,
-                changePercent: -0.14,
-                silverItems: buildDynamicSilverItems(livePrice, liveVndPerOunce, change, livePrice - 0.05, livePrice + 0.05),
-                currencies: CURRENCY_LIST
-            };
-        }
+        return {
+            success: true,
+            goldItems: buildDynamicGoldItems(goldPrice, goldVndPerOunce, goldChange, goldPrice - 0.2, goldPrice + 0.2),
+            silverItems: buildDynamicSilverItems(silverPrice, silverVndPerOunce, silverChange, silverPrice - 0.05, silverPrice + 0.05),
+            currencies: CURRENCY_LIST,
+            exchangeRate: EXCHANGE_RATE,
+            baseLuongVND: goldPrice * EXCHANGE_RATE / TROY_OUNCE_TO_GRAM * 37.5
+        };
     }
 
     async function fetchData() {
         if (currentMarket === 'news') return currentData;
 
-        // 1. Ưu tiên fetch trực tiếp API VangSaigon từ client trước
+        // 1. Ưu tiên fetch từ /api/gold trước - Server Node.js bypass CORS và fetch 100% VangSaigon gốc + TradingView
+        const endpoints = API_ENDPOINTS[currentMarket] || API_ENDPOINTS['gold'];
+        for (const endpoint of endpoints) {
+            try {
+                const response = await fetch(endpoint, { cache: 'no-store', signal: AbortSignal.timeout(3000) });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.success && (data.goldItems?.length > 0 || data.silverItems?.length > 0)) {
+                        lastLiveVsgData = data;
+                        currentData = data;
+                        try {
+                            localStorage.setItem('t3gold_live_cache_' + currentMarket, JSON.stringify(currentData));
+                        } catch (e) {}
+                        return currentData;
+                    }
+                }
+            } catch (e) { }
+        }
+
+        // 2. Dự phòng: Thử fetch trực tiếp VangSaigon nếu server offline
         const directLiveVsg = await fetchVsgLiveDirectly();
         if (directLiveVsg) {
             lastLiveVsgData = directLiveVsg;
             currentData = directLiveVsg;
+            return currentData;
         }
 
-        // 2. Nếu chưa có dữ liệu, thử gọi các server endpoints
-        if (!currentData) {
-            const endpoints = API_ENDPOINTS[currentMarket] || API_ENDPOINTS['gold'];
-            for (const endpoint of endpoints) {
-                try {
-                    const response = await fetch(endpoint, { signal: AbortSignal.timeout(3000) });
-                    if (response.ok) {
-                        const data = await response.json();
-                        if (data && data.success && data.price > 0) {
-                            lastLiveVsgData = data;
-                            currentData = data;
-                            break;
-                        }
-                    }
-                } catch (e) { }
-            }
-        }
-
-        // 3. Dự phòng dữ liệu gần nhất hoặc dữ liệu mặc định
-        if (!currentData) {
-            currentData = lastLiveVsgData || getInstantInitialData(currentMarket);
-        }
-
-        // 4. Lưu vào localStorage cache cho F5
-        try {
-            if (currentData) {
-                localStorage.setItem('t3gold_live_cache_' + currentMarket, JSON.stringify(currentData));
-            }
-        } catch (e) {}
-
-        return currentData;
+        return currentData || lastLiveVsgData;
     }
 
     // ==========================================
@@ -607,6 +673,46 @@ const GoldDashboard = (function () {
     function renderPriceCards(data) {
         if (!data) return;
 
+        const nowStr = (data && data.lastUpdatedStr) ? data.lastUpdatedStr : getFormattedDateTimeStr();
+
+        const lastUpdatedEl = document.getElementById('last-updated-time');
+        if (lastUpdatedEl) lastUpdatedEl.textContent = 'Cập nhật lần cuối: ' + nowStr;
+
+        const silverUpdatedEl = document.getElementById('silver-updated-time');
+        if (silverUpdatedEl) silverUpdatedEl.textContent = 'Cập nhật lần cuối: ' + nowStr;
+
+        const currUpdatedEl = document.getElementById('currency-updated-time');
+        if (currUpdatedEl) currUpdatedEl.textContent = 'Cập nhật lần cuối: ' + nowStr;
+
+        // Render Bảng Giá Vàng (#price-table-body)
+        // Nếu data không có goldItems thì dùng fallback để bảng không bị trống
+        const goldItems = (data.goldItems && data.goldItems.length > 0)
+            ? data.goldItems
+            : buildDynamicGoldItems(
+                data.price || 4339.20,
+                data.priceVndPerOunce || 4339.20 * EXCHANGE_RATE,
+                data.change || -14.79,
+                data.bid || 4339.0,
+                data.ask || 4339.40
+              );
+        const goldTableBody = document.getElementById('price-table-body');
+        if (goldTableBody) {
+            renderTableRows(goldTableBody, goldItems, true, data);
+        }
+
+        // Render Bảng Giá Bạc (#silver-price-table-body)
+        // Nếu data không có silverItems thì dùng fallback
+        const silverItems = (data.silverItems && data.silverItems.length > 0)
+            ? data.silverItems
+            : buildDynamicSilverItems(66.25, 66.25 * EXCHANGE_RATE, -0.09, 66.20, 66.30);
+        const silverTableBody = document.getElementById('silver-price-table-body');
+        if (silverTableBody) {
+            renderTableRows(silverTableBody, silverItems, false, data);
+        }
+
+        // Render Bảng Ngoại Tệ (#currency-table-body)
+        const currencyBody = document.getElementById('currency-table-body');
+        const currencyList = data && data.currencies && data.currencies.length > 0 ? data.currencies : CURRENCY_LIST;
         const isAuthed = AuthManager.isLoggedIn();
 
         const formatNumber = (num, decimals = 0) => {
@@ -617,225 +723,6 @@ const GoldDashboard = (function () {
             return Math.round(num).toLocaleString('en-US');
         };
 
-        let items = [];
-        if (currentMarket === 'gold') {
-            items = data.goldItems || [];
-        } else {
-            items = data.silverItems || [];
-        }
-
-        const getItemSubtitle = (it) => {
-            if (currentMarket === 'gold') {
-                if (it.isWorld) return 'Spot XAU/USD quy đổi VNĐ';
-                if (it.name.includes('SJC') && !it.name.includes('nhẫn')) return 'Vàng miếng thương hiệu SJC';
-                if (it.name.includes('nhẫn')) return 'Nhẫn tròn trơn SJC 999.9';
-                if (it.name.includes('999.9')) return 'Vàng ta nguyên chất 24K (4 số 9)';
-                if (it.name.includes('99.9')) return 'Vàng 22K (3 số 9)';
-                if (it.name.includes('95') && !it.name.includes('GF')) return 'Vàng tây (75% - 95%)';
-                if (it.name.includes('99,99% GF')) return 'Hợp đồng tương lai 99.99%';
-                if (it.name.includes('95% GF')) return 'Hợp đồng tương lai 95%';
-                if (it.name.includes('980')) return 'Vàng trang sức 98.0% (Vàng 980)';
-                if (it.name.includes('750')) return 'Vàng trang sức 18K (75.0%)';
-                if (it.name.includes('610')) return 'Vàng trang sức 14.6K (61.0%)';
-                if (it.name.includes('585')) return 'Vàng trang sức 14K (58.5%)';
-                if (it.name.includes('416')) return 'Vàng trang sức 10K (41.6%)';
-                return 'Chuẩn vàng trang sức';
-            } else {
-                if (it.isWorld) return 'Sàn quốc tế · Spot XAG/USD';
-                if (it.name.includes('Phú Quý (1 Lượng)')) return 'Bạc Phú Quý 99.9% ép vỉ (1 Lượng = 37.5g)';
-                if (it.name.includes('Phú Quý (5 Lượng)')) return 'Bạc Phú Quý 99.9% đúc thỏi (5 Lượng = 187.5g)';
-                if (it.name.includes('Phú Quý (1 Kg)')) return 'Bạc Phú Quý thỏi chuẩn đúc 1 Kilogram (1000g)';
-                if (it.name.includes('Bạc 999')) return 'Bạc nguyên chất 99.9% ép vỉ (1 Chỉ = 3.75g)';
-                if (it.name.includes('Nữ Trang')) return 'Bạc trang sức thời trang cao cấp 92.5%';
-                if (it.name.includes('Thái')) return 'Bạc Thái thủ công mỹ nghệ khắc họa tiết 92.5%';
-                if (it.name.includes('Ý')) return 'Bạc Ý xi bạch kim sáng bóng chuẩn 92.5%';
-                return 'Chuẩn bạc thị trường';
-            }
-        };
-
-        const getItemDisplayName = (name) => {
-            if (!name) return '';
-            if (name.includes('Phú Quý (1 Lượng)')) return 'Bạc Phú Quý (1L)';
-            if (name.includes('Phú Quý (5 Lượng)')) return 'Bạc Phú Quý (5L)';
-            if (name.includes('Phú Quý (1 Kg)')) return 'Bạc Phú Quý (1Kg)';
-            if (name.includes('Bạc Thế Giới')) return 'Bạc Thế Giới (XAG)';
-            return name;
-        };
-
-        const getItemUnitStr = (it) => {
-            if (it.isWorld) return 'ĐVT: USD / Ounce';
-            if (currentMarket === 'gold') return 'ĐVT: VNĐ / 1 Chỉ';
-            if (it.name.includes('1 Lượng')) return 'ĐVT: VNĐ / 1 Lượng';
-            if (it.name.includes('1 Kg') || it.name.includes('1Kg')) return 'ĐVT: VNĐ / 1 Kg';
-            return 'ĐVT: VNĐ / 1 Chỉ';
-        };
-
-        const getItemTheme = (it) => {
-            const name = it.name.toLowerCase();
-            if (it.isWorld || name.includes('thế giới') || name.includes('spot xag') || name.includes('bạc tg')) return { border: 'border-yellow-500 hover:border-yellow-400', dot: 'bg-yellow-400 animate-pulse', text: 'text-yellow-400', valText: 'text-yellow-400', subText: 'text-yellow-300' };
-            if (name.includes('phú quý (1 lượng)') || name.includes('phuquy_1l')) return { border: 'border-cyan-500 hover:border-cyan-400', dot: 'bg-cyan-400', text: 'text-cyan-400', valText: 'text-cyan-300', subText: 'text-cyan-400' };
-            if (name.includes('phú quý (5 lượng)') || name.includes('phuquy_5l')) return { border: 'border-blue-500 hover:border-blue-400', dot: 'bg-blue-400', text: 'text-blue-400', valText: 'text-blue-300', subText: 'text-blue-400' };
-            if (name.includes('phú quý (1 kg)') || name.includes('phuquy_1kg')) return { border: 'border-emerald-500 hover:border-emerald-400', dot: 'bg-emerald-400', text: 'text-emerald-400', valText: 'text-emerald-300', subText: 'text-emerald-400' };
-            if (name.includes('bạc 999')) return { border: 'border-amber-500 hover:border-amber-400', dot: 'bg-amber-400', text: 'text-amber-400', valText: 'text-amber-300', subText: 'text-amber-400' };
-            if (name.includes('nữ trang')) return { border: 'border-rose-500 hover:border-rose-400', dot: 'bg-rose-400', text: 'text-rose-400', valText: 'text-rose-300', subText: 'text-rose-400' };
-            if (name.includes('thái')) return { border: 'border-purple-500 hover:border-purple-400', dot: 'bg-purple-400', text: 'text-purple-400', valText: 'text-purple-300', subText: 'text-purple-400' };
-            if (name.includes('ý')) return { border: 'border-indigo-500 hover:border-indigo-400', dot: 'bg-indigo-400', text: 'text-indigo-400', valText: 'text-indigo-300', subText: 'text-indigo-400' };
-            if (name.includes('sjc tự do') || (name.includes('sjc') && !name.includes('nhẫn'))) return { border: 'border-amber-500 hover:border-amber-400', dot: 'bg-amber-400', text: 'text-amber-400', valText: 'text-yellow-300', subText: 'text-yellow-400' };
-            if (name.includes('nhẫn')) return { border: 'border-emerald-500 hover:border-emerald-400', dot: 'bg-emerald-400', text: 'text-emerald-400', valText: 'text-white', subText: 'text-emerald-400' };
-            if (name.includes('999.9')) return { border: 'border-cyan-500 hover:border-cyan-400', dot: 'bg-cyan-400', text: 'text-cyan-400', valText: 'text-cyan-300', subText: 'text-cyan-400' };
-            if (name.includes('980')) return { border: 'border-purple-500 hover:border-purple-400', dot: 'bg-purple-400', text: 'text-purple-400', valText: 'text-purple-300', subText: 'text-purple-400' };
-            if (name.includes('750')) return { border: 'border-rose-500 hover:border-rose-400', dot: 'bg-rose-400', text: 'text-rose-400', valText: 'text-rose-300', subText: 'text-rose-400' };
-            if (name.includes('610')) return { border: 'border-indigo-500 hover:border-indigo-400', dot: 'bg-indigo-400', text: 'text-indigo-400', valText: 'text-indigo-300', subText: 'text-indigo-400' };
-            if (name.includes('585')) return { border: 'border-teal-500 hover:border-teal-400', dot: 'bg-teal-400', text: 'text-teal-400', valText: 'text-teal-300', subText: 'text-teal-400' };
-            if (name.includes('416')) return { border: 'border-orange-500 hover:border-orange-400', dot: 'bg-orange-400', text: 'text-orange-400', valText: 'text-orange-300', subText: 'text-orange-400' };
-            if (name.includes('99.9') || name.includes('thỏi')) return { border: 'border-blue-500 hover:border-blue-400', dot: 'bg-blue-400', text: 'text-blue-400', valText: 'text-blue-300', subText: 'text-blue-400' };
-            if (name.includes('95% gf') || name.includes('hạt')) return { border: 'border-slate-500 hover:border-slate-400', dot: 'bg-slate-400', text: 'text-slate-300', valText: 'text-slate-200', subText: 'text-slate-300' };
-            if (name.includes('95')) return { border: 'border-lime-500 hover:border-lime-400', dot: 'bg-lime-400', text: 'text-lime-400', valText: 'text-lime-300', subText: 'text-lime-400' };
-            if (name.includes('99,99% gf')) return { border: 'border-fuchsia-500 hover:border-fuchsia-400', dot: 'bg-fuchsia-400', text: 'text-fuchsia-400', valText: 'text-fuchsia-300', subText: 'text-fuchsia-400' };
-            return { border: 'border-slate-600 hover:border-slate-500', dot: 'bg-slate-400', text: 'text-slate-300', valText: 'text-white', subText: 'text-slate-300' };
-        };
-
-        function getFormattedDateTimeStr() {
-            const now = new Date();
-            const d = String(now.getDate()).padStart(2, '0');
-            const m = String(now.getMonth() + 1).padStart(2, '0');
-            const y = now.getFullYear();
-            const hh = String(now.getHours()).padStart(2, '0');
-            const mm = String(now.getMinutes()).padStart(2, '0');
-            const ss = String(now.getSeconds()).padStart(2, '0');
-            return `${d}/${m}/${y} ${hh}:${mm}:${ss}`;
-        }
-
-        const nowStr = (data && data.lastUpdatedStr) ? data.lastUpdatedStr : getFormattedDateTimeStr();
-
-        const lastUpdatedEl = document.getElementById('last-updated-time');
-        if (lastUpdatedEl) lastUpdatedEl.textContent = 'Cập nhật lần cuối: ' + nowStr;
-        const currUpdatedEl = document.getElementById('currency-updated-time');
-        if (currUpdatedEl) currUpdatedEl.textContent = 'Cập nhật lần cuối: ' + nowStr;
-
-        const tableBody = document.getElementById('price-table-body');
-        if (tableBody) {
-            let rowsHtml = '';
-            items.forEach((item) => {
-                let buyMain = '';
-                let sellMain = '';
-                let buySub = '';   // chỉ dùng cho isWorld
-                let sellSub = '';  // chỉ dùng cho isWorld
-
-                if (item.isWorld) {
-                    const buyNum = Number(item.buy) || 0;
-                    const sellNum = Number(item.sell) || 0;
-                    buyMain = `${Math.floor(buyNum).toLocaleString('en-US')}`;
-                    sellMain = `${Math.floor(sellNum).toLocaleString('en-US')}`;
-                    
-                    let vndPerChiSell = 0;
-                    let vndPerChiBuy = 0;
-                    const exRate = data?.exchangeRate || EXCHANGE_RATE;
-
-                    if (currentMarket === 'gold') {
-                        vndPerChiSell = (data && data.baseLuongVND) ? (data.baseLuongVND / 10) : ((item.sell * exRate / TROY_OUNCE_TO_GRAM) * 3.75);
-                        vndPerChiBuy = vndPerChiSell - (((item.sell - item.buy) * exRate / TROY_OUNCE_TO_GRAM) * 3.75);
-                    } else {
-                        vndPerChiSell = (item.sell * exRate / TROY_OUNCE_TO_GRAM) * 3.75;
-                        vndPerChiBuy = (item.buy * exRate / TROY_OUNCE_TO_GRAM) * 3.75;
-                    }
-
-                    buySub = `≈ ${Math.round(vndPerChiBuy / 1000).toLocaleString('vi-VN')}`;
-                    sellSub = `≈ ${Math.round(vndPerChiSell / 1000).toLocaleString('vi-VN')}`;
-                } else {
-                    if (currentMarket === 'gold') {
-                        buyMain = `${Math.floor(item.buy / 10).toLocaleString('vi-VN')}`;
-                        sellMain = `${Math.floor(item.sell / 10).toLocaleString('vi-VN')}`;
-                    } else {
-                        buyMain = `${Math.round(item.buy / 1000).toLocaleString('vi-VN')}`;
-                        sellMain = `${Math.round(item.sell / 1000).toLocaleString('vi-VN')}`;
-                    }
-                }
-
-                // Biến động
-                let changeStr = '0';
-                if (item.isWorld) {
-                    changeStr = item.change > 0 ? `+${item.change}` : `${item.change}`;
-                } else {
-                    if (Math.abs(item.change) >= 1000) {
-                        const chgThousand = Math.round(item.change / 1000);
-                        changeStr = (chgThousand > 0 ? '+' : '') + chgThousand.toLocaleString('vi-VN');
-                    } else {
-                        changeStr = item.change > 0 ? `+${item.change}` : `${item.change}`;
-                    }
-                }
-                const changeColor = item.change < 0 ? 'text-val-down' : 'text-val-up';
-
-                // Chênh lệch CL
-                let clVal = item.cl !== undefined ? item.cl : 0;
-                let clStr = '0';
-                if (clVal !== 0) {
-                    if (item.isWorld) {
-                        clStr = (clVal > 0 ? '+' : '') + clVal;
-                    } else {
-                        const clThousand = Math.round(clVal / 1000);
-                        clStr = clThousand === 0 ? '0' : ((clThousand > 0 ? '+' : '') + clThousand.toLocaleString('vi-VN'));
-                    }
-                }
-                const clColor = clVal < 0 ? 'text-val-down' : 'text-val-up';
-
-                if (!isAuthed) {
-                    rowsHtml += `
-                        <tr class="transition-colors text-xs sm:text-sm md:text-base">
-                            <td class="text-left pl-2 sm:pl-3 py-1.5 sm:py-2.5 font-black col-org text-xs sm:text-sm md:text-base">
-                                <span>${item.name}</span>
-                            </td>
-                            <td colspan="4" class="text-center py-1.5 sm:py-2.5 pr-2 sm:pr-3 text-slate-300 text-[11px] sm:text-xs md:text-sm">
-                                <span>🔒 Vui lòng <a href="javascript:void(0)" onclick="GoldDashboard.openAuth('login')" class="auth-gate-link font-bold">đăng nhập</a> để xem giá trực tuyến</span>
-                            </td>
-                        </tr>
-                    `;
-                } else {
-                    rowsHtml += `
-                        <tr class="transition-colors border-b border-blue-900/30">
-                            <!-- Cột 1: Tổ chức -->
-                            <td class="text-left pl-1 sm:pl-2 pr-0.5 py-1.5 sm:py-2.5 font-black col-org">
-                                <div class="text-[14px] xs:text-[15.5px] sm:text-base md:text-lg font-black leading-tight">${getItemDisplayName(item.name)}</div>
-                                <div class="text-[11px] sm:text-[13px] font-sans font-semibold text-slate-400 normal-case mt-0.5 whitespace-nowrap">${getItemUnitStr(item)}</div>
-                            </td>
-
-                            <!-- Cột 2: Mua Vào -->
-                            <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:px-2 text-right font-mono font-black price-val text-[16.5px] xs:text-[18px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
-                                <div class="font-black">${buyMain}</div>
-                                ${buySub ? `<div class="text-[10.5px] sm:text-[12.5px] text-slate-400 font-bold mt-0.5">${buySub}</div>` : ''}
-                            </td>
-
-                            <!-- Cột 3: Bán Ra -->
-                            <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:px-2 text-right font-mono font-black price-val text-[16.5px] xs:text-[18px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
-                                <div class="font-black">${sellMain}</div>
-                                ${sellSub ? `<div class="text-[10.5px] sm:text-[12.5px] text-yellow-400 font-bold mt-0.5">${sellSub}</div>` : ''}
-                            </td>
-
-                            <!-- Cột 4: Biến Động -->
-                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black ${changeColor} text-[13.5px] xs:text-[14.5px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
-                                <div>${changeStr}</div>
-                            </td>
-
-                            <!-- Cột 5: Chênh Lệch -->
-                            <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:pr-2 text-right font-mono font-black ${clColor} text-[13.5px] xs:text-[14.5px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
-                                <div>${clStr}</div>
-                            </td>
-                        </tr>
-                    `;
-                }
-            });
-            tableBody.innerHTML = rowsHtml;
-        }
-
-        // Render Máy Tính Quy Đổi bên dưới bảng giá
-        const calcContainer = document.getElementById('calculator-section');
-        if (calcContainer) {
-            calcContainer.innerHTML = getCalculatorCardHtml();
-        }
-
-        // Render Bảng Ngoại Tệ
-        const currencyBody = document.getElementById('currency-table-body');
-        const currencyList = data.currencies && data.currencies.length > 0 ? data.currencies : CURRENCY_LIST;
         if (currencyBody) {
             if (!isAuthed) {
                 currencyBody.innerHTML = currencyList.map(c => `
@@ -869,52 +756,286 @@ const GoldDashboard = (function () {
             }
         }
 
-        calculateConverter();
+        // Render / Update Máy Tính Quy Đổi
+        const calcContainer = document.getElementById('calculator-section');
+        if (calcContainer) {
+            if (!calcContainer.firstElementChild) {
+                updateCalculatorUI(true);
+            } else {
+                calculateConverter();
+            }
+        }
+    }
+
+    function renderTableRows(tableBody, items, isGold, data) {
+        if (!tableBody || !items || items.length === 0) return; // Không xóa bảng nếu items rỗng
+        const currentMarket = isGold ? 'gold' : 'silver';
+        const isAuthed = AuthManager.isLoggedIn();
+
+        const existingRows = Array.from(tableBody.children);
+        const canUpdateInPlace = existingRows.length === items.length && items.length > 0 && !existingRows.some(r => r.children.length !== 5);
+
+        if (canUpdateInPlace) {
+            items.forEach((item, idx) => {
+                const row = existingRows[idx];
+                let buyMain = '';
+                let sellMain = '';
+                let buySub = '';
+                let sellSub = '';
+
+                if (item.isWorld) {
+                    const buyNum = Number(item.buy) || 0;
+                    const sellNum = Number(item.sell) || 0;
+                    buyMain = buyNum > 0 ? (buyNum < 1000 ? buyNum.toFixed(2) : Math.floor(buyNum).toLocaleString('en-US')) : '0';
+                    sellMain = sellNum > 0 ? (sellNum < 1000 ? sellNum.toFixed(2) : Math.floor(sellNum).toLocaleString('en-US')) : '0';
+                    
+                    const exRate = data?.exchangeRate || EXCHANGE_RATE;
+
+                    if (currentMarket === 'gold') {
+                        const vndPerChiSell = (data && data.baseLuongVND) ? (data.baseLuongVND / 10) : ((sellNum * exRate / TROY_OUNCE_TO_GRAM) * 3.75);
+                        const vndPerChiBuy = vndPerChiSell - (((sellNum - buyNum) * exRate / TROY_OUNCE_TO_GRAM) * 3.75);
+
+                        buySub = `≈ ${Math.round(vndPerChiBuy).toLocaleString('vi-VN')} VNĐ/chỉ`;
+                        sellSub = `≈ ${Math.round(vndPerChiSell).toLocaleString('vi-VN')} VNĐ/chỉ`;
+                    } else {
+                        const vndPerChiSell = (sellNum * exRate / TROY_OUNCE_TO_GRAM) * 3.75;
+                        const vndPerChiBuy = (buyNum * exRate / TROY_OUNCE_TO_GRAM) * 3.75;
+
+                        buySub = `≈ ${Math.round(vndPerChiBuy).toLocaleString('vi-VN')} VNĐ/chỉ`;
+                        sellSub = `≈ ${Math.round(vndPerChiSell).toLocaleString('vi-VN')} VNĐ/chỉ`;
+                    }
+                } else {
+                    if (currentMarket === 'gold') {
+                        buyMain = `${Math.round(item.buy / 10).toLocaleString('vi-VN')}`;
+                        sellMain = `${Math.round(item.sell / 10).toLocaleString('vi-VN')}`;
+                    } else {
+                        buyMain = `${Math.round(item.buy / 1000).toLocaleString('vi-VN')}`;
+                        sellMain = `${Math.round(item.sell / 1000).toLocaleString('vi-VN')}`;
+                    }
+                }
+
+                let changeStr = '0';
+                if (item.isWorld) {
+                    changeStr = item.change > 0 ? `+${item.change}` : `${item.change}`;
+                } else {
+                    const chgVal = Math.round(item.change || 0);
+                    changeStr = chgVal === 0 ? '0' : ((chgVal > 0 ? '+' : '') + chgVal.toLocaleString('vi-VN'));
+                }
+                const changeColor = item.change < 0 ? 'text-val-down' : 'text-val-up';
+
+                let clVal = item.cl !== undefined ? Math.round(item.cl) : 0;
+                let clStr = '0';
+                if (clVal !== 0) {
+                    if (currentMarket === 'silver' && !item.isWorld) {
+                        const clK = clVal / 1000;
+                        clStr = (clVal > 0 ? '+' : '') + (Math.abs(clK) < 10 ? clK.toFixed(1) : clK.toFixed(1));
+                    } else {
+                        clStr = (clVal > 0 ? '+' : '') + clVal.toLocaleString('vi-VN');
+                    }
+                }
+                const clColor = clVal < 0 ? 'text-val-down' : 'text-val-up';
+
+                const cells = row.children;
+                if (isAuthed && cells.length === 5) {
+                    const nameDiv = cells[0].children[0];
+                    const unitDiv = cells[0].children[1];
+                    const dispName = getItemDisplayName(item.name);
+                    const dispUnit = getItemUnitStr(item);
+                    if (nameDiv && nameDiv.textContent !== dispName) nameDiv.textContent = dispName;
+                    if (unitDiv && unitDiv.textContent !== dispUnit) unitDiv.textContent = dispUnit;
+
+                    const buyMainDiv = cells[1].children[0];
+                    let buySubDiv = cells[1].children[1];
+                    if (buyMainDiv && buyMainDiv.textContent !== buyMain) buyMainDiv.textContent = buyMain;
+                    if (buySub) {
+                        if (!buySubDiv) {
+                            buySubDiv = document.createElement('div');
+                            buySubDiv.className = 'text-[10px] sm:text-[12px] text-slate-400 font-bold mt-0.5';
+                            cells[1].appendChild(buySubDiv);
+                        }
+                        if (buySubDiv.textContent !== buySub) buySubDiv.textContent = buySub;
+                    } else if (buySubDiv) {
+                        buySubDiv.remove();
+                    }
+
+                    const sellMainDiv = cells[2].children[0];
+                    let sellSubDiv = cells[2].children[1];
+                    if (sellMainDiv && sellMainDiv.textContent !== sellMain) sellMainDiv.textContent = sellMain;
+                    if (sellSub) {
+                        if (!sellSubDiv) {
+                            sellSubDiv = document.createElement('div');
+                            sellSubDiv.className = 'text-[10px] sm:text-[12px] text-yellow-400 font-bold mt-0.5';
+                            cells[2].appendChild(sellSubDiv);
+                        }
+                        if (sellSubDiv.textContent !== sellSub) sellSubDiv.textContent = sellSub;
+                    } else if (sellSubDiv) {
+                        sellSubDiv.remove();
+                    }
+
+                    const changeDiv = cells[3].children[0] || cells[3];
+                    if (changeDiv.textContent !== changeStr) changeDiv.textContent = changeStr;
+                    cells[3].className = `py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black ${changeColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap`;
+
+                    const clDiv = cells[4].children[0] || cells[4];
+                    if (clDiv.textContent !== clStr) clDiv.textContent = clStr;
+                    cells[4].className = `py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:pr-2 text-right font-mono font-black ${clColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap`;
+                }
+            });
+        } else {
+            let rowsHtml = '';
+            items.forEach((item) => {
+                let buyMain = '';
+                let sellMain = '';
+                let buySub = '';
+                let sellSub = '';
+
+                if (item.isWorld) {
+                    const buyNum = Number(item.buy) || 0;
+                    const sellNum = Number(item.sell) || 0;
+                    buyMain = buyNum > 0 ? (buyNum < 1000 ? buyNum.toFixed(2) : Math.floor(buyNum).toLocaleString('en-US')) : '0';
+                    sellMain = sellNum > 0 ? (sellNum < 1000 ? sellNum.toFixed(2) : Math.floor(sellNum).toLocaleString('en-US')) : '0';
+                    
+                    const exRate = data?.exchangeRate || EXCHANGE_RATE;
+
+                    if (currentMarket === 'gold') {
+                        const vndPerChiSell = (data && data.baseLuongVND) ? (data.baseLuongVND / 10) : ((sellNum * exRate / TROY_OUNCE_TO_GRAM) * 3.75);
+                        const vndPerChiBuy = vndPerChiSell - (((sellNum - buyNum) * exRate / TROY_OUNCE_TO_GRAM) * 3.75);
+
+                        buySub = `≈ ${Math.round(vndPerChiBuy).toLocaleString('vi-VN')} VNĐ/chỉ`;
+                        sellSub = `≈ ${Math.round(vndPerChiSell).toLocaleString('vi-VN')} VNĐ/chỉ`;
+                    } else {
+                        const vndPerChiSell = (sellNum * exRate / TROY_OUNCE_TO_GRAM) * 3.75;
+                        const vndPerChiBuy = (buyNum * exRate / TROY_OUNCE_TO_GRAM) * 3.75;
+
+                        buySub = `≈ ${Math.round(vndPerChiBuy).toLocaleString('vi-VN')} VNĐ/chỉ`;
+                        sellSub = `≈ ${Math.round(vndPerChiSell).toLocaleString('vi-VN')} VNĐ/chỉ`;
+                    }
+                } else {
+                    if (currentMarket === 'gold') {
+                        buyMain = `${Math.round(item.buy / 10).toLocaleString('vi-VN')}`;
+                        sellMain = `${Math.round(item.sell / 10).toLocaleString('vi-VN')}`;
+                    } else {
+                        buyMain = `${Math.round(item.buy / 1000).toLocaleString('vi-VN')}`;
+                        sellMain = `${Math.round(item.sell / 1000).toLocaleString('vi-VN')}`;
+                    }
+                }
+
+                let changeStr = '0';
+                if (item.isWorld) {
+                    changeStr = item.change > 0 ? `+${item.change}` : `${item.change}`;
+                } else {
+                    const chgVal = Math.round(item.change || 0);
+                    changeStr = chgVal === 0 ? '0' : ((chgVal > 0 ? '+' : '') + chgVal.toLocaleString('vi-VN'));
+                }
+                const changeColor = item.change < 0 ? 'text-val-down' : 'text-val-up';
+
+                let clVal = item.cl !== undefined ? Math.round(item.cl) : 0;
+                let clStr = '0';
+                if (clVal !== 0) {
+                    if (currentMarket === 'silver' && !item.isWorld) {
+                        const clK = clVal / 1000;
+                        clStr = (clVal > 0 ? '+' : '') + (Math.abs(clK) < 10 ? clK.toFixed(1) : clK.toFixed(1));
+                    } else {
+                        clStr = (clVal > 0 ? '+' : '') + clVal.toLocaleString('vi-VN');
+                    }
+                }
+                const clColor = clVal < 0 ? 'text-val-down' : 'text-val-up';
+
+                if (!isAuthed) {
+                    rowsHtml += `
+                        <tr class="transition-colors text-xs sm:text-sm md:text-base">
+                            <td class="text-left pl-2 sm:pl-3 py-1.5 sm:py-2.5 font-black col-org text-xs sm:text-sm md:text-base">
+                                <span>${item.name}</span>
+                            </td>
+                            <td colspan="4" class="text-center py-1.5 sm:py-2.5 pr-2 sm:pr-3 text-slate-300 text-[11px] sm:text-xs md:text-sm">
+                                <span>🔒 Vui lòng <a href="javascript:void(0)" onclick="GoldDashboard.openAuth('login')" class="auth-gate-link font-bold">đăng nhập</a> để xem giá trực tuyến</span>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    rowsHtml += `
+                        <tr class="transition-colors border-b border-blue-900/30">
+                            <td class="text-left pl-1 sm:pl-2 pr-0.5 py-1.5 sm:py-2.5 font-black col-org">
+                                <div class="text-[13px] xs:text-[14.5px] sm:text-base md:text-lg font-black leading-tight">${getItemDisplayName(item.name)}</div>
+                                <div class="text-[10px] sm:text-[12px] font-sans font-semibold text-slate-400 normal-case mt-0.5 whitespace-nowrap">${getItemUnitStr(item)}</div>
+                            </td>
+
+                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-2 text-right font-mono font-black price-val text-[13.5px] xs:text-[15px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                                <div class="font-black">${buyMain}</div>
+                                ${buySub ? `<div class="text-[10px] sm:text-[12px] text-slate-400 font-bold mt-0.5">${buySub}</div>` : ''}
+                            </td>
+
+                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-2 text-right font-mono font-black price-val text-[13.5px] xs:text-[15px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                                <div class="font-black">${sellMain}</div>
+                                ${sellSub ? `<div class="text-[10px] sm:text-[12px] text-yellow-400 font-bold mt-0.5">${sellSub}</div>` : ''}
+                            </td>
+
+                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black ${changeColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
+                                <div>${changeStr}</div>
+                            </td>
+
+                            <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:pr-2 text-right font-mono font-black ${clColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
+                                <div>${clStr}</div>
+                            </td>
+                        </tr>
+                    `;
+                }
+            });
+            tableBody.innerHTML = rowsHtml;
+        }
+    }
+
+    function updateCalculatorUI(forceRebuild = false) {
+        const calcContainer = document.getElementById('calculator-section');
+        if (calcContainer) {
+            if (forceRebuild || !calcContainer.firstElementChild) {
+                calcContainer.innerHTML = getCalculatorCardHtml();
+                const amountInput = document.getElementById('calc-amount');
+                const unitSelect = document.getElementById('calc-unit');
+                const typeSelect = document.getElementById('calc-type');
+                if (amountInput) amountInput.addEventListener('input', calculateConverter);
+                if (unitSelect) unitSelect.addEventListener('change', calculateConverter);
+                if (typeSelect) typeSelect.addEventListener('change', calculateConverter);
+            }
+            calculateConverter();
+        }
     }
 
     function getCalculatorCardHtml() {
-        const isGold = currentMarket === 'gold';
-        const title = isGold ? 'MÁY TÍNH QUY ĐỔI TIỀN VÀNG' : 'MÁY TÍNH QUY ĐỔI TIỀN BẠC';
-        const desc = isGold ? 'Nhập số lượng & loại vàng để tính tiền VNĐ' : 'Nhập số lượng & loại bạc để tính tiền VNĐ';
+        const title = 'MÁY TÍNH QUY ĐỔI TIỀN VÀNG & BẠC';
+        const desc = 'Nhập số lượng & chọn loại vàng/bạc để tính tiền VNĐ theo thời gian thực';
 
         const prevAmount = document.getElementById('calc-amount')?.value || '1';
-        const prevUnit = document.getElementById('calc-unit')?.value || (isGold ? 'chi' : 'luong');
-        const prevType = document.getElementById('calc-type')?.value || (isGold ? 'sjc' : 'bac_thoi');
+        const prevUnit = document.getElementById('calc-unit')?.value || 'chi';
+        const prevType = document.getElementById('calc-type')?.value || 'sjc';
 
-        const unitOptions = isGold ? `
+        const unitOptions = `
             <option value="chi" ${prevUnit === 'chi' ? 'selected' : ''}>Chỉ (3.75g)</option>
-            <option value="luong" ${prevUnit === 'luong' ? 'selected' : ''}>Lượng / Cây (37.5g)</option>
-            <option value="gram" ${prevUnit === 'gram' ? 'selected' : ''}>Gram (g)</option>
-        ` : `
             <option value="luong" ${prevUnit === 'luong' ? 'selected' : ''}>Lượng / Cây (37.5g)</option>
             <option value="kg" ${prevUnit === 'kg' ? 'selected' : ''}>Kilogram (1000g)</option>
-            <option value="chi" ${prevUnit === 'chi' ? 'selected' : ''}>Chỉ (3.75g)</option>
             <option value="gram" ${prevUnit === 'gram' ? 'selected' : ''}>Gram (g)</option>
         `;
 
-        const typeOptions = isGold ? `
-            <option value="sjc" ${prevType === 'sjc' ? 'selected' : ''}>Vàng Miếng SJC (SJC Tự do)</option>
-            <option value="nhan" ${prevType === 'nhan' ? 'selected' : ''}>Vàng nhẫn SJC</option>
-            <option value="24k" ${prevType === '24k' ? 'selected' : ''}>Vàng 999.9 (24K)</option>
-            <option value="22k" ${prevType === '22k' ? 'selected' : ''}>Vàng 99.9 (22K)</option>
-            <option value="980" ${prevType === '980' ? 'selected' : ''}>Vàng 980</option>
-            <option value="750" ${prevType === '750' ? 'selected' : ''}>Vàng 750 (18K)</option>
-            <option value="610" ${prevType === '610' ? 'selected' : ''}>Vàng 610 (14.6K)</option>
-            <option value="585" ${prevType === '585' ? 'selected' : ''}>Vàng 585 (14K)</option>
-            <option value="416" ${prevType === '416' ? 'selected' : ''}>Vàng 416 (10K)</option>
-            <option value="18k" ${prevType === '18k' ? 'selected' : ''}>Vàng 95 (18K)</option>
-            <option value="gf9999" ${prevType === 'gf9999' ? 'selected' : ''}>99,99% GF</option>
-            <option value="gf95" ${prevType === 'gf95' ? 'selected' : ''}>95% GF</option>
-            <option value="tg" ${prevType === 'tg' ? 'selected' : ''}>Vàng TG (Quốc tế)</option>
-        ` : `
-            <option value="phuquy_1l" ${prevType === 'phuquy_1l' ? 'selected' : ''}>Bạc Phú Quý (1 Lượng)</option>
-            <option value="phuquy_5l" ${prevType === 'phuquy_5l' ? 'selected' : ''}>Bạc Phú Quý (5 Lượng)</option>
-            <option value="phuquy_1kg" ${prevType === 'phuquy_1kg' ? 'selected' : ''}>Bạc Phú Quý (1 Kg)</option>
-            <option value="bac_999" ${prevType === 'bac_999' ? 'selected' : ''}>Bạc 999 (1 Chỉ)</option>
-            <option value="bac_925" ${prevType === 'bac_925' ? 'selected' : ''}>Bạc nữ trang bán lẻ (1 Chỉ)</option>
-            <option value="bac_thai" ${prevType === 'bac_thai' ? 'selected' : ''}>Bạc Thái 925 (1 Chỉ)</option>
-            <option value="bac_y" ${prevType === 'bac_y' ? 'selected' : ''}>Bạc Ý 925 (1 Chỉ)</option>
-            <option value="bac_tg" ${prevType === 'bac_tg' ? 'selected' : ''}>Bạc Thế Giới (Spot XAG/USD)</option>
+        const typeOptions = `
+            <optgroup label="--- VÀNG ---">
+                <option value="sjc" ${prevType === 'sjc' ? 'selected' : ''}>Vàng Miếng SJC (SJC Tự do)</option>
+                <option value="24k" ${prevType === '24k' ? 'selected' : ''}>Vàng 999.9 (24K)</option>
+                <option value="22k" ${prevType === '22k' ? 'selected' : ''}>Vàng 99.9 (22K)</option>
+                <option value="980" ${prevType === '980' ? 'selected' : ''}>Vàng 980</option>
+                <option value="750" ${prevType === '750' ? 'selected' : ''}>Vàng 750 (18K)</option>
+                <option value="610" ${prevType === '610' ? 'selected' : ''}>Vàng 610 (14.6K)</option>
+                <option value="585" ${prevType === '585' ? 'selected' : ''}>Vàng 585 (14K)</option>
+                <option value="416" ${prevType === '416' ? 'selected' : ''}>Vàng 416 (10K)</option>
+                <option value="18k" ${prevType === '18k' ? 'selected' : ''}>Vàng 95 (18K)</option>
+                <option value="tg" ${prevType === 'tg' ? 'selected' : ''}>Vàng TG (Quốc tế)</option>
+            </optgroup>
+            <optgroup label="--- BẠC ---">
+                <option value="phuquy_1l" ${prevType === 'phuquy_1l' ? 'selected' : ''}>Bạc Phú Quý (1 Lượng)</option>
+                <option value="phuquy_1kg" ${prevType === 'phuquy_1kg' ? 'selected' : ''}>Bạc Phú Quý (1 Kg)</option>
+                <option value="bac_999" ${prevType === 'bac_999' ? 'selected' : ''}>Bạc 999 thị trường</option>
+                <option value="bac_925" ${prevType === 'bac_925' ? 'selected' : ''}>Bạc nữ trang bán lẻ</option>
+                <option value="bac_tg" ${prevType === 'bac_tg' ? 'selected' : ''}>Bạc TG (Spot XAG/USD)</option>
+            </optgroup>
         `;
 
         return `
@@ -976,7 +1097,7 @@ const GoldDashboard = (function () {
                         <strong class="text-slate-200 font-bold ml-1">Thời gian thực</strong>
                     </div>
                     <div class="text-slate-400 text-xs sm:text-sm">
-                        ${isGold ? '1 Lượng = 10 Chỉ' : 'Chuẩn thị trường'}
+                        1 Lượng = 10 Chỉ · 1 Kg = 26.66 Lượng
                     </div>
                 </div>
             </div>
@@ -984,100 +1105,59 @@ const GoldDashboard = (function () {
     }
 
     function initTradingView() {
-        const symbol = currentMarket === 'gold' ? 'OANDA:XAUUSD' : 'OANDA:XAGUSD';
-        const chartContainer = document.getElementById('tv_chart');
-        if (!chartContainer || typeof TradingView === 'undefined') return;
+        if (typeof TradingView === 'undefined') return;
 
         const tvTheme = currentTheme === 'light' ? 'light' : 'dark';
         const tvBg = currentTheme === 'light' ? '#ffffff' : '#0f172a';
         const tvGrid = currentTheme === 'light' ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.04)';
 
-        chartContainer.innerHTML = '';
-        new TradingView.widget({
-            "autosize": true,
-            "symbol": symbol,
-            "interval": "60",
-            "timezone": "Asia/Ho_Chi_Minh",
-            "theme": tvTheme,
-            "style": "1",
-            "locale": "vi_VN",
-            "enable_publishing": false,
-            "backgroundColor": tvBg,
-            "gridColor": tvGrid,
-            "hide_top_toolbar": true,
-            "hide_legend": false,
-            "save_image": false,
-            "container_id": "tv_chart"
-        });
+        // 1. Chart Vàng XAU/USD
+        const goldContainer = document.getElementById('tv_chart_gold') || document.getElementById('tv_chart');
+        if (goldContainer) {
+            goldContainer.innerHTML = '';
+            new TradingView.widget({
+                "autosize": true,
+                "symbol": "OANDA:XAUUSD",
+                "interval": "60",
+                "timezone": "Asia/Ho_Chi_Minh",
+                "theme": tvTheme,
+                "style": "1",
+                "locale": "vi_VN",
+                "enable_publishing": false,
+                "backgroundColor": tvBg,
+                "gridColor": tvGrid,
+                "hide_top_toolbar": true,
+                "hide_legend": false,
+                "save_image": false,
+                "container_id": goldContainer.id
+            });
+        }
+
+        // 2. Chart Bạc XAG/USD
+        const silverContainer = document.getElementById('tv_chart_silver');
+        if (silverContainer) {
+            silverContainer.innerHTML = '';
+            new TradingView.widget({
+                "autosize": true,
+                "symbol": "OANDA:XAGUSD",
+                "interval": "60",
+                "timezone": "Asia/Ho_Chi_Minh",
+                "theme": tvTheme,
+                "style": "1",
+                "locale": "vi_VN",
+                "enable_publishing": false,
+                "backgroundColor": tvBg,
+                "gridColor": tvGrid,
+                "hide_top_toolbar": true,
+                "hide_legend": false,
+                "save_image": false,
+                "container_id": "tv_chart_silver"
+            });
+        }
     }
 
-    function updateCalculatorUI() {
-        const typeSelect = document.getElementById('calc-type');
-        const unitSelect = document.getElementById('calc-unit');
-        const calcTitle = document.getElementById('calc-title');
-        const calcDesc = document.getElementById('calc-desc');
-        const tableTitle = document.getElementById('table-title');
-        const tableUnitSub = document.getElementById('table-unit-subtitle');
-        const tableColName = document.getElementById('table-col-name');
-        const chartTitle = document.getElementById('chart-title');
-
-        if (currentMarket === 'gold') {
-            if (calcTitle) calcTitle.textContent = 'Máy Tính Quy Đổi Tiền Vàng Nhanh';
-            if (calcDesc) calcDesc.textContent = 'Nhập số lượng vàng muốn tính, hệ thống tự động nhân ra số tiền VNĐ theo thời gian thực';
-            if (tableTitle) tableTitle.textContent = 'GIÁ VÀNG THAM KHẢO';
-            if (tableUnitSub) tableUnitSub.textContent = 'Đơn vị: VNĐ / 1 Chỉ';
-            if (tableColName) tableColName.textContent = 'Tổ chức';
-            if (chartTitle) chartTitle.textContent = 'Biểu Đồ Giá Vàng Thế Giới (XAU/USD)';
-
-            if (unitSelect) {
-                unitSelect.innerHTML = `
-                    <option value="chi" selected>Chỉ (3.75g)</option>
-                    <option value="luong">Lượng / Cây (37.5g)</option>
-                    <option value="gram">Gram (g)</option>
-                `;
-            }
-
-            if (typeSelect) {
-                typeSelect.innerHTML = `
-                    <option value="sjc" selected>Vàng Miếng SJC (SJC Tự do)</option>
-                    <option value="24k">Vàng 999.9 (24K)</option>
-                    <option value="22k">Vàng 99.9 (22K)</option>
-                    <option value="980">Vàng 980</option>
-                    <option value="750">Vàng 750 (18K)</option>
-                    <option value="610">Vàng 610 (14.6K)</option>
-                    <option value="585">Vàng 585 (14K)</option>
-                    <option value="416">Vàng 416 (10K)</option>
-                    <option value="18k">Vàng 95 (18K)</option>
-                    <option value="tg">Vàng TG (Quốc tế)</option>
-                `;
-            }
-        } else {
-            if (calcTitle) calcTitle.textContent = 'Máy Tính Quy Đổi Tiền Bạc Nhanh';
-            if (calcDesc) calcDesc.textContent = 'Nhập số lượng bạc muốn tính, hệ thống tự động nhân ra số tiền VNĐ theo thời gian thực';
-            if (tableTitle) tableTitle.textContent = 'GIÁ BẠC THAM KHẢO';
-            if (tableUnitSub) tableUnitSub.textContent = 'Đơn vị: VNĐ / 1 Chỉ';
-            if (tableColName) tableColName.textContent = 'Tổ chức';
-            if (chartTitle) chartTitle.textContent = 'Biểu Đồ Giá Bạc Thế Giới (XAG/USD)';
-
-            if (unitSelect) {
-                unitSelect.innerHTML = `
-                    <option value="luong" selected>Lượng / Cây (37.5g)</option>
-                    <option value="kg">Kilogram (1000g)</option>
-                    <option value="chi">Chỉ (3.75g)</option>
-                    <option value="gram">Gram (g)</option>
-                `;
-            }
-
-            if (typeSelect) {
-                typeSelect.innerHTML = `
-                    <option value="bac_thoi" selected>Bạc Phú Quý (1 Lượng)</option>
-                    <option value="bac_kg">Bạc Phú Quý (1 Kg)</option>
-                    <option value="bac_999">Bạc 999 thị trường</option>
-                    <option value="bac_925">Bạc nữ trang bán lẻ</option>
-                    <option value="bac_tg">Bạc TG (Spot XAG)</option>
-                `;
-            }
-        }
+    function updateMarketHeadersUI() {
+        // No-op
     }
 
     function calculateConverter() {
@@ -1100,8 +1180,9 @@ const GoldDashboard = (function () {
         const type = typeSelect.value;
 
         let pricePerGramVND = 0;
+        const isGoldType = ['sjc', 'nhan', '24k', '22k', '980', '750', '610', '585', '416', '18k', 'tg'].includes(type);
 
-        if (currentMarket === 'gold') {
+        if (isGoldType) {
             const goldItems = currentData.goldItems || [];
             let selectedItem = null;
 
@@ -1115,28 +1196,26 @@ const GoldDashboard = (function () {
             else if (type === '585') selectedItem = goldItems.find(i => i.name === 'Vàng 585 (14K)');
             else if (type === '416') selectedItem = goldItems.find(i => i.name === 'Vàng 416 (10K)');
             else if (type === '18k') selectedItem = goldItems.find(i => i.name === 'Vàng 95');
-            else if (type === 'gf9999') selectedItem = goldItems.find(i => i.name === '99,99% GF');
-            else if (type === 'gf95') selectedItem = goldItems.find(i => i.name === '95% GF');
             else if (type === 'tg') selectedItem = goldItems.find(i => i.name === 'Vàng TG');
             else selectedItem = goldItems[0];
 
             let pricePerChiVND = 0;
             if (selectedItem) {
                 if (selectedItem.isWorld) {
-                    pricePerChiVND = (selectedItem.sell * EXCHANGE_RATE / TROY_OUNCE_TO_GRAM) * 3.75;
+                    pricePerChiVND = (selectedItem.sell * (currentData.exchangeRate || EXCHANGE_RATE) / TROY_OUNCE_TO_GRAM) * 3.75;
                 } else {
                     pricePerChiVND = selectedItem.sell * 100;
                 }
             } else {
-                pricePerChiVND = (145000 * 100);
+                pricePerChiVND = 14500000;
             }
             pricePerGramVND = pricePerChiVND / 3.75;
         } else {
-            // Silver calculation (Bạc Phú Quý, Bạc 999 thị trường, Bạc Nữ Trang & Bạc Thế Giới)
             const silverItems = currentData.silverItems || [];
             let selectedItem = null;
 
             if (type === 'phuquy_1l') selectedItem = silverItems.find(i => i.name.includes('Phú Quý (1 Lượng)'));
+            else if (type === 'phuquy_5l') selectedItem = silverItems.find(i => i.name.includes('Phú Quý (5 Lượng)'));
             else if (type === 'phuquy_1kg') selectedItem = silverItems.find(i => i.name.includes('Phú Quý (1 Kg)'));
             else if (type === 'bac_999') selectedItem = silverItems.find(i => i.name.includes('Bạc 999'));
             else if (type === 'bac_925') selectedItem = silverItems.find(i => i.name.includes('Nữ trang'));
@@ -1148,10 +1227,11 @@ const GoldDashboard = (function () {
                     pricePerGramVND = (selectedItem.sell * (currentData.exchangeRate || EXCHANGE_RATE)) / TROY_OUNCE_TO_GRAM;
                 } else if (selectedItem.name.includes('1 Kg')) {
                     pricePerGramVND = selectedItem.sell / 1000;
+                } else if (selectedItem.name.includes('5 Lượng')) {
+                    pricePerGramVND = selectedItem.sell / (5 * 37.5);
                 } else if (selectedItem.name.includes('1 Lượng')) {
                     pricePerGramVND = selectedItem.sell / 37.5;
                 } else {
-                    // 1 Chỉ = 3.75g
                     pricePerGramVND = selectedItem.sell / 3.75;
                 }
             } else {
@@ -1163,10 +1243,10 @@ const GoldDashboard = (function () {
         if (unit === 'chi') totalGrams = amount * 3.75;
         else if (unit === 'luong') totalGrams = amount * 37.5;
         else if (unit === 'kg') totalGrams = amount * 1000;
-        else totalGrams = amount; // gram
+        else totalGrams = amount;
 
         const totalVND = totalGrams * pricePerGramVND;
-        const totalUSD = totalVND / EXCHANGE_RATE;
+        const totalUSD = totalVND / (currentData.exchangeRate || EXCHANGE_RATE);
 
         resultEl.textContent = formatVND(totalVND);
         if (resultUsdEl) resultUsdEl.textContent = `≈ $${formatUSD(totalUSD)} USD`;
@@ -1653,6 +1733,8 @@ const GoldDashboard = (function () {
         return liveNewsList;
     }
 
+    let newsLimit = 6;
+
     async function renderNews(filter = 'all') {
         currentNewsFilter = filter;
         const container = document.getElementById('news-section');
@@ -1674,22 +1756,24 @@ const GoldDashboard = (function () {
             : newsData.filter(item => item.category === filter);
 
         const featuredArticle = filteredNews.find(n => n.featured) || filteredNews[0];
-        const regularArticles = filteredNews.filter(n => n.id !== (featuredArticle ? featuredArticle.id : -1));
+        const allRegular = filteredNews.filter(n => n.id !== (featuredArticle ? featuredArticle.id : -1));
+        const regularArticles = allRegular.slice(0, newsLimit);
+        const hasMore = allRegular.length > newsLimit;
 
         let html = `
             <!-- Tiêu đề và bộ lọc Tin Tức -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-2 border-b border-slate-800">
                 <div>
-                    <h2 class="text-base font-bold text-slate-100 flex items-center gap-2">
+                    <h2 class="text-base sm:text-lg font-black text-slate-100 flex items-center gap-2 uppercase tracking-tight">
                         <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
-                        <span>Tin Tức Tự Động 24/7 (VnExpress, CafeF, VietnamNet)</span>
+                        <span>TIN TỨC THỊ TRƯỜNG THỜI GIAN THỰC</span>
                     </h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Tự động cập nhật qua RSS Feed mỗi 10 phút từ các cơ quan báo chí chính thống</p>
+                    <p class="text-xs text-slate-400 mt-0.5 font-medium">Tự động cập nhật 24/7 từ các trang báo kinh tế - tài chính hàng đầu</p>
                 </div>
                 <div class="flex items-center gap-2">
                     <button onclick="GoldDashboard.refreshNews()" title="Quét lại tin mới nhất"
-                        class="text-xs font-mono text-blue-400 bg-blue-950/60 border border-blue-800/50 hover:bg-blue-900/60 px-2.5 py-1 rounded-lg flex items-center gap-1.5 cursor-pointer transition-all">
-                        <span>🔄 Làm mới tin (${filteredNews.length} bài)</span>
+                        class="text-xs font-mono text-blue-400 bg-blue-950/60 border border-blue-800/50 hover:bg-blue-900/60 px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 cursor-pointer transition-all">
+                        <span>🔄 Cập nhật (${filteredNews.length} tin)</span>
                     </button>
                 </div>
             </div>
@@ -1697,17 +1781,17 @@ const GoldDashboard = (function () {
             <!-- Thanh Danh Mục / Bộ Lọc (Category Filter Pills) -->
             <div class="flex flex-wrap items-center gap-2">
                 ${categories.map(cat => {
-            const isActive = currentNewsFilter === cat.id;
-            const activeClass = isActive
-                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30 border-blue-500'
-                : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700 border-slate-700';
-            return `
+                    const isActive = currentNewsFilter === cat.id;
+                    const activeClass = isActive
+                        ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30 border-blue-500'
+                        : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700 border-slate-700';
+                    return `
                         <button onclick="GoldDashboard.filterNews('${cat.id}')"
                             class="px-3.5 py-1.5 rounded-xl text-xs transition-all cursor-pointer border ${activeClass}">
                             ${cat.name}
                         </button>
                     `;
-        }).join('')}
+                }).join('')}
             </div>
         `;
 
@@ -1762,7 +1846,6 @@ const GoldDashboard = (function () {
             `;
         }
 
-        // Lưới các bài viết khác (Full-width 3 cột)
         if (regularArticles.length > 0) {
             html += `
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -1813,20 +1896,24 @@ const GoldDashboard = (function () {
             `;
         }
 
-        if (filteredNews.length === 0) {
+        if (hasMore) {
             html += `
-                <div class="dashboard-card p-12 rounded-2xl border border-slate-800 text-center flex flex-col items-center justify-center gap-3 mt-4">
-                    <span class="text-4xl">📰</span>
-                    <h3 class="text-base font-bold text-slate-200">Chưa có bài viết mới trong chuyên mục này</h3>
-                    <p class="text-xs text-slate-400">Vui lòng chọn chuyên mục khác hoặc bấm "Làm mới tin" để quét lại luồng bài mới nhất từ các báo.</p>
-                    <button onclick="GoldDashboard.filterNews('all')" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-all shadow-md mt-2 cursor-pointer">
-                        Xem tất cả tin tức (${newsData.length} bài)
+                <div class="flex justify-center mt-4">
+                    <button onclick="GoldDashboard.loadMoreNews()"
+                        class="px-6 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-yellow-400 hover:text-yellow-300 font-bold text-xs sm:text-sm flex items-center gap-2 cursor-pointer transition-all shadow-md">
+                        <span>📰 Xem Thêm Tin Tức Thị Trường</span>
+                        <span>▼</span>
                     </button>
                 </div>
             `;
         }
 
         container.innerHTML = html;
+    }
+
+    function loadMoreNews() {
+        newsLimit += 6;
+        renderNews(currentNewsFilter);
     }
 
     function openNewsModal(id) {
@@ -2079,21 +2166,15 @@ const GoldDashboard = (function () {
             initTheme();
             renderAuthHeader();
 
-            // ⚡ Hiển thị ngay lập tức 0ms không chờ mạng
-            currentData = getInstantInitialData(currentMarket);
+            // ⚡ Hiển thị ngay lập tức 0ms không chờ mạng - load cả gold lẫn silver
+            currentData = getInstantInitialData('gold');
             renderPriceCards(currentData);
 
-            updateCalculatorUI();
+            updateCalculatorUI(true);
             this.refreshData();
             initTradingView();
-            setInterval(() => this.refreshData(), 1000); // ⚡ Tự động cập nhật nhảy số thời gian thực mỗi 1 giây theo VangSaigon
-
-            const amountInput = document.getElementById('calc-amount');
-            const unitSelect = document.getElementById('calc-unit');
-            const typeSelect = document.getElementById('calc-type');
-            if (amountInput) amountInput.addEventListener('input', calculateConverter);
-            if (unitSelect) unitSelect.addEventListener('change', calculateConverter);
-            if (typeSelect) typeSelect.addEventListener('change', calculateConverter);
+            renderNews('all');
+            setInterval(() => this.refreshData(), 3000); // ⚡ Tự động cập nhật nhảy số thời gian thực mỗi 3 giây theo VangSaigon
         },
         switchMarket: function (market) {
             if (currentMarket === market) return;
@@ -2146,14 +2227,11 @@ const GoldDashboard = (function () {
                     if (tabSilver) tabSilver.className = 'px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all cursor-pointer bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 shadow-lg shadow-cyan-500/20 active-tab';
                 }
 
-                // ⚡ Hiển thị bảng giá mới ngay lập tức mà KHÔNG bị reset về 0 hoặc dữ liệu giả
-                if (lastLiveVsgData) {
-                    currentData = lastLiveVsgData;
-                } else {
-                    currentData = getInstantInitialData(market);
-                }
+                // ⚡ Hiển thị bảng giá mới ngay lập tức trong 0ms không bị chờ mạng hay trống bảng
+                currentData = getInstantInitialData(market);
                 renderPriceCards(currentData);
-                updateCalculatorUI();
+                updateMarketHeadersUI();
+                updateCalculatorUI(true);
                 initTradingView();
                 this.refreshData();
             }
@@ -2161,6 +2239,7 @@ const GoldDashboard = (function () {
         openNews: openNewsModal,
         closeNewsModal: closeNewsModal,
         filterNews: renderNews,
+        loadMoreNews: loadMoreNews,
         refreshNews: async function () {
             liveNewsList = [];
             await renderNews(currentNewsFilter);
@@ -2186,11 +2265,12 @@ const GoldDashboard = (function () {
                 if (data) {
                     renderPriceCards(data);
 
-                    // Cập nhật khung thời gian "Cập nhật lần cuối"
+                    // Cập nhật cả 2 timestamp vàng & bạc cùng 1 lúc
+                    const nowTimeStr = 'Cập nhật lần cuối: ' + getFormattedDateTimeStr();
                     const lastUpdatedEl = document.getElementById('last-updated-time');
-                    if (lastUpdatedEl) {
-                        lastUpdatedEl.textContent = 'Cập nhật lần cuối: ' + getFormattedDateTimeStr();
-                    }
+                    if (lastUpdatedEl) lastUpdatedEl.textContent = nowTimeStr;
+                    const silverUpdatedEl = document.getElementById('silver-updated-time');
+                    if (silverUpdatedEl) silverUpdatedEl.textContent = nowTimeStr;
                 }
             } finally {
                 setTimeout(() => {
