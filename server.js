@@ -294,19 +294,25 @@ async function fetchTaiemLiveData() {
         ];
 
         // Parse Silver
-        const pq1lRow = goldRows.find(r => r[0] === 'Phú Quý 1L');
-        const pq1kgRow = goldRows.find(r => r[0] === 'Phú Quý 1KG');
-        const xagRow = goldRows.find(r => r[0] === 'Thế Giới' && r[1] && r[1].includes('.'));
+        const pq1lRow = goldRows.find(r => r && r[0] && r[0].includes('Phú Quý 1L'));
+        const pq1kgRow = goldRows.find(r => r && r[0] && r[0].includes('Phú Quý 1KG'));
+        const xagRow = goldRows.find(r => r && r[0] && r[0].includes('Thế Giới') && r[1] && r[1].includes('.'));
 
         const xagBuy = xagRow ? parseFloat(xagRow[1].replace(/,/g, '.')) : 61.09;
-        const xagSell = xagRow ? parseFloat(xagRow[2].replace(/,/g, '.')) : 61.109;
+        const xagSell = xagRow ? parseFloat(xagRow[2].replace(/,/g, '.')) : 61.11;
         const worldSellVndPerChi = (xagSell * exchangeRate / troyOunceToGram) * 3.75;
 
-        const pq1lBuy = (pq1lRow && pq1lRow[1]) ? parseInt(pq1lRow[1].replace(/[,.]/g, ''), 10) * 1000 : Math.round(baseLuongVND * 0.97);
-        const pq1lSell = (pq1lRow && pq1lRow[2]) ? parseInt(pq1lRow[2].replace(/[,.]/g, ''), 10) * 1000 : Math.round(baseLuongVND);
+        // Silver Base Calculations (VND)
+        const silverBaseLuongVndSell = Math.round(worldSellVndPerChi * 10);
+        const silverBaseLuongVndBuy = Math.round((xagBuy * exchangeRate / troyOunceToGram) * 37.5);
+        const silverBaseKgVndSell = Math.round((xagSell * exchangeRate / troyOunceToGram) * 1000);
+        const silverBaseKgVndBuy = Math.round((xagBuy * exchangeRate / troyOunceToGram) * 1000);
 
-        const pq1kgBuy = (pq1kgRow && pq1kgRow[1]) ? parseInt(pq1kgRow[1].replace(/[,.]/g, ''), 10) * 1000 : Math.round(baseLuongVND * 26.66 * 0.97);
-        const pq1kgSell = (pq1kgRow && pq1kgRow[2]) ? parseInt(pq1kgRow[2].replace(/[,.]/g, ''), 10) * 1000 : Math.round(baseLuongVND * 26.66);
+        const pq1lBuy = (pq1lRow && pq1lRow[1]) ? parseInt(pq1lRow[1].replace(/[,.]/g, ''), 10) * 1000 : Math.round(silverBaseLuongVndBuy * 0.97);
+        const pq1lSell = (pq1lRow && pq1lRow[2]) ? parseInt(pq1lRow[2].replace(/[,.]/g, ''), 10) * 1000 : Math.round(silverBaseLuongVndSell);
+
+        const pq1kgBuy = (pq1kgRow && pq1kgRow[1]) ? parseInt(pq1kgRow[1].replace(/[,.]/g, ''), 10) * 1000 : Math.round(silverBaseKgVndBuy * 0.97);
+        const pq1kgSell = (pq1kgRow && pq1kgRow[2]) ? parseInt(pq1kgRow[2].replace(/[,.]/g, ''), 10) * 1000 : Math.round(silverBaseKgVndSell);
 
         const bac999Sell = Math.round((worldSellVndPerChi * 1.05) / 1000) * 1000;
         const bac999Buy = bac999Sell - 30000;
