@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
     <meta name="google-site-verification" content="0WlZrnXwTEoIH_z7TcZ3BIqcFFFJd3P_ixlzII5aWVA" />
     <title>Bảng Giá Vàng Hôm Nay - Trực Tuyến SJC, 9999, 18K, 24K | T3Gold</title>
     <meta name="description" content="Cập nhật bảng giá vàng hôm nay trực tuyến 24/7. Tra cứu giá vàng SJC, vàng 9999, vàng nữ trang 18K/14K, giá vàng 24K, giá bạc và tỷ giá ngoại tệ mới nhất." />
@@ -84,33 +85,56 @@
             </div>
         </div>
 
-        <!-- 2. Ở Giữa (DESKTOP WEB): Capsule Bar chuẩn như Hình 1 -->
-        <div class="hidden md:flex items-center justify-center flex-1 mx-4">
-            <a href="https://www.t3gold.vn/cac-goi-phan-mem"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Xem chi tiết các gói phần mềm quản lý tiệm vàng T3Gold"
-                class="t3gold-banner-dark group relative px-5 py-2.5 rounded-full bg-[#0b1329] border border-amber-500/50 shadow-lg shadow-amber-500/10 hover:border-amber-400 hover:scale-[1.02] active:scale-98 flex items-center gap-4 transition-all">
+        <!-- 2. Ở Giữa (DESKTOP / LAPTOP MÀN HÌNH LỚN >= 1024px): Capsule Bar 2 Tầng Đẳng Cấp -->
+        <div class="hidden lg:flex items-center justify-center flex-1 mx-4">
+            <div
+                class="t3gold-banner-dark group relative px-5 py-2.5 rounded-2xl bg-[#0b1329] border border-amber-500/50 shadow-lg shadow-amber-500/10 flex flex-col gap-2 transition-all max-w-xl w-full">
                 
-                <!-- Logo T3Gold Mới (Bự 52px nét, dễ nhìn dễ đọc) -->
-                <div class="flex items-center justify-center shrink-0 pr-1">
-                    <img src="logo-slogan-transparent.png" alt="T3Gold" class="h-[52px] w-auto object-contain shrink-0" style="height: 52px; max-height: 56px;" />
+                <!-- Tầng 1: Logo | Tiêu Đề | Nút Xem Ngay -->
+                <div class="flex items-center justify-between gap-3">
+                    <a href="https://www.t3gold.vn/cac-goi-phan-mem" target="_blank" rel="noopener noreferrer"
+                        class="flex items-center gap-3 shrink-0 min-w-0 flex-1">
+                        <!-- Logo T3Gold -->
+                        <img src="logo-slogan-transparent.png" alt="T3Gold" class="h-[32px] w-auto object-contain shrink-0" />
+                        
+                        <!-- Vạch ngăn cách vertical vàng ánh kim -->
+                        <div class="h-6 w-px bg-gradient-to-b from-transparent via-amber-500/60 to-transparent shrink-0"></div>
+
+                        <!-- Chữ Khám phá Các Gói Phần Mềm T3Gold -->
+                        <div class="flex items-center gap-1.5 whitespace-nowrap">
+                            <span class="text-light-fix text-xs sm:text-sm font-semibold">Khám phá</span>
+                            <strong class="text-gold-fix text-xs sm:text-sm font-black">Các Gói Phần Mềm T3Gold</strong>
+                        </div>
+                    </a>
+
+                    <!-- Nút Vàng XEM NGAY ➔ -->
+                    <a href="https://www.t3gold.vn/cac-goi-phan-mem" target="_blank" rel="noopener noreferrer"
+                        class="btn-gold-fix px-3.5 py-1 rounded-full text-slate-950 text-xs font-black uppercase tracking-wider flex items-center gap-1 shadow-md shadow-amber-500/25 shrink-0 group-hover:brightness-110 transition-all">
+                        XEM NGAY <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-0.5 transition-transform pointer-events-none"></i>
+                    </a>
                 </div>
-                
-                <!-- Vạch ngăn cách vertical -->
-                <div class="h-7 w-px bg-slate-700/80 shrink-0"></div>
-                
-                <!-- Nội dung chữ -->
-                <div class="flex items-center gap-2.5 whitespace-nowrap pl-1">
-                    <span class="text-light-fix text-xs sm:text-sm font-semibold tracking-normal">Khám phá</span>
-                    <strong class="text-gold-fix text-xs sm:text-sm font-black tracking-wide">Các Gói Phần Mềm T3Gold</strong>
+
+                <!-- Đường kẻ ngang Vàng Ánh Kim Gradient thẩm mỹ cao -->
+                <div class="h-px w-full bg-gradient-to-r from-transparent via-amber-500/50 to-transparent my-0.5"></div>
+
+                <!-- Tầng 2: Slogan Chạy Chữ Marquee & Số Hotline -->
+                <div class="flex items-center justify-between gap-3 pt-0.5">
+                    <!-- Slogan chữ chạy mượt (Màu nổi bật, chữ lớn rõ nét) -->
+                    <div class="t3gold-marquee-box flex-1 overflow-hidden">
+                        <div class="t3gold-marquee-text t3gold-slogan-fix text-[13.5px] sm:text-sm md:text-base font-extrabold">
+                            ✨ Đơn giản thao tác &nbsp;•&nbsp; Chính xác nghiệp vụ &nbsp;•&nbsp; Báo cáo thông minh ✨
+                        </div>
+                    </div>
+
+                    <!-- Hotline Button (Mở trực tiếp bàn phím điện thoại & tự động sao chép số) -->
+                    <a href="tel:0942758213" rel="nofollow" title="Bấm gọi ngay Hotline T3Gold"
+                        onclick="GoldDashboard.handleHotlineClick(event)"
+                        class="t3gold-hotline-btn inline-flex items-center gap-1.5 text-xs sm:text-sm font-black px-3 py-1 rounded-full shadow-sm shrink-0 transition-all">
+                        <i class="fa-solid fa-phone text-xs animate-pulse pointer-events-none"></i>
+                        <span class="pointer-events-none">0942 758 213</span>
+                    </a>
                 </div>
-                
-                <!-- Nút Vàng XEM NGAY ➔ -->
-                <span class="btn-gold-fix px-3.5 py-1.5 rounded-full text-slate-950 text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5 shadow-md shadow-amber-500/25 shrink-0 group-hover:brightness-110 transition-all">
-                    XEM NGAY <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-0.5 transition-transform"></i>
-                </span>
-            </a>
+            </div>
         </div>
 
         <!-- 3. Bên Phải: Theme Switch + Auth -->
@@ -129,36 +153,67 @@
         </div>
     </header>
 
-    <!-- 2. Băng Rôn Quảng Cáo Dành Cho Mobile (Chuẩn như Hình 2) -->
-    <div class="md:hidden w-full my-2">
-        <a href="https://www.t3gold.vn/cac-goi-phan-mem"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Xem chi tiết các gói phần mềm quản lý tiệm vàng T3Gold"
-            class="t3gold-banner-dark group relative block p-3 sm:p-3.5 rounded-2xl bg-[#0b1329] border border-amber-500/50 shadow-lg shadow-amber-500/10 active:scale-98 transition-all overflow-hidden">
+    <!-- 2. Băng Rôn Quảng Cáo Dành Cho Mobile & Tablet (< 1024px: Cấu Trúc 2 Tầng + Marquee Slogan + Hotline) -->
+    <div class="lg:hidden w-full my-2">
+        <div
+            class="t3gold-banner-dark group relative block p-3 sm:p-4 rounded-2xl bg-[#0b1329] border border-amber-500/50 shadow-lg shadow-amber-500/10 transition-all overflow-hidden">
             
-            <div class="flex items-center justify-between gap-3">
-                <!-- Logo Trái (Bự 52px cực nét và nổi bật) -->
-                <div class="flex items-center shrink-0 pr-1">
-                    <img src="logo-slogan-transparent.png" alt="T3Gold" class="h-[52px] sm:h-[56px] w-auto object-contain shrink-0" style="height: 52px; max-height: 56px;" />
-                </div>
-                
-                <!-- Chữ Ở Giữa (Đẩy chữ giãn ra bên phải pl-2, gap-1.5 thoáng mát) -->
-                <div class="flex flex-col text-left flex-1 min-w-0 gap-1.5 justify-center pl-2">
-                    <span class="text-gold-fix text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider block leading-tight">
-                        PHẦN MỀM TIỆM VÀNG
-                    </span>
-                    <strong class="text-light-fix text-[11px] sm:text-xs font-black uppercase tracking-wide block truncate leading-tight">
-                        CÁC GÓI PHẦN MỀM T3GOLD
-                    </strong>
-                </div>
-                
-                <!-- Nút Vàng Bên Phải: XEM ➔ -->
-                <span class="btn-gold-fix px-3 py-1.5 rounded-full text-slate-950 text-[11px] font-black uppercase tracking-wider flex items-center gap-1 shadow-md shadow-amber-500/25 shrink-0 group-hover:brightness-110">
-                    XEM <i class="fa-solid fa-arrow-right text-[9px]"></i>
-                </span>
+            <!-- Tầng 1: Logo | Khám phá Các Gói Phần Mềm | Nút XEM NGAY -->
+            <div class="flex items-center justify-between gap-2 pb-1.5">
+                <a href="https://www.t3gold.vn/cac-goi-phan-mem" target="_blank" rel="noopener noreferrer"
+                    class="flex items-center gap-2 min-w-0 flex-1">
+                    <!-- Logo Trái -->
+                    <div class="flex items-center shrink-0 pr-0.5">
+                        <img src="logo-slogan-transparent.png" alt="T3Gold" class="w-auto object-contain shrink-0"
+                            style="height: clamp(24px, 5vw, 34px); max-height: 36px;" />
+                    </div>
+
+                    <!-- Chữ Ở Giữa (Khóa 1 dòng duy nhất, chữ rõ ràng dễ đọc) -->
+                    <div class="flex flex-col text-left flex-1 min-w-0 justify-center">
+                        <span class="text-light-fix font-semibold tracking-normal block leading-tight whitespace-nowrap"
+                            style="font-size: clamp(10px, 2.5vw, 12px);">
+                            Khám phá
+                        </span>
+                        <strong class="text-gold-fix font-black tracking-tight block leading-tight whitespace-nowrap"
+                            style="font-size: clamp(10.5px, 3vw, 14px);">
+                            Các Gói Phần Mềm T3Gold
+                        </strong>
+                    </div>
+                </a>
+
+                <!-- Nút Vàng Bên Phải: XEM NGAY ➔ -->
+                <a href="https://www.t3gold.vn/cac-goi-phan-mem" target="_blank" rel="noopener noreferrer"
+                    class="btn-gold-fix px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-slate-950 font-black uppercase tracking-wider flex items-center gap-1 shadow-md shadow-amber-500/25 shrink-0 group-hover:brightness-110"
+                    style="font-size: clamp(10px, 2.5vw, 12px);">
+                    XEM NGAY <i class="fa-solid fa-arrow-right text-[9px] sm:text-[10px] pointer-events-none"></i>
+                </a>
             </div>
-        </a>
+
+            <!-- Đường kẻ ngang Vàng Ánh Kim Gradient thẩm mỹ cao -->
+            <div class="h-px w-full bg-gradient-to-r from-transparent via-amber-500/50 to-transparent my-1"></div>
+
+            <!-- Tầng 2: Dòng Slogan chữ chạy mượt Marquee (Màu sắc tương phản nét căng, chữ lớn rõ) -->
+            <div class="t3gold-marquee-box py-1 my-0.5">
+                <div class="t3gold-marquee-text t3gold-slogan-fix text-[13.5px] sm:text-[14.5px] font-extrabold">
+                    ✨ Đơn giản thao tác &nbsp;•&nbsp; Chính xác nghiệp vụ &nbsp;•&nbsp; Báo cáo thông minh ✨
+                </div>
+            </div>
+
+            <!-- Đường kẻ ngang Vàng Ánh Kim Gradient thẩm mỹ cao -->
+            <div class="h-px w-full bg-gradient-to-r from-transparent via-amber-500/50 to-transparent my-1"></div>
+
+            <!-- Tầng 3: Dòng Hotline Bấm Gọi (Mở trực tiếp bàn phím điện thoại & tự động sao chép số) -->
+            <div class="flex items-center justify-between pt-1 mt-0.5">
+                <span class="text-light-fix text-[11px] sm:text-xs font-semibold flex items-center gap-1">
+                    <i class="fa-solid fa-headset text-gold-fix text-xs pointer-events-none"></i> Hỗ trợ Hotline / Zalo:
+                </span>
+                <a href="tel:0942758213" rel="nofollow"
+                    onclick="GoldDashboard.handleHotlineClick(event)"
+                    class="t3gold-hotline-btn inline-flex items-center gap-1.5 text-xs sm:text-sm font-black px-3 py-1 rounded-full shadow-sm transition-all">
+                    <i class="fa-solid fa-phone text-xs animate-pulse pointer-events-none"></i> <span class="pointer-events-none">0942 758 213</span>
+                </a>
+            </div>
+        </div>
     </div>
 
     <!-- Khối ẩn Đồng Hồ & Nút Làm Mới (Theo yêu cầu: giữ DOM cho JS nhưng ẩn hoàn toàn khỏi màn hình) -->

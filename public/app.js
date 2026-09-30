@@ -1,7 +1,7 @@
 const GoldDashboard = (function () {
     const API_ENDPOINTS = {
-        gold: ['/gold', '/api/gold', '/api'],
-        silver: ['/silver', '/api/silver', '/api/v1/silver']
+        gold: ['/api/gold', 'http://localhost:3001/api/gold', '/gold', '/api'],
+        silver: ['/api/silver', 'http://localhost:3001/api/silver', '/silver']
     };
 
     // Tỷ giá quy đổi thị trường thực tế
@@ -2174,7 +2174,7 @@ const GoldDashboard = (function () {
             this.refreshData();
             initTradingView();
             renderNews('all');
-            setInterval(() => this.refreshData(), 3000); // ⚡ Tự động cập nhật nhảy số thời gian thực mỗi 3 giây theo VangSaigon
+            setInterval(() => this.refreshData(), 1500); // ⚡ Tự động cập nhật nhảy số thời gian thực mỗi 1.5 giây theo Taiem
         },
         switchMarket: function (market) {
             if (currentMarket === market) return;
@@ -2254,6 +2254,11 @@ const GoldDashboard = (function () {
         loginDemo: loginDemo,
         logout: function () {
             AuthManager.logout();
+        },
+        handleHotlineClick: function (e) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText('0942758213');
+            }
         },
         refreshData: async function () {
             const icon = document.getElementById('refresh-icon');

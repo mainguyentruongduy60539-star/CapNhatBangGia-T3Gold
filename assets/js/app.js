@@ -2255,6 +2255,11 @@ const GoldDashboard = (function () {
         logout: function () {
             AuthManager.logout();
         },
+        handleHotlineClick: function (e) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText('0942758213');
+            }
+        },
         refreshData: async function () {
             const icon = document.getElementById('refresh-icon');
 

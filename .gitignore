@@ -1,5 +1,10 @@
 node_modules/
 .vscode/
 *.log
-
+.env
 .vercel
+test_*.js
+test_*.py
+parse_*.js
+find_*.js
+

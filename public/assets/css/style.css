@@ -1294,3 +1294,56 @@ body.light-theme .t3gold-banner-dark .btn-gold-fix {
 body.light-theme .t3gold-banner-dark .btn-gold-fix * {
     color: #020617 !important;
 }
+
+/* T3Gold Slogan Marquee Animation */
+.t3gold-marquee-box {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    position: relative;
+}
+
+.t3gold-marquee-text {
+    display: inline-block;
+    white-space: nowrap;
+    padding-left: 100%;
+    animation: t3gold-marquee 16s linear infinite;
+}
+
+@keyframes t3gold-marquee {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-100%, 0, 0); }
+}
+
+/* HIGH-CONTRAST SLOGAN & HOTLINE STYLES */
+.t3gold-slogan-fix {
+    color: #fde047 !important; /* Bright Gold in Dark Mode */
+    font-weight: 800 !important;
+    font-size: 14px !important;
+    letter-spacing: 0.02em;
+}
+
+@media (max-width: 640px) {
+    .t3gold-slogan-fix {
+        font-size: 13.5px !important;
+    }
+}
+
+body.light-theme .t3gold-slogan-fix {
+    color: #b45309 !important; /* Deep Crisp Amber in Light Mode */
+    font-weight: 800 !important;
+}
+
+.t3gold-hotline-btn {
+    background: rgba(245, 158, 11, 0.18) !important;
+    color: #fde047 !important;
+    border: 1.5px solid rgba(250, 204, 21, 0.5) !important;
+    font-weight: 800 !important;
+}
+
+body.light-theme .t3gold-hotline-btn {
+    background: #fef3c7 !important;
+    color: #92400e !important;
+    border: 1.5px solid rgba(217, 119, 6, 0.6) !important;
+    font-weight: 800 !important;
+}
