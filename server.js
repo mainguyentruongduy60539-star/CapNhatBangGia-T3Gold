@@ -1203,4 +1203,9 @@ if (require.main === module) {
     startServer(DEFAULT_PORT);
 }
 
-module.exports = { app, fetchTaiemLiveData, fetchVsgData, startServer };
+app.fetchTaiemLiveData = fetchTaiemLiveData;
+app.fetchVsgData = fetchVsgData;
+app.startServer = startServer;
+
+module.exports = app;
+module.exports.app = app;
