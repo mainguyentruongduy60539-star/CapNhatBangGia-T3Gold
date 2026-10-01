@@ -521,8 +521,8 @@ function buildSilverItemsFromVsg(vsg) {
     // 1. Chỉ lấy Bạc TG, Phú Quý 1L, Phú Quý 1KG từ API (Bỏ Bạc Phú Quý 5L)
     const silverMap = {
         'XAGUSD': { name: 'Bạc Thế Giới (XAG/USD)', isWorld: true, multiplier: 1 },
-        'PHUQUY_1L': { name: 'Bạc Phú Quý (1 Lượng)', isWorld: false, multiplier: 1000 },
-        'PHUQUY_1KG': { name: 'Bạc Phú Quý (1 Kg)', isWorld: false, multiplier: 1000 }
+        'PHUQUY_1L': { name: 'Bạc Phú Quý (1 Lượng)', isWorld: false, multiplier: 1 },
+        'PHUQUY_1KG': { name: 'Bạc Phú Quý (1 Kg)', isWorld: false, multiplier: 1 }
     };
 
     const rawItems = (vsg.silver_price || []).filter(s => silverMap[s.name]);
