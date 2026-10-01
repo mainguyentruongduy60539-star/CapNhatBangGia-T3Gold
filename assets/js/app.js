@@ -366,9 +366,9 @@ const GoldDashboard = (function () {
             const exchangeRate = usdItem?.saigon?.sell || 26030;
 
             const troyOunceToGram = 31.1034768;
-            const sjcTdRaw = vsg.vsg_gold_table?.find(i => i.name === 'SJC Tự do');
-            const baseVsgChiVND = (sjcTdRaw && sjcTdRaw.gap && sjcTdRaw.saigon?.sell)
-                ? (sjcTdRaw.saigon.sell - sjcTdRaw.gap) / 10
+            const baseSjcTdRaw = vsg.vsg_gold_table?.find(i => i.name === 'SJC Tự do');
+            const baseVsgChiVND = (baseSjcTdRaw && baseSjcTdRaw.gap && baseSjcTdRaw.saigon?.sell)
+                ? (baseSjcTdRaw.saigon.sell - baseSjcTdRaw.gap) / 10
                 : Math.round((xauSell * exchangeRate / troyOunceToGram) * 0.375);
             const baseLuongVND = baseVsgChiVND * 10;
 
