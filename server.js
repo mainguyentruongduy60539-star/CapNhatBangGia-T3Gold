@@ -620,13 +620,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
     try {
-        // 1. Try Taiem Live Feed first (using user credentials)
-        const taiemData = await fetchTaiemLiveData();
-        if (taiemData && taiemData.success && taiemData.goldItems?.length > 0) {
-            return res.json(taiemData);
-        }
-
-        // 2. Fallback to VangSaigon / TradingView if Taiem is unavailable
+        // 1. Ưu tiên lấy dữ liệu trực tiếp từ API VangSaigon.vn
         const [vsg, tvPrice] = await Promise.all([fetchVsgData(), fetchTvLivePrice()]);
 
         if (vsg) {
@@ -800,7 +794,13 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
             });
         }
 
-        // Fallback live data nếu server đang bận
+        // 2. Dự phòng: Thử lấy dữ liệu Taiem nếu VangSaigon bận/lỗi
+        const taiemData = await fetchTaiemLiveData();
+        if (taiemData && taiemData.success && taiemData.goldItems?.length > 0) {
+            return res.json(taiemData);
+        }
+
+        // 3. Fallback live data nếu server bận
         const fallbackXauSell = 4358.96;
         const fallbackXauBuy = 4358.76;
         const fallbackExRate = 26030;
