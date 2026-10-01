@@ -647,6 +647,8 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
             const baseVsgChiVND = Math.round((xauSell * exchangeRate / troyOunceToGram) * 0.375);
             const baseLuongVND = baseVsgChiVND * 10;
 
+            const baseLuongInNgàn = Math.round(baseLuongVND / 1000);
+
             // 1. Vàng TG
             const vtgItem = {
                 name: 'Vàng TG',
@@ -669,7 +671,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                 buy: sjcBuy,
                 sell: sjcSell,
                 change: sjcChange,
-                cl: Math.round(sjcSell - baseLuongVND)
+                cl: Math.round(sjcSell - baseLuongInNgàn)
             };
 
             // 3. Vàng 999.9
@@ -685,7 +687,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                 buy: g9999Buy,
                 sell: g9999Sell,
                 change: g9999Change,
-                cl: Math.round(g9999Sell - baseLuongVND)
+                cl: Math.round(g9999Sell - baseLuongInNgàn)
             };
 
             // 4. Vàng 99.9
@@ -701,7 +703,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                 buy: g999Buy,
                 sell: g999Sell,
                 change: g999Change,
-                cl: Math.round(g999Sell - baseLuongVND)
+                cl: Math.round(g999Sell - baseLuongInNgàn)
             };
 
             // 5. Vàng 95
@@ -717,7 +719,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                 buy: g95Buy,
                 sell: g95Sell,
                 change: g95Change,
-                cl: Math.round(g95Sell - baseLuongVND)
+                cl: Math.round(g95Sell - baseLuongInNgàn)
             };
 
             // 6-10. Custom Gold Types (980, 750, 610, 585, 416)
@@ -728,7 +730,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                     buy: Math.round(g9999Buy * 0.980),
                     sell: Math.round(g9999Sell * 0.980),
                     change: Math.round(g9999Change * 0.980),
-                    cl: Math.round(Math.round(g9999Sell * 0.980) - baseLuongVND)
+                    cl: Math.round(Math.round(g9999Sell * 0.980) - baseLuongInNgàn)
                 },
                 {
                     name: 'Vàng 750',
@@ -736,7 +738,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                     buy: Math.round(g9999Buy * 0.750),
                     sell: Math.round(g9999Sell * 0.750),
                     change: Math.round(g9999Change * 0.750),
-                    cl: Math.round(Math.round(g9999Sell * 0.750) - baseLuongVND)
+                    cl: Math.round(Math.round(g9999Sell * 0.750) - baseLuongInNgàn)
                 },
                 {
                     name: 'Vàng 610',
@@ -744,7 +746,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                     buy: Math.round(g9999Buy * 0.610),
                     sell: Math.round(g9999Sell * 0.610),
                     change: Math.round(g9999Change * 0.610),
-                    cl: Math.round(Math.round(g9999Sell * 0.610) - baseLuongVND)
+                    cl: Math.round(Math.round(g9999Sell * 0.610) - baseLuongInNgàn)
                 },
                 {
                     name: 'Vàng 585',
@@ -752,7 +754,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                     buy: Math.round(g9999Buy * 0.585),
                     sell: Math.round(g9999Sell * 0.585),
                     change: Math.round(g9999Change * 0.585),
-                    cl: Math.round(Math.round(g9999Sell * 0.585) - baseLuongVND)
+                    cl: Math.round(Math.round(g9999Sell * 0.585) - baseLuongInNgàn)
                 },
                 {
                     name: 'Vàng 416',
@@ -760,7 +762,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                     buy: Math.round(g9999Buy * 0.416),
                     sell: Math.round(g9999Sell * 0.416),
                     change: Math.round(g9999Change * 0.416),
-                    cl: Math.round(Math.round(g9999Sell * 0.416) - baseLuongVND)
+                    cl: Math.round(Math.round(g9999Sell * 0.416) - baseLuongInNgàn)
                 }
             ];
 

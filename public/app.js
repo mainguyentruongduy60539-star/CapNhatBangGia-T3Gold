@@ -414,6 +414,8 @@ const GoldDashboard = (function () {
                 cl: 0
             };
 
+            const baseLuongInNgàn = Math.round(baseLuongVND / 1000);
+
             const sjcTdRaw = vsg.sjcNationWide?.find(i => i.name === 'SJC TD' || i.name === 'SJC Tự do' || i.name.includes('SJC TD'))
                           || vsg.vsg_gold_table?.find(i => i.name === 'SJC Tự do');
             const sjcBuy = Math.round(sjcTdRaw?.saigon?.buy || 142147);
@@ -425,7 +427,7 @@ const GoldDashboard = (function () {
                 buy: sjcBuy,
                 sell: sjcSell,
                 change: sjcChange,
-                cl: Math.round(sjcSell - baseLuongVND)
+                cl: Math.round(sjcSell - baseLuongInNgàn)
             };
 
             const g9999Raw = vsg.goldNationWide?.find(i => i.name === '999,9 TD' || i.name.includes('999,9'))
@@ -440,7 +442,7 @@ const GoldDashboard = (function () {
                 buy: g9999Buy,
                 sell: g9999Sell,
                 change: g9999Change,
-                cl: Math.round(g9999Sell - baseLuongVND)
+                cl: Math.round(g9999Sell - baseLuongInNgàn)
             };
 
             const g999Raw = vsg.goldNationWide?.find(i => i.name === '99,9 TD' || i.name.includes('99,9 TD'))
@@ -455,7 +457,7 @@ const GoldDashboard = (function () {
                 buy: g999Buy,
                 sell: g999Sell,
                 change: g999Change,
-                cl: Math.round(g999Sell - baseLuongVND)
+                cl: Math.round(g999Sell - baseLuongInNgàn)
             };
 
             const g95Raw = vsg.goldNationWide?.find(i => i.name.includes('95%') || i.name.includes('Vàng 95'))
@@ -470,7 +472,7 @@ const GoldDashboard = (function () {
                 buy: g95Buy,
                 sell: g95Sell,
                 change: g95Change,
-                cl: Math.round(g95Sell - baseLuongVND)
+                cl: Math.round(g95Sell - baseLuongInNgàn)
             };
 
             const customGoldTypes = [
@@ -480,7 +482,7 @@ const GoldDashboard = (function () {
                     buy: Math.round(g9999Buy * 0.980),
                     sell: Math.round(g9999Sell * 0.980),
                     change: Math.round(g9999Change * 0.980),
-                    cl: Math.round(Math.round(g9999Sell * 0.980) - baseLuongVND)
+                    cl: Math.round(Math.round(g9999Sell * 0.980) - baseLuongInNgàn)
                 },
                 {
                     name: 'Vàng 750',
@@ -488,7 +490,7 @@ const GoldDashboard = (function () {
                     buy: Math.round(g9999Buy * 0.750),
                     sell: Math.round(g9999Sell * 0.750),
                     change: Math.round(g9999Change * 0.750),
-                    cl: Math.round(Math.round(g9999Sell * 0.750) - baseLuongVND)
+                    cl: Math.round(Math.round(g9999Sell * 0.750) - baseLuongInNgàn)
                 },
                 {
                     name: 'Vàng 610',
@@ -496,7 +498,7 @@ const GoldDashboard = (function () {
                     buy: Math.round(g9999Buy * 0.610),
                     sell: Math.round(g9999Sell * 0.610),
                     change: Math.round(g9999Change * 0.610),
-                    cl: Math.round(Math.round(g9999Sell * 0.610) - baseLuongVND)
+                    cl: Math.round(Math.round(g9999Sell * 0.610) - baseLuongInNgàn)
                 },
                 {
                     name: 'Vàng 585',
@@ -504,7 +506,7 @@ const GoldDashboard = (function () {
                     buy: Math.round(g9999Buy * 0.585),
                     sell: Math.round(g9999Sell * 0.585),
                     change: Math.round(g9999Change * 0.585),
-                    cl: Math.round(Math.round(g9999Sell * 0.585) - baseLuongVND)
+                    cl: Math.round(Math.round(g9999Sell * 0.585) - baseLuongInNgàn)
                 },
                 {
                     name: 'Vàng 416',
@@ -512,7 +514,7 @@ const GoldDashboard = (function () {
                     buy: Math.round(g9999Buy * 0.416),
                     sell: Math.round(g9999Sell * 0.416),
                     change: Math.round(g9999Change * 0.416),
-                    cl: Math.round(Math.round(g9999Sell * 0.416) - baseLuongVND)
+                    cl: Math.round(Math.round(g9999Sell * 0.416) - baseLuongInNgàn)
                 }
             ];
 
@@ -829,8 +831,13 @@ const GoldDashboard = (function () {
                         sellSub = `≈ ${Math.round(vndPerChiSell).toLocaleString('vi-VN')} VNĐ/chỉ`;
                     }
                 } else {
-                    buyMain = `${Math.round(item.buy).toLocaleString('vi-VN')}`;
-                    sellMain = `${Math.round(item.sell).toLocaleString('vi-VN')}`;
+                    if (currentMarket === 'gold' && !item.isWorld) {
+                        buyMain = `${Math.round(item.buy / 10).toLocaleString('vi-VN')}`;
+                        sellMain = `${Math.round(item.sell / 10).toLocaleString('vi-VN')}`;
+                    } else {
+                        buyMain = `${Math.round(item.buy).toLocaleString('vi-VN')}`;
+                        sellMain = `${Math.round(item.sell).toLocaleString('vi-VN')}`;
+                    }
                 }
 
                 let changeStr = '0';
@@ -930,8 +937,13 @@ const GoldDashboard = (function () {
                         sellSub = `≈ ${Math.round(vndPerChiSell).toLocaleString('vi-VN')} VNĐ/chỉ`;
                     }
                 } else {
-                    buyMain = `${Math.round(item.buy).toLocaleString('vi-VN')}`;
-                    sellMain = `${Math.round(item.sell).toLocaleString('vi-VN')}`;
+                    if (currentMarket === 'gold' && !item.isWorld) {
+                        buyMain = `${Math.round(item.buy / 10).toLocaleString('vi-VN')}`;
+                        sellMain = `${Math.round(item.sell / 10).toLocaleString('vi-VN')}`;
+                    } else {
+                        buyMain = `${Math.round(item.buy).toLocaleString('vi-VN')}`;
+                        sellMain = `${Math.round(item.sell).toLocaleString('vi-VN')}`;
+                    }
                 }
 
                 let changeStr = '0';
