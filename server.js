@@ -284,6 +284,46 @@ async function fetchTaiemLiveData() {
                 sell: g95Sell,
                 change: 0,
                 cl: Math.round((g95Sell / 10) - (baseVsgChiVND / 10))
+            },
+            {
+                name: 'Vàng 980',
+                isWorld: false,
+                buy: Math.round(g9999Buy * 0.980),
+                sell: Math.round(g9999Sell * 0.980),
+                change: 0,
+                cl: Math.round((Math.round(g9999Sell * 0.980) / 10) - (baseVsgChiVND / 10))
+            },
+            {
+                name: 'Vàng 750',
+                isWorld: false,
+                buy: Math.round(g9999Buy * 0.750),
+                sell: Math.round(g9999Sell * 0.750),
+                change: 0,
+                cl: Math.round((Math.round(g9999Sell * 0.750) / 10) - (baseVsgChiVND / 10))
+            },
+            {
+                name: 'Vàng 610',
+                isWorld: false,
+                buy: Math.round(g9999Buy * 0.610),
+                sell: Math.round(g9999Sell * 0.610),
+                change: 0,
+                cl: Math.round((Math.round(g9999Sell * 0.610) / 10) - (baseVsgChiVND / 10))
+            },
+            {
+                name: 'Vàng 585',
+                isWorld: false,
+                buy: Math.round(g9999Buy * 0.585),
+                sell: Math.round(g9999Sell * 0.585),
+                change: 0,
+                cl: Math.round((Math.round(g9999Sell * 0.585) / 10) - (baseVsgChiVND / 10))
+            },
+            {
+                name: 'Vàng 416',
+                isWorld: false,
+                buy: Math.round(g9999Buy * 0.416),
+                sell: Math.round(g9999Sell * 0.416),
+                change: 0,
+                cl: Math.round((Math.round(g9999Sell * 0.416) / 10) - (baseVsgChiVND / 10))
             }
         ];
 
@@ -659,7 +699,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                 });
             }
 
-            // Chỉ giữ 5 loại vàng theo yêu cầu: Vàng TG, SJC Tự do, Vàng 999.9, Vàng 99.9, Vàng 95
+            // 1. Chỉ giữ 5 loại vàng chuẩn từ VangSaigon: Vàng TG -> Vàng 95
             const keepNames = [
                 'Vàng TG',
                 'SJC Tự do',
@@ -667,7 +707,58 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                 'Vàng 99.9',
                 'Vàng 95'
             ];
-            goldItems = goldItems.filter(i => keepNames.includes(i.name));
+            const filteredGold = goldItems.filter(i => keepNames.includes(i.name));
+
+            // 2. Tính các loại Vàng 980, 750, 610, 585, 416 theo công thức từ Vàng 999.9
+            const g9999 = goldItems.find(i => i.name === 'Vàng 999.9') || { buy: 136300, sell: 137800, change: 0 };
+            const g9999BuyRaw = g9999.buy || 136300;
+            const g9999SellRaw = g9999.sell || 137800;
+            const g9999ChangeRaw = g9999.change || 0;
+
+            const customGoldTypes = [
+                {
+                    name: 'Vàng 980',
+                    isWorld: false,
+                    buy: Math.round(g9999BuyRaw * 0.980),
+                    sell: Math.round(g9999SellRaw * 0.980),
+                    change: Math.round(g9999ChangeRaw * 0.980),
+                    cl: Math.round((Math.round(g9999SellRaw * 0.980) / 10) - (baseVsgChiVND / 10))
+                },
+                {
+                    name: 'Vàng 750',
+                    isWorld: false,
+                    buy: Math.round(g9999BuyRaw * 0.750),
+                    sell: Math.round(g9999SellRaw * 0.750),
+                    change: Math.round(g9999ChangeRaw * 0.750),
+                    cl: Math.round((Math.round(g9999SellRaw * 0.750) / 10) - (baseVsgChiVND / 10))
+                },
+                {
+                    name: 'Vàng 610',
+                    isWorld: false,
+                    buy: Math.round(g9999BuyRaw * 0.610),
+                    sell: Math.round(g9999SellRaw * 0.610),
+                    change: Math.round(g9999ChangeRaw * 0.610),
+                    cl: Math.round((Math.round(g9999SellRaw * 0.610) / 10) - (baseVsgChiVND / 10))
+                },
+                {
+                    name: 'Vàng 585',
+                    isWorld: false,
+                    buy: Math.round(g9999BuyRaw * 0.585),
+                    sell: Math.round(g9999SellRaw * 0.585),
+                    change: Math.round(g9999ChangeRaw * 0.585),
+                    cl: Math.round((Math.round(g9999SellRaw * 0.585) / 10) - (baseVsgChiVND / 10))
+                },
+                {
+                    name: 'Vàng 416',
+                    isWorld: false,
+                    buy: Math.round(g9999BuyRaw * 0.416),
+                    sell: Math.round(g9999SellRaw * 0.416),
+                    change: Math.round(g9999ChangeRaw * 0.416),
+                    cl: Math.round((Math.round(g9999SellRaw * 0.416) / 10) - (baseVsgChiVND / 10))
+                }
+            ];
+
+            goldItems = [...filteredGold, ...customGoldTypes];
 
             // Danh sách Ngoại Tệ chuẩn
             const currencies = (vsg.currencyNationWide || []).map(c => ({
