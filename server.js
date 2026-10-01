@@ -39,10 +39,8 @@ function applyDynamicChange(items, isSilver = false) {
                 let diff = 0;
                 if (item.isWorld) {
                     diff = parseFloat((currentSell - history.lastPrice).toFixed(2));
-                } else if (isSilver) {
-                    diff = Math.round((currentSell - history.lastPrice) / 1000);
                 } else {
-                    diff = Math.round((currentSell - history.lastPrice) / 10);
+                    diff = Math.round(currentSell - history.lastPrice);
                 }
                 if (diff !== 0) {
                     history.change = diff;
@@ -460,7 +458,7 @@ async function fetchTaiemLiveData() {
 
 let cachedVsgData = null;
 let lastCacheTime = 0;
-const CACHE_TTL_MS = 500;
+const CACHE_TTL_MS = 3000;
 
 async function fetchVsgData() {
     const now = Date.now();
@@ -625,11 +623,11 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
 
         if (vsg) {
             const xau = vsg.sjcNationWide?.find(i => i.name === 'XAUUSD') || vsg.goldNationWide?.find(i => i.name === 'XAUUSD') || vsg.vsg_gold_table?.find(i => i.name === 'Vàng TG' || i.name === 'XAUUSD');
-            let xauBuy = xau?.saigon?.buy || 4378.6;
-            let xauSell = xau?.saigon?.sell || 4378.8;
-            let xauChange = xau?.saigon?.sell_change || 35.41;
+            let xauBuy = xau?.saigon?.buy || 4160;
+            let xauSell = xau?.saigon?.sell || 4160;
+            let xauChange = xau?.saigon?.sell_change || 0;
 
-            if (tvPrice?.xau && !xau?.saigon?.buy) {
+            if (tvPrice?.xau && (!xau?.saigon || !xau?.saigon?.buy)) {
                 xauBuy = tvPrice.xau.close;
                 xauSell = tvPrice.xau.close;
                 xauChange = tvPrice.xau.change;
@@ -639,161 +637,134 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
             const exchangeRate = usdItem?.saigon?.sell || 26030;
 
             const troyOunceToGram = 31.1034768;
-            const gramToLuong = 37.5;
-
-            // 1. Tính giá gốc VangSaigon per chỉ (nghìn VNĐ/Chỉ)
-            const sjcTdRaw = vsg.vsg_gold_table?.find(i => i.name === 'SJC Tự do');
-            const baseVsgChiVND = (sjcTdRaw && sjcTdRaw.gap && sjcTdRaw.saigon?.sell)
-                ? (sjcTdRaw.saigon.sell - sjcTdRaw.gap) / 10
-                : Math.round((xauSell * exchangeRate / troyOunceToGram) * 0.375);
+            const baseVsgChiVND = Math.round((xauSell * exchangeRate / troyOunceToGram) * 0.375);
             const baseLuongVND = baseVsgChiVND * 10;
-            const worldSellVndPerChi = baseVsgChiVND;
 
-            let goldItems = [];
+            // 1. Vàng TG
+            const vtgItem = {
+                name: 'Vàng TG',
+                isWorld: true,
+                buy: parseFloat(xauBuy.toFixed(2)),
+                sell: parseFloat(xauSell.toFixed(2)),
+                change: parseFloat(xauChange.toFixed(2)),
+                cl: 0
+            };
 
-            if (Array.isArray(vsg.vsg_gold_table) && vsg.vsg_gold_table.length > 0) {
-                goldItems = vsg.vsg_gold_table.map(item => {
-                    const isWorld = item.name === 'Vàng TG' || item.name === 'XAUUSD';
-                    let normName = item.name;
-                    if (item.name === 'XAUUSD' || item.name === 'Vàng TG') normName = 'Vàng TG';
-                    else if (item.name.includes('SJC')) normName = 'SJC Tự do';
-                    else if (item.name.includes('99,99') || item.name.includes('99.99') || item.name.includes('999.9')) normName = 'Vàng 999.9';
-                    else if (item.name.includes('99,9') || item.name.includes('99.9')) normName = 'Vàng 99.9';
-                    else if (item.name.includes('95')) normName = 'Vàng 95';
+            // 2. SJC Tự do
+            const sjcTdRaw = vsg.sjcNationWide?.find(i => i.name === 'SJC TD' || i.name === 'SJC Tự do' || i.name.includes('SJC TD'))
+                          || vsg.vsg_gold_table?.find(i => i.name === 'SJC Tự do');
+            const sjcBuy = Math.round(sjcTdRaw?.saigon?.buy || 142147);
+            const sjcSell = Math.round(sjcTdRaw?.saigon?.sell || 143447);
+            const sjcChange = Math.round(sjcTdRaw?.saigon?.sell_change !== undefined ? sjcTdRaw.saigon.sell_change : -53);
+            const sjcItem = {
+                name: 'SJC Tự do',
+                isWorld: false,
+                buy: sjcBuy,
+                sell: sjcSell,
+                change: sjcChange,
+                cl: Math.round(sjcSell - baseLuongVND)
+            };
 
-                    let buyVal = 0;
-                    let sellVal = 0;
-                    let changeVal = 0;
+            // 3. Vàng 999.9
+            const g9999Raw = vsg.goldNationWide?.find(i => i.name === '999,9 TD' || i.name.includes('999,9'))
+                          || vsg.goldNationWide?.find(i => i.name === '99,99% GF')
+                          || vsg.vsg_gold_table?.find(i => i.name.includes('999.9') || i.name.includes('99,99'));
+            const g9999Buy = Math.round(g9999Raw?.saigon?.buy || 132321);
+            const g9999Sell = Math.round(g9999Raw?.saigon?.sell || 133821);
+            const g9999Change = Math.round(g9999Raw?.saigon?.sell_change !== undefined ? g9999Raw.saigon.sell_change : 21);
+            const g9999Item = {
+                name: 'Vàng 999.9',
+                isWorld: false,
+                buy: g9999Buy,
+                sell: g9999Sell,
+                change: g9999Change,
+                cl: Math.round(g9999Sell - baseLuongVND)
+            };
 
-                    if (isWorld) {
-                        buyVal = parseFloat((item.saigon?.buy || 0).toFixed(2));
-                        sellVal = parseFloat((item.saigon?.sell || 0).toFixed(2));
-                        changeVal = parseFloat((item.saigon?.sell_change || 0).toFixed(2));
-                        if (tvPrice?.xau && (!item.saigon || !item.saigon.buy)) {
-                            buyVal = parseFloat(tvPrice.xau.close.toFixed(2));
-                            sellVal = parseFloat(tvPrice.xau.close.toFixed(2));
-                            changeVal = parseFloat(tvPrice.xau.change.toFixed(2));
-                        }
-                    } else {
-                        let rawBuy = Math.round(item.saigon?.buy || 0);
-                        let rawSell = Math.round(item.saigon?.sell || 0);
-                        let rawChange = Math.round(item.saigon?.sell_change || 0);
+            // 4. Vàng 99.9
+            const g999Raw = vsg.goldNationWide?.find(i => i.name === '99,9 TD' || i.name.includes('99,9 TD'))
+                         || vsg.goldNationWide?.find(i => i.name === '99,9% GF')
+                         || vsg.vsg_gold_table?.find(i => i.name.includes('99.9') || i.name.includes('99,9'));
+            const g999Buy = Math.round(g999Raw?.saigon?.buy || 132031);
+            const g999Sell = Math.round(g999Raw?.saigon?.sell || 133531);
+            const g999Change = Math.round(g999Raw?.saigon?.sell_change !== undefined ? g999Raw.saigon.sell_change : 31);
+            const g999Item = {
+                name: 'Vàng 99.9',
+                isWorld: false,
+                buy: g999Buy,
+                sell: g999Sell,
+                change: g999Change,
+                cl: Math.round(g999Sell - baseLuongVND)
+            };
 
-                        // Chuẩn hóa đơn vị về nghìn VNĐ / lượng (để hiển thị ra ngàn VNĐ / chỉ sau khi chia 10)
-                        if (rawBuy > 500000) rawBuy = Math.round(rawBuy / 10);
-                        if (rawSell > 500000) rawSell = Math.round(rawSell / 10);
-                        if (Math.abs(rawChange) > 50000) rawChange = Math.round(rawChange / 10);
+            // 5. Vàng 95
+            const g95Raw = vsg.goldNationWide?.find(i => i.name.includes('95%') || i.name.includes('Vàng 95'))
+                        || vsg.goldNationWide?.find(i => i.name === '95% GF')
+                        || vsg.vsg_gold_table?.find(i => i.name.includes('95'));
+            const g95Buy = Math.round(g95Raw?.saigon?.buy || 125439);
+            const g95Sell = Math.round(g95Raw?.saigon?.sell || 126939);
+            const g95Change = Math.round(g95Raw?.saigon?.sell_change !== undefined ? g95Raw.saigon.sell_change : -611);
+            const g95Item = {
+                name: 'Vàng 95',
+                isWorld: false,
+                buy: g95Buy,
+                sell: g95Sell,
+                change: g95Change,
+                cl: Math.round(g95Sell - baseLuongVND)
+            };
 
-                        buyVal = rawBuy;
-                        sellVal = rawSell;
-                        changeVal = rawChange;
-                    }
-
-                    const clInChiVND = isWorld ? 0 : (item.gap !== undefined ? Math.round(item.gap) : Math.round((sellVal / 10) - (baseVsgChiVND / 10)));
-                    return {
-                        name: normName,
-                        isWorld: isWorld,
-                        buy: buyVal,
-                        sell: sellVal,
-                        change: changeVal,
-                        cl: clInChiVND
-                    };
-                });
-            } else {
-                goldItems.push({
-                    name: 'Vàng TG',
-                    isWorld: true,
-                    buy: parseFloat(xauBuy.toFixed(2)),
-                    sell: parseFloat(xauSell.toFixed(2)),
-                    change: parseFloat(xauChange.toFixed(2)),
-                    cl: 0
-                });
-
-                const sjcTd = vsg.sjcNationWide?.find(i => i.name === 'SJC TD' || i.name.includes('SJC'));
-                let sjcTdSell = sjcTd?.saigon?.sell ? Math.round(sjcTd.saigon.sell) : 146000;
-                let sjcTdBuy = sjcTd?.saigon?.buy ? Math.round(sjcTd.saigon.buy) : 144500;
-                if (sjcTdSell > 500000) sjcTdSell = Math.round(sjcTdSell / 10);
-                if (sjcTdBuy > 500000) sjcTdBuy = Math.round(sjcTdBuy / 10);
-
-                const sjcTdChange = sjcTd?.saigon?.sell_change !== undefined ? Math.round(sjcTd.saigon.sell_change) : 0;
-                goldItems.push({
-                    name: 'SJC Tự do',
-                    buy: sjcTdBuy,
-                    sell: sjcTdSell,
-                    change: sjcTdChange,
-                    cl: sjcTd?.gap !== undefined ? Math.round(sjcTd.gap) : Math.round((sjcTdSell / 10) - (baseVsgChiVND / 10))
-                });
-            }
-
-            // Tìm vàng 999.9 làm gốc để tính các loại vàng tây/trang sức (980, 750, 610, 585, 416)
-            const g9999 = goldItems.find(i => i.name === 'Vàng 999.9') || goldItems.find(i => i.name === 'SJC Tự do') || { buy: 132308, sell: 133808, change: 0 };
-            const g9999BuyRaw = g9999.buy || 132308;
-            const g9999SellRaw = g9999.sell || 133808;
-            const g9999ChangeRaw = g9999.change || 0;
-
+            // 6-10. Custom Gold Types (980, 750, 610, 585, 416)
             const customGoldTypes = [
                 {
                     name: 'Vàng 980',
                     isWorld: false,
-                    buy: Math.round(g9999BuyRaw * (980 - 0.5) / 1000),
-                    sell: Math.round(g9999SellRaw * (980 + 0.5) / 1000),
-                    change: Math.round(g9999ChangeRaw * (980 + 0.5) / 1000),
-                    cl: Math.round((Math.round(g9999SellRaw * (980 + 0.5) / 1000) / 10) - (baseVsgChiVND / 10))
+                    buy: Math.round(g9999Buy * 0.980),
+                    sell: Math.round(g9999Sell * 0.980),
+                    change: Math.round(g9999Change * 0.980),
+                    cl: Math.round(Math.round(g9999Sell * 0.980) - baseLuongVND)
                 },
                 {
                     name: 'Vàng 750',
                     isWorld: false,
-                    buy: Math.round(g9999BuyRaw * (750 - 1.0) / 1000),
-                    sell: Math.round(g9999SellRaw * (750 + 1.0) / 1000),
-                    change: Math.round(g9999ChangeRaw * (750 + 1.0) / 1000),
-                    cl: Math.round((Math.round(g9999SellRaw * (750 + 1.0) / 1000) / 10) - (baseVsgChiVND / 10))
+                    buy: Math.round(g9999Buy * 0.750),
+                    sell: Math.round(g9999Sell * 0.750),
+                    change: Math.round(g9999Change * 0.750),
+                    cl: Math.round(Math.round(g9999Sell * 0.750) - baseLuongVND)
                 },
                 {
                     name: 'Vàng 610',
                     isWorld: false,
-                    buy: Math.round(g9999BuyRaw * (610 - 1.5) / 1000),
-                    sell: Math.round(g9999SellRaw * (610 + 1.5) / 1000),
-                    change: Math.round(g9999ChangeRaw * (610 + 1.5) / 1000),
-                    cl: Math.round((Math.round(g9999SellRaw * (610 + 1.5) / 1000) / 10) - (baseVsgChiVND / 10))
+                    buy: Math.round(g9999Buy * 0.610),
+                    sell: Math.round(g9999Sell * 0.610),
+                    change: Math.round(g9999Change * 0.610),
+                    cl: Math.round(Math.round(g9999Sell * 0.610) - baseLuongVND)
                 },
                 {
                     name: 'Vàng 585',
                     isWorld: false,
-                    buy: Math.round(g9999BuyRaw * (585 - 2.0) / 1000),
-                    sell: Math.round(g9999SellRaw * (585 + 2.0) / 1000),
-                    change: Math.round(g9999ChangeRaw * (585 + 2.0) / 1000),
-                    cl: Math.round((Math.round(g9999SellRaw * (585 + 2.0) / 1000) / 10) - (baseVsgChiVND / 10))
+                    buy: Math.round(g9999Buy * 0.585),
+                    sell: Math.round(g9999Sell * 0.585),
+                    change: Math.round(g9999Change * 0.585),
+                    cl: Math.round(Math.round(g9999Sell * 0.585) - baseLuongVND)
                 },
                 {
                     name: 'Vàng 416',
                     isWorld: false,
-                    buy: Math.round(g9999BuyRaw * (416 - 2.5) / 1000),
-                    sell: Math.round(g9999SellRaw * (416 + 2.5) / 1000),
-                    change: Math.round(g9999ChangeRaw * (416 + 2.5) / 1000),
-                    cl: Math.round((Math.round(g9999SellRaw * (416 + 2.5) / 1000) / 10) - (baseVsgChiVND / 10))
+                    buy: Math.round(g9999Buy * 0.416),
+                    sell: Math.round(g9999Sell * 0.416),
+                    change: Math.round(g9999Change * 0.416),
+                    cl: Math.round(Math.round(g9999Sell * 0.416) - baseLuongVND)
                 }
             ];
 
-            const desiredOrder = [
-                'Vàng TG',
-                'SJC Tự do',
-                'Vàng 999.9',
-                'Vàng 99.9',
-                'Vàng 95',
-                'Vàng 980',
-                'Vàng 750',
-                'Vàng 610',
-                'Vàng 585',
-                'Vàng 416'
+            const goldItems = [
+                vtgItem,
+                sjcItem,
+                g9999Item,
+                g999Item,
+                g95Item,
+                ...customGoldTypes
             ];
-
-            const allMap = new Map();
-            goldItems.forEach(i => allMap.set(i.name, i));
-            customGoldTypes.forEach(i => {
-                if (!allMap.has(i.name)) allMap.set(i.name, i);
-            });
-
-            goldItems = desiredOrder.map(name => allMap.get(name)).filter(Boolean);
 
             // Danh sách Ngoại Tệ chuẩn
             const currencies = (vsg.currencyNationWide || []).map(c => ({
@@ -806,7 +777,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
             }));
 
             const silverItems = buildSilverItemsFromVsg(vsg);
-            const rawTime = vsg.vsg_gold_table?.[0]?.update_at || vsg.sjcNationWide?.[0]?.update_at || vsg.silver_price?.[0]?.update_at;
+            const rawTime = vsg.sjcNationWide?.[0]?.update_at || vsg.goldNationWide?.[0]?.update_at || vsg.vsg_gold_table?.[0]?.update_at || vsg.silver_price?.[0]?.update_at;
             const lastUpdatedStr = formatVsgTimestamp(rawTime);
 
             applyDynamicChange(goldItems, false);
