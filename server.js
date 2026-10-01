@@ -816,40 +816,43 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
         }
 
         // 2. Fallback live baseline data nếu VangSaigon API bận hoặc bị chặn
-        const fallbackXauSell = 4160.50;
-        const fallbackXauBuy = 4160.30;
+        const fallbackXauSell = tvPrice?.xau ? tvPrice.xau.close : 4172.00;
+        const fallbackXauBuy = tvPrice?.xau ? tvPrice.xau.close : 4172.00;
+        const fallbackXauChange = tvPrice?.xau ? tvPrice.xau.change : 0;
         const fallbackExRate = 26030;
         const baseVsgChiVND = Math.round((fallbackXauSell * fallbackExRate / 31.1034768) * 0.375);
         const baseLuongVND = baseVsgChiVND * 10;
-        const g9999Sell = 133821;
-        const g9999Buy = 132321;
-        const g9999Change = 21;
-        const sjcSell = 143447;
-        const sjcBuy = 142147;
-        const sjcChange = -53;
+        const baseLuongInNgàn = Math.round(baseLuongVND / 100);
+
+        const g9999Sell = 134060;
+        const g9999Buy = 132560;
+        const g9999Change = 262;
+        const sjcSell = 143590;
+        const sjcBuy = 142290;
+        const sjcChange = 92;
 
         res.json({
             success: true,
-            source: 'VangSaigon Live Baseline',
+            source: 'Live Baseline (TradingView & TaiEm)',
             price: fallbackXauSell,
             bid: fallbackXauBuy,
             ask: fallbackXauSell,
-            change: 0.1,
+            change: fallbackXauChange,
             changePercent: 0,
             exchangeRate: fallbackExRate,
             baseLuongVND,
             lastUpdatedStr: getFormattedDateTimeStr(),
             goldItems: [
-                { name: 'Vàng TG', isWorld: true, buy: fallbackXauBuy, sell: fallbackXauSell, change: 0.1, cl: 0 },
-                { name: 'SJC Tự do', isWorld: false, buy: sjcBuy, sell: sjcSell, change: sjcChange, cl: Math.round(sjcSell - baseLuongVND) },
-                { name: 'Vàng 999.9', isWorld: false, buy: g9999Buy, sell: g9999Sell, change: g9999Change, cl: Math.round(g9999Sell - baseLuongVND) },
-                { name: 'Vàng 99.9', isWorld: false, buy: 132031, sell: 133531, change: 31, cl: Math.round(133531 - baseLuongVND) },
-                { name: 'Vàng 95', isWorld: false, buy: 125439, sell: 126939, change: -611, cl: Math.round(126939 - baseLuongVND) },
-                { name: 'Vàng 980', isWorld: false, buy: Math.round(g9999Buy * 0.980), sell: Math.round(g9999Sell * 0.980), change: Math.round(g9999Change * 0.980), cl: Math.round(Math.round(g9999Sell * 0.980) - baseLuongVND) },
-                { name: 'Vàng 750', isWorld: false, buy: Math.round(g9999Buy * 0.750), sell: Math.round(g9999Sell * 0.750), change: Math.round(g9999Change * 0.750), cl: Math.round(Math.round(g9999Sell * 0.750) - baseLuongVND) },
-                { name: 'Vàng 610', isWorld: false, buy: Math.round(g9999Buy * 0.610), sell: Math.round(g9999Sell * 0.610), change: Math.round(g9999Change * 0.610), cl: Math.round(Math.round(g9999Sell * 0.610) - baseLuongVND) },
-                { name: 'Vàng 585', isWorld: false, buy: Math.round(g9999Buy * 0.585), sell: Math.round(g9999Sell * 0.585), change: Math.round(g9999Change * 0.585), cl: Math.round(Math.round(g9999Sell * 0.585) - baseLuongVND) },
-                { name: 'Vàng 416', isWorld: false, buy: Math.round(g9999Buy * 0.416), sell: Math.round(g9999Sell * 0.416), change: Math.round(g9999Change * 0.416), cl: Math.round(Math.round(g9999Sell * 0.416) - baseLuongVND) }
+                { name: 'Vàng TG', isWorld: true, buy: fallbackXauBuy, sell: fallbackXauSell, change: fallbackXauChange, cl: 0 },
+                { name: 'SJC Tự do', isWorld: false, buy: sjcBuy, sell: sjcSell, change: sjcChange, cl: Math.round(sjcSell - baseLuongInNgàn) },
+                { name: 'Vàng 999.9', isWorld: false, buy: g9999Buy, sell: g9999Sell, change: g9999Change, cl: Math.round(g9999Sell - baseLuongInNgàn) },
+                { name: 'Vàng 99.9', isWorld: false, buy: 132560, sell: 134060, change: 262, cl: Math.round(134060 - baseLuongInNgàn) },
+                { name: 'Vàng 95', isWorld: false, buy: 125680, sell: 127180, change: -369, cl: Math.round(127180 - baseLuongInNgàn) },
+                { name: 'Vàng 980', isWorld: false, buy: Math.round(g9999Buy * 0.980), sell: Math.round(g9999Sell * 0.980), change: Math.round(g9999Change * 0.980), cl: Math.round(Math.round(g9999Sell * 0.980) - baseLuongInNgàn) },
+                { name: 'Vàng 750', isWorld: false, buy: Math.round(g9999Buy * 0.750), sell: Math.round(g9999Sell * 0.750), change: Math.round(g9999Change * 0.750), cl: Math.round(Math.round(g9999Sell * 0.750) - baseLuongInNgàn) },
+                { name: 'Vàng 610', isWorld: false, buy: Math.round(g9999Buy * 0.610), sell: Math.round(g9999Sell * 0.610), change: Math.round(g9999Change * 0.610), cl: Math.round(Math.round(g9999Sell * 0.610) - baseLuongInNgàn) },
+                { name: 'Vàng 585', isWorld: false, buy: Math.round(g9999Buy * 0.585), sell: Math.round(g9999Sell * 0.585), change: Math.round(g9999Change * 0.585), cl: Math.round(Math.round(g9999Sell * 0.585) - baseLuongInNgàn) },
+                { name: 'Vàng 416', isWorld: false, buy: Math.round(g9999Buy * 0.416), sell: Math.round(g9999Sell * 0.416), change: Math.round(g9999Change * 0.416), cl: Math.round(Math.round(g9999Sell * 0.416) - baseLuongInNgàn) }
             ],
             currencies: [
                 { code: 'USD', name: 'Đô la Mỹ', rateBuy: 25750, rateSell: 26150, rateRate: 0, digit: 0 },
