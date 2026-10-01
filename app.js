@@ -752,7 +752,6 @@ const GoldDashboard = (function () {
         // Render Bảng Ngoại Tệ (#currency-table-body)
         const currencyBody = document.getElementById('currency-table-body');
         const currencyList = data && data.currencies && data.currencies.length > 0 ? data.currencies : CURRENCY_LIST;
-        const isAuthed = AuthManager.isLoggedIn();
 
         const formatNumber = (num, decimals = 0) => {
             if (num === null || num === undefined) return '0';
@@ -763,36 +762,23 @@ const GoldDashboard = (function () {
         };
 
         if (currencyBody) {
-            if (!isAuthed) {
-                currencyBody.innerHTML = currencyList.map(c => `
-                    <tr class="transition-colors text-sm sm:text-base">
-                        <td class="text-left pl-2 sm:pl-3 py-2.5 font-black col-org text-xs sm:text-sm md:text-base">
+            currencyBody.innerHTML = currencyList.map(c => {
+                const rateVal = c.rateRate !== undefined && c.rateRate !== 0 ? (c.rateRate > 10 ? c.rateRate.toFixed(2) : c.rateRate.toFixed(4)) : '0';
+                const buyVal = c.digit === 1 ? c.rateBuy.toFixed(1) : formatNumber(c.rateBuy);
+                const sellVal = c.digit === 1 ? c.rateSell.toFixed(1) : formatNumber(c.rateSell);
+                const rateNum = parseFloat(rateVal);
+                const rateColor = rateNum < 0 ? 'text-val-down' : 'text-val-up';
+                return `
+                    <tr class="transition-colors border-b border-blue-900/30 text-xs sm:text-sm md:text-base">
+                        <td class="text-left pl-1.5 sm:pl-2.5 py-1.5 sm:py-2.5 font-extrabold col-org text-[12px] sm:text-sm md:text-base whitespace-nowrap overflow-hidden">
                             <span>${c.code}</span>
                         </td>
-                        <td colspan="3" class="text-center pr-3 py-2.5 text-slate-300 text-xs sm:text-sm">
-                            <span>Vui lòng <a href="javascript:void(0)" onclick="GoldDashboard.openAuth('login')" class="auth-gate-link font-bold">đăng nhập</a> để xem giá</span>
-                        </td>
+                        <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black price-val text-[14px] xs:text-[15px] sm:text-base md:text-lg tracking-tighter whitespace-nowrap">${buyVal}</td>
+                        <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black price-val text-[14px] xs:text-[15px] sm:text-base md:text-lg tracking-tighter whitespace-nowrap">${sellVal}</td>
+                        <td class="py-1.5 sm:py-2.5 pr-1 sm:pr-2 text-right font-mono font-black ${rateColor} text-[14px] xs:text-[15px] sm:text-base md:text-lg tracking-tighter whitespace-nowrap">${rateVal}</td>
                     </tr>
-                `).join('');
-            } else {
-                currencyBody.innerHTML = currencyList.map(c => {
-                    const rateVal = c.rateRate !== undefined && c.rateRate !== 0 ? (c.rateRate > 10 ? c.rateRate.toFixed(2) : c.rateRate.toFixed(4)) : '0';
-                    const buyVal = c.digit === 1 ? c.rateBuy.toFixed(1) : formatNumber(c.rateBuy);
-                    const sellVal = c.digit === 1 ? c.rateSell.toFixed(1) : formatNumber(c.rateSell);
-                    const rateNum = parseFloat(rateVal);
-                    const rateColor = rateNum < 0 ? 'text-val-down' : 'text-val-up';
-                    return `
-                        <tr class="transition-colors border-b border-blue-900/30 text-xs sm:text-sm md:text-base">
-                            <td class="text-left pl-1.5 sm:pl-2.5 py-1.5 sm:py-2.5 font-extrabold col-org text-[12px] sm:text-sm md:text-base whitespace-nowrap overflow-hidden">
-                                <span>${c.code}</span>
-                            </td>
-                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black price-val text-[14px] xs:text-[15px] sm:text-base md:text-lg tracking-tighter whitespace-nowrap">${buyVal}</td>
-                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black price-val text-[14px] xs:text-[15px] sm:text-base md:text-lg tracking-tighter whitespace-nowrap">${sellVal}</td>
-                            <td class="py-1.5 sm:py-2.5 pr-1 sm:pr-2 text-right font-mono font-black ${rateColor} text-[14px] xs:text-[15px] sm:text-base md:text-lg tracking-tighter whitespace-nowrap">${rateVal}</td>
-                        </tr>
-                    `;
-                }).join('');
-            }
+                `;
+            }).join('');
         }
 
         // Render / Update Máy Tính Quy Đổi
@@ -809,7 +795,6 @@ const GoldDashboard = (function () {
     function renderTableRows(tableBody, items, isGold, data) {
         if (!tableBody || !items || items.length === 0) return; // Không xóa bảng nếu items rỗng
         const currentMarket = isGold ? 'gold' : 'silver';
-        const isAuthed = AuthManager.isLoggedIn();
 
         const existingRows = Array.from(tableBody.children);
         const canUpdateInPlace = existingRows.length === items.length && items.length > 0 && !existingRows.some(r => r.children.length !== 5);
@@ -870,7 +855,7 @@ const GoldDashboard = (function () {
                 const clColor = clVal < 0 ? 'text-val-down' : 'text-val-up';
 
                 const cells = row.children;
-                if (isAuthed && cells.length === 5) {
+                if (cells.length === 5) {
                     const nameDiv = cells[0].children[0];
                     const unitDiv = cells[0].children[1];
                     const dispName = getItemDisplayName(item.name);
@@ -970,45 +955,32 @@ const GoldDashboard = (function () {
                 }
                 const clColor = clVal < 0 ? 'text-val-down' : 'text-val-up';
 
-                if (!isAuthed) {
-                    rowsHtml += `
-                        <tr class="transition-colors text-xs sm:text-sm md:text-base">
-                            <td class="text-left pl-2 sm:pl-3 py-1.5 sm:py-2.5 font-black col-org text-xs sm:text-sm md:text-base">
-                                <span>${item.name}</span>
-                            </td>
-                            <td colspan="4" class="text-center py-1.5 sm:py-2.5 pr-2 sm:pr-3 text-slate-300 text-[11px] sm:text-xs md:text-sm">
-                                <span>🔒 Vui lòng <a href="javascript:void(0)" onclick="GoldDashboard.openAuth('login')" class="auth-gate-link font-bold">đăng nhập</a> để xem giá trực tuyến</span>
-                            </td>
-                        </tr>
-                    `;
-                } else {
-                    rowsHtml += `
-                        <tr class="transition-colors border-b border-blue-900/30">
-                            <td class="text-left pl-1 sm:pl-2 pr-0.5 py-1.5 sm:py-2.5 font-black col-org">
-                                <div class="text-[13px] xs:text-[14.5px] sm:text-base md:text-lg font-black leading-tight">${getItemDisplayName(item.name)}</div>
-                                <div class="text-[10px] sm:text-[12px] font-sans font-semibold text-slate-400 normal-case mt-0.5 whitespace-nowrap">${getItemUnitStr(item)}</div>
-                            </td>
+                rowsHtml += `
+                    <tr class="transition-colors border-b border-blue-900/30">
+                        <td class="text-left pl-1 sm:pl-2 pr-0.5 py-1.5 sm:py-2.5 font-black col-org">
+                            <div class="text-[13px] xs:text-[14.5px] sm:text-base md:text-lg font-black leading-tight">${getItemDisplayName(item.name)}</div>
+                            <div class="text-[10px] sm:text-[12px] font-sans font-semibold text-slate-400 normal-case mt-0.5 whitespace-nowrap">${getItemUnitStr(item)}</div>
+                        </td>
 
-                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-2 text-right font-mono font-black price-val text-[13.5px] xs:text-[15px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
-                                <div class="font-black">${buyMain}</div>
-                                ${buySub ? `<div class="text-[10px] sm:text-[12px] text-slate-400 font-bold mt-0.5">${buySub}</div>` : ''}
-                            </td>
+                        <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-2 text-right font-mono font-black price-val text-[13.5px] xs:text-[15px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                            <div class="font-black">${buyMain}</div>
+                            ${buySub ? `<div class="text-[10px] sm:text-[12px] text-slate-400 font-bold mt-0.5">${buySub}</div>` : ''}
+                        </td>
 
-                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-2 text-right font-mono font-black price-val text-[13.5px] xs:text-[15px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
-                                <div class="font-black">${sellMain}</div>
-                                ${sellSub ? `<div class="text-[10px] sm:text-[12px] text-yellow-400 font-bold mt-0.5">${sellSub}</div>` : ''}
-                            </td>
+                        <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-2 text-right font-mono font-black price-val text-[13.5px] xs:text-[15px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                            <div class="font-black">${sellMain}</div>
+                            ${sellSub ? `<div class="text-[10px] sm:text-[12px] text-yellow-400 font-bold mt-0.5">${sellSub}</div>` : ''}
+                        </td>
 
-                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-center font-mono font-black ${changeColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
-                                <div>${changeStr}</div>
-                            </td>
+                        <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-center font-mono font-black ${changeColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
+                            <div>${changeStr}</div>
+                        </td>
 
-                            <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:pr-2 text-center font-mono font-black ${clColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
-                                <div>${clStr}</div>
-                            </td>
-                        </tr>
-                    `;
-                }
+                        <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:pr-2 text-center font-mono font-black ${clColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
+                            <div>${clStr}</div>
+                        </td>
+                    </tr>
+                `;
             });
             tableBody.innerHTML = rowsHtml;
         }
@@ -1196,12 +1168,9 @@ const GoldDashboard = (function () {
         const resultEl = document.getElementById('calc-result');
         const resultUsdEl = document.getElementById('calc-result-usd');
 
-        if (!amountInput || !unitSelect || !typeSelect || !resultEl || !currentData) return;
-
-        if (!AuthManager.isLoggedIn()) {
-            resultEl.innerHTML = '<span class="text-xs text-amber-400">Vui lòng đăng nhập để tính</span>';
-            if (resultUsdEl) resultUsdEl.textContent = '';
-            return;
+        if (!amountInput || !unitSelect || !typeSelect || !resultEl) return;
+        if (!currentData) {
+            currentData = getInstantInitialData(currentMarket);
         }
 
         const amount = parseFloat(amountInput.value) || 0;

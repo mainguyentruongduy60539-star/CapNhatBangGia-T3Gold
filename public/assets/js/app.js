@@ -1,7 +1,7 @@
 const GoldDashboard = (function () {
     const API_ENDPOINTS = {
-        gold: ['/api/gold', 'http://localhost:3001/api/gold', '/gold', '/api'],
-        silver: ['/api/silver', 'http://localhost:3001/api/silver', '/silver']
+        gold: ['/gold', '/api/gold', '/api'],
+        silver: ['/silver', '/api/silver', '/api/v1/silver']
     };
 
     // Tỷ giá quy đổi thị trường thực tế
@@ -405,88 +405,124 @@ const GoldDashboard = (function () {
                 } catch(e2) {}
             }
 
-            let goldItems = [];
-            if (Array.isArray(vsg.vsg_gold_table) && vsg.vsg_gold_table.length > 0) {
-                goldItems = vsg.vsg_gold_table.map(item => {
-                    const isWorld = item.name === 'Vàng TG' || item.name === 'XAUUSD';
-                    const isGF95 = item.name === '95% GF';
-                    let buyVal = isWorld ? parseFloat((item.saigon?.buy || 0).toFixed(2)) : (isGF95 ? Math.round(item.saigon?.buy) : Math.round(item.saigon?.buy || 0));
-                    let sellVal = isWorld ? parseFloat((item.saigon?.sell || 0).toFixed(2)) : (isGF95 ? Math.round(item.saigon?.sell) : Math.round(item.saigon?.sell || 0));
-                    let changeVal = isWorld ? parseFloat(item.saigon?.sell_change?.toFixed(2) || item.saigon?.sell_change) : (isGF95 ? Math.round(item.saigon?.sell_change) : Math.round(item.saigon?.sell_change || 0));
+            const vtgItem = {
+                name: 'Vàng TG',
+                isWorld: true,
+                buy: tvPrice ? parseFloat((tvPrice.bid || tvPrice.close).toFixed(2)) : parseFloat(xauBuy.toFixed(2)),
+                sell: tvPrice ? parseFloat((tvPrice.ask || tvPrice.close).toFixed(2)) : parseFloat(xauSell.toFixed(2)),
+                change: tvPrice ? parseFloat((tvPrice.change || 0).toFixed(2)) : parseFloat(xauChange.toFixed(2)),
+                cl: 0
+            };
 
-                    if (isWorld && tvPrice && (!item.saigon || !item.saigon.buy)) {
-                        buyVal = parseFloat((tvPrice.close || tvPrice.bid).toFixed(2));
-                        sellVal = parseFloat((tvPrice.close || tvPrice.ask).toFixed(2));
-                        changeVal = parseFloat((tvPrice.change || 0).toFixed(2));
-                    }
+            const sjcTdRaw = vsg.sjcNationWide?.find(i => i.name === 'SJC TD' || i.name === 'SJC Tự do' || i.name.includes('SJC TD'))
+                          || vsg.vsg_gold_table?.find(i => i.name === 'SJC Tự do');
+            const sjcBuy = Math.round(sjcTdRaw?.saigon?.buy || 142147);
+            const sjcSell = Math.round(sjcTdRaw?.saigon?.sell || 143447);
+            const sjcChange = Math.round(sjcTdRaw?.saigon?.sell_change !== undefined ? sjcTdRaw.saigon.sell_change : -53);
+            const sjcItem = {
+                name: 'SJC Tự do',
+                isWorld: false,
+                buy: sjcBuy,
+                sell: sjcSell,
+                change: sjcChange,
+                cl: Math.round(sjcSell - baseLuongVND)
+            };
 
-                    const clInChiVND = isWorld ? 0 : (item.gap !== undefined ? Math.round(item.gap) : Math.round((sellVal / 10) - (baseVsgChiVND / 10)));
-                    return {
-                        name: item.name === 'XAUUSD' ? 'Vàng TG' : item.name,
-                        isWorld: isWorld,
-                        buy: buyVal,
-                        sell: sellVal,
-                        change: changeVal,
-                        cl: clInChiVND
-                    };
-                });
-            } else {
-                goldItems.push({
-                    name: 'Vàng TG',
-                    isWorld: true,
-                    buy: tvPrice ? parseFloat((tvPrice.bid || tvPrice.close).toFixed(2)) : parseFloat(xauBuy.toFixed(2)),
-                    sell: tvPrice ? parseFloat((tvPrice.ask || tvPrice.close).toFixed(2)) : parseFloat(xauSell.toFixed(2)),
-                    change: tvPrice ? parseFloat((tvPrice.change || 0).toFixed(2)) : parseFloat(xauChange.toFixed(2)),
-                    cl: 0
-                });
-            }
+            const g9999Raw = vsg.goldNationWide?.find(i => i.name === '999,9 TD' || i.name.includes('999,9'))
+                          || vsg.goldNationWide?.find(i => i.name === '99,99% GF')
+                          || vsg.vsg_gold_table?.find(i => i.name.includes('999.9') || i.name.includes('99,99'));
+            const g9999Buy = Math.round(g9999Raw?.saigon?.buy || 132321);
+            const g9999Sell = Math.round(g9999Raw?.saigon?.sell || 133821);
+            const g9999Change = Math.round(g9999Raw?.saigon?.sell_change !== undefined ? g9999Raw.saigon.sell_change : 21);
+            const g9999Item = {
+                name: 'Vàng 999.9',
+                isWorld: false,
+                buy: g9999Buy,
+                sell: g9999Sell,
+                change: g9999Change,
+                cl: Math.round(g9999Sell - baseLuongVND)
+            };
 
-            const g9999 = goldItems.find(i => i.name === 'Vàng 999.9') || { buy: 136300, sell: 137800, change: 0 };
-            const g9999BuyRaw = g9999.buy || 136300;
-            const g9999SellRaw = g9999.sell || 137800;
-            const g9999ChangeRaw = g9999.change || 0;
+            const g999Raw = vsg.goldNationWide?.find(i => i.name === '99,9 TD' || i.name.includes('99,9 TD'))
+                         || vsg.goldNationWide?.find(i => i.name === '99,9% GF')
+                         || vsg.vsg_gold_table?.find(i => i.name.includes('99.9') || i.name.includes('99,9'));
+            const g999Buy = Math.round(g999Raw?.saigon?.buy || 132031);
+            const g999Sell = Math.round(g999Raw?.saigon?.sell || 133531);
+            const g999Change = Math.round(g999Raw?.saigon?.sell_change !== undefined ? g999Raw.saigon.sell_change : 31);
+            const g999Item = {
+                name: 'Vàng 99.9',
+                isWorld: false,
+                buy: g999Buy,
+                sell: g999Sell,
+                change: g999Change,
+                cl: Math.round(g999Sell - baseLuongVND)
+            };
+
+            const g95Raw = vsg.goldNationWide?.find(i => i.name.includes('95%') || i.name.includes('Vàng 95'))
+                        || vsg.goldNationWide?.find(i => i.name === '95% GF')
+                        || vsg.vsg_gold_table?.find(i => i.name.includes('95'));
+            const g95Buy = Math.round(g95Raw?.saigon?.buy || 125439);
+            const g95Sell = Math.round(g95Raw?.saigon?.sell || 126939);
+            const g95Change = Math.round(g95Raw?.saigon?.sell_change !== undefined ? g95Raw.saigon.sell_change : -611);
+            const g95Item = {
+                name: 'Vàng 95',
+                isWorld: false,
+                buy: g95Buy,
+                sell: g95Sell,
+                change: g95Change,
+                cl: Math.round(g95Sell - baseLuongVND)
+            };
 
             const customGoldTypes = [
                 {
                     name: 'Vàng 980',
                     isWorld: false,
-                    buy: Math.round(g9999BuyRaw * (980 - 0.5) / 1000),
-                    sell: Math.round(g9999SellRaw * (980 + 0.5) / 1000),
-                    change: Math.round(g9999ChangeRaw * (980 + 0.5) / 1000),
-                    cl: Math.round((Math.round(g9999SellRaw * (980 + 0.5) / 1000) / 10) - baseVsgChiVND)
+                    buy: Math.round(g9999Buy * 0.980),
+                    sell: Math.round(g9999Sell * 0.980),
+                    change: Math.round(g9999Change * 0.980),
+                    cl: Math.round(Math.round(g9999Sell * 0.980) - baseLuongVND)
                 },
                 {
                     name: 'Vàng 750',
                     isWorld: false,
-                    buy: Math.round(g9999BuyRaw * (750 - 1.0) / 1000),
-                    sell: Math.round(g9999SellRaw * (750 + 1.0) / 1000),
-                    change: Math.round(g9999ChangeRaw * (750 + 1.0) / 1000),
-                    cl: Math.round((Math.round(g9999SellRaw * (750 + 1.0) / 1000) / 10) - baseVsgChiVND)
+                    buy: Math.round(g9999Buy * 0.750),
+                    sell: Math.round(g9999Sell * 0.750),
+                    change: Math.round(g9999Change * 0.750),
+                    cl: Math.round(Math.round(g9999Sell * 0.750) - baseLuongVND)
                 },
                 {
                     name: 'Vàng 610',
                     isWorld: false,
-                    buy: Math.round(g9999BuyRaw * (610 - 1.5) / 1000),
-                    sell: Math.round(g9999SellRaw * (610 + 1.5) / 1000),
-                    change: Math.round(g9999ChangeRaw * (610 + 1.5) / 1000),
-                    cl: Math.round((Math.round(g9999SellRaw * (610 + 1.5) / 1000) / 10) - baseVsgChiVND)
+                    buy: Math.round(g9999Buy * 0.610),
+                    sell: Math.round(g9999Sell * 0.610),
+                    change: Math.round(g9999Change * 0.610),
+                    cl: Math.round(Math.round(g9999Sell * 0.610) - baseLuongVND)
                 },
                 {
                     name: 'Vàng 585',
                     isWorld: false,
-                    buy: Math.round(g9999BuyRaw * (585 - 2.0) / 1000),
-                    sell: Math.round(g9999SellRaw * (585 + 2.0) / 1000),
-                    change: Math.round(g9999ChangeRaw * (585 + 2.0) / 1000),
-                    cl: Math.round((Math.round(g9999SellRaw * (585 + 2.0) / 1000) / 10) - baseVsgChiVND)
+                    buy: Math.round(g9999Buy * 0.585),
+                    sell: Math.round(g9999Sell * 0.585),
+                    change: Math.round(g9999Change * 0.585),
+                    cl: Math.round(Math.round(g9999Sell * 0.585) - baseLuongVND)
                 },
                 {
                     name: 'Vàng 416',
                     isWorld: false,
-                    buy: Math.round(g9999BuyRaw * (416 - 2.5) / 1000),
-                    sell: Math.round(g9999SellRaw * (416 + 2.5) / 1000),
-                    change: Math.round(g9999ChangeRaw * (416 + 2.5) / 1000),
-                    cl: Math.round((Math.round(g9999SellRaw * (416 + 2.5) / 1000) / 10) - baseVsgChiVND)
+                    buy: Math.round(g9999Buy * 0.416),
+                    sell: Math.round(g9999Sell * 0.416),
+                    change: Math.round(g9999Change * 0.416),
+                    cl: Math.round(Math.round(g9999Sell * 0.416) - baseLuongVND)
                 }
+            ];
+
+            const goldItems = [
+                vtgItem,
+                sjcItem,
+                g9999Item,
+                g999Item,
+                g95Item,
+                ...customGoldTypes
             ];
 
             const currencies = (vsg.currencyNationWide || []).map(c => ({
@@ -661,6 +697,9 @@ const GoldDashboard = (function () {
             return currentData;
         }
 
+        if (!currentData && !lastLiveVsgData) {
+            currentData = getInstantInitialData(currentMarket);
+        }
         return currentData || lastLiveVsgData;
     }
 
@@ -713,7 +752,6 @@ const GoldDashboard = (function () {
         // Render Bảng Ngoại Tệ (#currency-table-body)
         const currencyBody = document.getElementById('currency-table-body');
         const currencyList = data && data.currencies && data.currencies.length > 0 ? data.currencies : CURRENCY_LIST;
-        const isAuthed = AuthManager.isLoggedIn();
 
         const formatNumber = (num, decimals = 0) => {
             if (num === null || num === undefined) return '0';
@@ -724,36 +762,23 @@ const GoldDashboard = (function () {
         };
 
         if (currencyBody) {
-            if (!isAuthed) {
-                currencyBody.innerHTML = currencyList.map(c => `
-                    <tr class="transition-colors text-sm sm:text-base">
-                        <td class="text-left pl-2 sm:pl-3 py-2.5 font-black col-org text-xs sm:text-sm md:text-base">
+            currencyBody.innerHTML = currencyList.map(c => {
+                const rateVal = c.rateRate !== undefined && c.rateRate !== 0 ? (c.rateRate > 10 ? c.rateRate.toFixed(2) : c.rateRate.toFixed(4)) : '0';
+                const buyVal = c.digit === 1 ? c.rateBuy.toFixed(1) : formatNumber(c.rateBuy);
+                const sellVal = c.digit === 1 ? c.rateSell.toFixed(1) : formatNumber(c.rateSell);
+                const rateNum = parseFloat(rateVal);
+                const rateColor = rateNum < 0 ? 'text-val-down' : 'text-val-up';
+                return `
+                    <tr class="transition-colors border-b border-blue-900/30 text-xs sm:text-sm md:text-base">
+                        <td class="text-left pl-1.5 sm:pl-2.5 py-1.5 sm:py-2.5 font-extrabold col-org text-[12px] sm:text-sm md:text-base whitespace-nowrap overflow-hidden">
                             <span>${c.code}</span>
                         </td>
-                        <td colspan="3" class="text-center pr-3 py-2.5 text-slate-300 text-xs sm:text-sm">
-                            <span>Vui lòng <a href="javascript:void(0)" onclick="GoldDashboard.openAuth('login')" class="auth-gate-link font-bold">đăng nhập</a> để xem giá</span>
-                        </td>
+                        <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black price-val text-[14px] xs:text-[15px] sm:text-base md:text-lg tracking-tighter whitespace-nowrap">${buyVal}</td>
+                        <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black price-val text-[14px] xs:text-[15px] sm:text-base md:text-lg tracking-tighter whitespace-nowrap">${sellVal}</td>
+                        <td class="py-1.5 sm:py-2.5 pr-1 sm:pr-2 text-right font-mono font-black ${rateColor} text-[14px] xs:text-[15px] sm:text-base md:text-lg tracking-tighter whitespace-nowrap">${rateVal}</td>
                     </tr>
-                `).join('');
-            } else {
-                currencyBody.innerHTML = currencyList.map(c => {
-                    const rateVal = c.rateRate !== undefined && c.rateRate !== 0 ? (c.rateRate > 10 ? c.rateRate.toFixed(2) : c.rateRate.toFixed(4)) : '0';
-                    const buyVal = c.digit === 1 ? c.rateBuy.toFixed(1) : formatNumber(c.rateBuy);
-                    const sellVal = c.digit === 1 ? c.rateSell.toFixed(1) : formatNumber(c.rateSell);
-                    const rateNum = parseFloat(rateVal);
-                    const rateColor = rateNum < 0 ? 'text-val-down' : 'text-val-up';
-                    return `
-                        <tr class="transition-colors border-b border-blue-900/30 text-xs sm:text-sm md:text-base">
-                            <td class="text-left pl-1.5 sm:pl-2.5 py-1.5 sm:py-2.5 font-extrabold col-org text-[12px] sm:text-sm md:text-base whitespace-nowrap overflow-hidden">
-                                <span>${c.code}</span>
-                            </td>
-                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black price-val text-[14px] xs:text-[15px] sm:text-base md:text-lg tracking-tighter whitespace-nowrap">${buyVal}</td>
-                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black price-val text-[14px] xs:text-[15px] sm:text-base md:text-lg tracking-tighter whitespace-nowrap">${sellVal}</td>
-                            <td class="py-1.5 sm:py-2.5 pr-1 sm:pr-2 text-right font-mono font-black ${rateColor} text-[14px] xs:text-[15px] sm:text-base md:text-lg tracking-tighter whitespace-nowrap">${rateVal}</td>
-                        </tr>
-                    `;
-                }).join('');
-            }
+                `;
+            }).join('');
         }
 
         // Render / Update Máy Tính Quy Đổi
@@ -770,7 +795,6 @@ const GoldDashboard = (function () {
     function renderTableRows(tableBody, items, isGold, data) {
         if (!tableBody || !items || items.length === 0) return; // Không xóa bảng nếu items rỗng
         const currentMarket = isGold ? 'gold' : 'silver';
-        const isAuthed = AuthManager.isLoggedIn();
 
         const existingRows = Array.from(tableBody.children);
         const canUpdateInPlace = existingRows.length === items.length && items.length > 0 && !existingRows.some(r => r.children.length !== 5);
@@ -805,13 +829,8 @@ const GoldDashboard = (function () {
                         sellSub = `≈ ${Math.round(vndPerChiSell).toLocaleString('vi-VN')} VNĐ/chỉ`;
                     }
                 } else {
-                    if (currentMarket === 'gold') {
-                        buyMain = `${Math.round(item.buy / 10).toLocaleString('vi-VN')}`;
-                        sellMain = `${Math.round(item.sell / 10).toLocaleString('vi-VN')}`;
-                    } else {
-                        buyMain = `${Math.round(item.buy / 1000).toLocaleString('vi-VN')}`;
-                        sellMain = `${Math.round(item.sell / 1000).toLocaleString('vi-VN')}`;
-                    }
+                    buyMain = `${Math.round(item.buy).toLocaleString('vi-VN')}`;
+                    sellMain = `${Math.round(item.sell).toLocaleString('vi-VN')}`;
                 }
 
                 let changeStr = '0';
@@ -836,7 +855,7 @@ const GoldDashboard = (function () {
                 const clColor = clVal < 0 ? 'text-val-down' : 'text-val-up';
 
                 const cells = row.children;
-                if (isAuthed && cells.length === 5) {
+                if (cells.length === 5) {
                     const nameDiv = cells[0].children[0];
                     const unitDiv = cells[0].children[1];
                     const dispName = getItemDisplayName(item.name);
@@ -874,11 +893,11 @@ const GoldDashboard = (function () {
 
                     const changeDiv = cells[3].children[0] || cells[3];
                     if (changeDiv.textContent !== changeStr) changeDiv.textContent = changeStr;
-                    cells[3].className = `py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black ${changeColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap`;
+                    cells[3].className = `py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-center font-mono font-black ${changeColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap`;
 
                     const clDiv = cells[4].children[0] || cells[4];
                     if (clDiv.textContent !== clStr) clDiv.textContent = clStr;
-                    cells[4].className = `py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:pr-2 text-right font-mono font-black ${clColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap`;
+                    cells[4].className = `py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:pr-2 text-center font-mono font-black ${clColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap`;
                 }
             });
         } else {
@@ -911,13 +930,8 @@ const GoldDashboard = (function () {
                         sellSub = `≈ ${Math.round(vndPerChiSell).toLocaleString('vi-VN')} VNĐ/chỉ`;
                     }
                 } else {
-                    if (currentMarket === 'gold') {
-                        buyMain = `${Math.round(item.buy / 10).toLocaleString('vi-VN')}`;
-                        sellMain = `${Math.round(item.sell / 10).toLocaleString('vi-VN')}`;
-                    } else {
-                        buyMain = `${Math.round(item.buy / 1000).toLocaleString('vi-VN')}`;
-                        sellMain = `${Math.round(item.sell / 1000).toLocaleString('vi-VN')}`;
-                    }
+                    buyMain = `${Math.round(item.buy).toLocaleString('vi-VN')}`;
+                    sellMain = `${Math.round(item.sell).toLocaleString('vi-VN')}`;
                 }
 
                 let changeStr = '0';
@@ -941,45 +955,32 @@ const GoldDashboard = (function () {
                 }
                 const clColor = clVal < 0 ? 'text-val-down' : 'text-val-up';
 
-                if (!isAuthed) {
-                    rowsHtml += `
-                        <tr class="transition-colors text-xs sm:text-sm md:text-base">
-                            <td class="text-left pl-2 sm:pl-3 py-1.5 sm:py-2.5 font-black col-org text-xs sm:text-sm md:text-base">
-                                <span>${item.name}</span>
-                            </td>
-                            <td colspan="4" class="text-center py-1.5 sm:py-2.5 pr-2 sm:pr-3 text-slate-300 text-[11px] sm:text-xs md:text-sm">
-                                <span>🔒 Vui lòng <a href="javascript:void(0)" onclick="GoldDashboard.openAuth('login')" class="auth-gate-link font-bold">đăng nhập</a> để xem giá trực tuyến</span>
-                            </td>
-                        </tr>
-                    `;
-                } else {
-                    rowsHtml += `
-                        <tr class="transition-colors border-b border-blue-900/30">
-                            <td class="text-left pl-1 sm:pl-2 pr-0.5 py-1.5 sm:py-2.5 font-black col-org">
-                                <div class="text-[13px] xs:text-[14.5px] sm:text-base md:text-lg font-black leading-tight">${getItemDisplayName(item.name)}</div>
-                                <div class="text-[10px] sm:text-[12px] font-sans font-semibold text-slate-400 normal-case mt-0.5 whitespace-nowrap">${getItemUnitStr(item)}</div>
-                            </td>
+                rowsHtml += `
+                    <tr class="transition-colors border-b border-blue-900/30">
+                        <td class="text-left pl-1 sm:pl-2 pr-0.5 py-1.5 sm:py-2.5 font-black col-org">
+                            <div class="text-[13px] xs:text-[14.5px] sm:text-base md:text-lg font-black leading-tight">${getItemDisplayName(item.name)}</div>
+                            <div class="text-[10px] sm:text-[12px] font-sans font-semibold text-slate-400 normal-case mt-0.5 whitespace-nowrap">${getItemUnitStr(item)}</div>
+                        </td>
 
-                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-2 text-right font-mono font-black price-val text-[13.5px] xs:text-[15px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
-                                <div class="font-black">${buyMain}</div>
-                                ${buySub ? `<div class="text-[10px] sm:text-[12px] text-slate-400 font-bold mt-0.5">${buySub}</div>` : ''}
-                            </td>
+                        <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-2 text-right font-mono font-black price-val text-[13.5px] xs:text-[15px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                            <div class="font-black">${buyMain}</div>
+                            ${buySub ? `<div class="text-[10px] sm:text-[12px] text-slate-400 font-bold mt-0.5">${buySub}</div>` : ''}
+                        </td>
 
-                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-2 text-right font-mono font-black price-val text-[13.5px] xs:text-[15px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
-                                <div class="font-black">${sellMain}</div>
-                                ${sellSub ? `<div class="text-[10px] sm:text-[12px] text-yellow-400 font-bold mt-0.5">${sellSub}</div>` : ''}
-                            </td>
+                        <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-2 text-right font-mono font-black price-val text-[13.5px] xs:text-[15px] sm:text-xl md:text-2xl tracking-tighter whitespace-nowrap">
+                            <div class="font-black">${sellMain}</div>
+                            ${sellSub ? `<div class="text-[10px] sm:text-[12px] text-yellow-400 font-bold mt-0.5">${sellSub}</div>` : ''}
+                        </td>
 
-                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black ${changeColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
-                                <div>${changeStr}</div>
-                            </td>
+                        <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-center font-mono font-black ${changeColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
+                            <div>${changeStr}</div>
+                        </td>
 
-                            <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:pr-2 text-right font-mono font-black ${clColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
-                                <div>${clStr}</div>
-                            </td>
-                        </tr>
-                    `;
-                }
+                        <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:pr-2 text-center font-mono font-black ${clColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
+                            <div>${clStr}</div>
+                        </td>
+                    </tr>
+                `;
             });
             tableBody.innerHTML = rowsHtml;
         }
@@ -1167,12 +1168,9 @@ const GoldDashboard = (function () {
         const resultEl = document.getElementById('calc-result');
         const resultUsdEl = document.getElementById('calc-result-usd');
 
-        if (!amountInput || !unitSelect || !typeSelect || !resultEl || !currentData) return;
-
-        if (!AuthManager.isLoggedIn()) {
-            resultEl.innerHTML = '<span class="text-xs text-amber-400">Vui lòng đăng nhập để tính</span>';
-            if (resultUsdEl) resultUsdEl.textContent = '';
-            return;
+        if (!amountInput || !unitSelect || !typeSelect || !resultEl) return;
+        if (!currentData) {
+            currentData = getInstantInitialData(currentMarket);
         }
 
         const amount = parseFloat(amountInput.value) || 0;
@@ -2174,7 +2172,7 @@ const GoldDashboard = (function () {
             this.refreshData();
             initTradingView();
             renderNews('all');
-            setInterval(() => this.refreshData(), 1500); // ⚡ Tự động cập nhật nhảy số thời gian thực mỗi 1.5 giây theo Taiem
+            setInterval(() => this.refreshData(), 3000); // ⚡ Tự động cập nhật nhảy số thời gian thực mỗi 3 giây theo VangSaigon
         },
         switchMarket: function (market) {
             if (currentMarket === market) return;
