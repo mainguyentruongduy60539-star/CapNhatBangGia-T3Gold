@@ -2212,7 +2212,7 @@ const GoldDashboard = (function () {
             this.refreshData();
             initTradingView();
             renderNews('all');
-            setInterval(() => this.refreshData(), 3000); // ⚡ Tự động cập nhật nhảy số thời gian thực mỗi 3 giây theo VangSaigon
+            setInterval(() => this.refreshData(), 1000); // ⚡ Tự động cập nhật nhảy số thời gian thực mỗi 1 giây theo VangSaigon
         },
         switchMarket: function (market) {
             if (currentMarket === market) return;

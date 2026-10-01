@@ -459,7 +459,7 @@ async function fetchTaiemLiveData() {
 
 let cachedVsgData = null;
 let lastCacheTime = 0;
-const CACHE_TTL_MS = 3000;
+const CACHE_TTL_MS = 1000;
 
 async function fetchVsgData() {
     const now = Date.now();
