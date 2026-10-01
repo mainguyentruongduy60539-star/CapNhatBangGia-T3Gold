@@ -654,26 +654,26 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
             if (Array.isArray(vsg.vsg_gold_table) && vsg.vsg_gold_table.length > 0) {
                 goldItems = vsg.vsg_gold_table.map(item => {
                     const isWorld = item.name === 'Vàng TG' || item.name === 'XAUUSD';
-                    const isGF95 = item.name === '95% GF';
-                    let buyVal = isWorld ? parseFloat((item.saigon?.buy || 0).toFixed(2)) : (isGF95 ? Math.round(item.saigon?.buy) : Math.round(item.saigon?.buy || 0));
-                    let sellVal = isWorld ? parseFloat((item.saigon?.sell || 0).toFixed(2)) : (isGF95 ? Math.round(item.saigon?.sell) : Math.round(item.saigon?.sell || 0));
-                    let changeVal = isWorld ? parseFloat(item.saigon?.sell_change?.toFixed(2) || item.saigon?.sell_change) : (isGF95 ? Math.round(item.saigon?.sell_change) : Math.round(item.saigon?.sell_change || 0));
+                    const buyVal = isWorld 
+                        ? parseFloat((item.saigon?.buy || item.hanoi?.buy || 0).toFixed(2)) 
+                        : Math.round(item.saigon?.buy || item.hanoi?.buy || 0);
+                    const sellVal = isWorld 
+                        ? parseFloat((item.saigon?.sell || item.hanoi?.sell || 0).toFixed(2)) 
+                        : Math.round(item.saigon?.sell || item.hanoi?.sell || 0);
+                    const changeVal = isWorld 
+                        ? parseFloat((item.saigon?.sell_change || item.hanoi?.sell_change || 0).toFixed(2)) 
+                        : Math.round(item.saigon?.sell_change || item.hanoi?.sell_change || 0);
+                    const clVal = isWorld 
+                        ? 0 
+                        : Math.round(item.gap !== undefined ? item.gap : 0);
 
-                    if (isWorld && tvPrice?.xau && (!item.saigon || !item.saigon.buy)) {
-                        buyVal = parseFloat(tvPrice.xau.close.toFixed(2));
-                        sellVal = parseFloat(tvPrice.xau.close.toFixed(2));
-                        changeVal = parseFloat(tvPrice.xau.change.toFixed(2));
-                    }
-
-                    // item.gap từ API VangSaigon là nghìn VNĐ / Lượng -> quy đổi VNĐ / Chỉ: gap * 1000 / 10 = gap * 100
-                    const clInChiVND = isWorld ? 0 : (item.gap !== undefined ? Math.round(item.gap) : Math.round((sellVal / 10) - (baseVsgChiVND / 10)));
                     return {
                         name: item.name === 'XAUUSD' ? 'Vàng TG' : item.name,
                         isWorld: isWorld,
                         buy: buyVal,
                         sell: sellVal,
                         change: changeVal,
-                        cl: clInChiVND
+                        cl: clVal
                     };
                 });
             } else {
@@ -698,67 +698,6 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
                     cl: sjcTd?.gap !== undefined ? Math.round(sjcTd.gap) : Math.round((sjcTdSell / 10) - (baseVsgChiVND / 10))
                 });
             }
-
-            // 1. Bỏ 99,99% GF, 95% GF, Vàng nhẫn SJC theo yêu cầu
-            // 2. Tìm vàng 999.9 làm gốc để tính các loại vàng tây/trang sức
-            const keepNames = [
-                'Vàng TG',
-                'SJC Tự do',
-                'Vàng 999.9',
-                'Vàng 99.9',
-                'Vàng 95'
-            ];
-            const filteredGold = goldItems.filter(i => keepNames.includes(i.name));
-
-            const g9999 = goldItems.find(i => i.name === 'Vàng 999.9') || { buy: 136300, sell: 137800, change: 0 };
-            const g9999BuyRaw = g9999.buy || 136300;
-            const g9999SellRaw = g9999.sell || 137800;
-            const g9999ChangeRaw = g9999.change || 0;
-
-            const customGoldTypes = [
-                {
-                    name: 'Vàng 980',
-                    isWorld: false,
-                    buy: Math.round(g9999BuyRaw * (980 - 0.5) / 1000),
-                    sell: Math.round(g9999SellRaw * (980 + 0.5) / 1000),
-                    change: Math.round(g9999ChangeRaw * (980 + 0.5) / 1000),
-                    cl: Math.round((Math.round(g9999SellRaw * (980 + 0.5) / 1000) / 10) - baseVsgChiVND)
-                },
-                {
-                    name: 'Vàng 750',
-                    isWorld: false,
-                    buy: Math.round(g9999BuyRaw * (750 - 1.0) / 1000),
-                    sell: Math.round(g9999SellRaw * (750 + 1.0) / 1000),
-                    change: Math.round(g9999ChangeRaw * (750 + 1.0) / 1000),
-                    cl: Math.round((Math.round(g9999SellRaw * (750 + 1.0) / 1000) / 10) - baseVsgChiVND)
-                },
-                {
-                    name: 'Vàng 610',
-                    isWorld: false,
-                    buy: Math.round(g9999BuyRaw * (610 - 1.5) / 1000),
-                    sell: Math.round(g9999SellRaw * (610 + 1.5) / 1000),
-                    change: Math.round(g9999ChangeRaw * (610 + 1.5) / 1000),
-                    cl: Math.round((Math.round(g9999SellRaw * (610 + 1.5) / 1000) / 10) - baseVsgChiVND)
-                },
-                {
-                    name: 'Vàng 585',
-                    isWorld: false,
-                    buy: Math.round(g9999BuyRaw * (585 - 2.0) / 1000),
-                    sell: Math.round(g9999SellRaw * (585 + 2.0) / 1000),
-                    change: Math.round(g9999ChangeRaw * (585 + 2.0) / 1000),
-                    cl: Math.round((Math.round(g9999SellRaw * (585 + 2.0) / 1000) / 10) - baseVsgChiVND)
-                },
-                {
-                    name: 'Vàng 416',
-                    isWorld: false,
-                    buy: Math.round(g9999BuyRaw * (416 - 2.5) / 1000),
-                    sell: Math.round(g9999SellRaw * (416 + 2.5) / 1000),
-                    change: Math.round(g9999ChangeRaw * (416 + 2.5) / 1000),
-                    cl: Math.round((Math.round(g9999SellRaw * (416 + 2.5) / 1000) / 10) - baseVsgChiVND)
-                }
-            ];
-
-            goldItems = [...filteredGold, ...customGoldTypes];
 
             // Danh sách Ngoại Tệ chuẩn
             const currencies = (vsg.currencyNationWide || []).map(c => ({
