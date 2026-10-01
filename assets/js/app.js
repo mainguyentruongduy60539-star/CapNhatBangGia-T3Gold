@@ -427,7 +427,7 @@ const GoldDashboard = (function () {
                 buy: sjcBuy,
                 sell: sjcSell,
                 change: sjcChange,
-                cl: Math.round(sjcSell - baseLuongInNgàn)
+                cl: Math.round((sjcSell - baseLuongInNgàn) / 10)
             };
 
             const g9999Raw = vsg.goldNationWide?.find(i => i.name === '999,9 TD' || i.name.includes('999,9'))
@@ -442,7 +442,7 @@ const GoldDashboard = (function () {
                 buy: g9999Buy,
                 sell: g9999Sell,
                 change: g9999Change,
-                cl: Math.round(g9999Sell - baseLuongInNgàn)
+                cl: Math.round((g9999Sell - baseLuongInNgàn) / 10)
             };
 
             const g999Raw = vsg.goldNationWide?.find(i => i.name === '99,9 TD' || i.name.includes('99,9 TD'))
@@ -457,7 +457,7 @@ const GoldDashboard = (function () {
                 buy: g999Buy,
                 sell: g999Sell,
                 change: g999Change,
-                cl: Math.round(g999Sell - baseLuongInNgàn)
+                cl: Math.round((g999Sell - baseLuongInNgàn) / 10)
             };
 
             const g95Raw = vsg.goldNationWide?.find(i => i.name.includes('95%') || i.name.includes('Vàng 95'))
@@ -472,7 +472,7 @@ const GoldDashboard = (function () {
                 buy: g95Buy,
                 sell: g95Sell,
                 change: g95Change,
-                cl: Math.round(g95Sell - baseLuongInNgàn)
+                cl: Math.round((g95Sell - baseLuongInNgàn) / 10)
             };
 
             const customGoldTypes = [
@@ -482,7 +482,7 @@ const GoldDashboard = (function () {
                     buy: Math.round(g9999Buy * 0.980),
                     sell: Math.round(g9999Sell * 0.980),
                     change: Math.round(g9999Change * 0.980),
-                    cl: Math.round(Math.round(g9999Sell * 0.980) - baseLuongInNgàn)
+                    cl: Math.round((Math.round(g9999Sell * 0.980) - baseLuongInNgàn) / 10)
                 },
                 {
                     name: 'Vàng 750',
@@ -490,7 +490,7 @@ const GoldDashboard = (function () {
                     buy: Math.round(g9999Buy * 0.750),
                     sell: Math.round(g9999Sell * 0.750),
                     change: Math.round(g9999Change * 0.750),
-                    cl: Math.round(Math.round(g9999Sell * 0.750) - baseLuongInNgàn)
+                    cl: Math.round((Math.round(g9999Sell * 0.750) - baseLuongInNgàn) / 10)
                 },
                 {
                     name: 'Vàng 610',
@@ -498,7 +498,7 @@ const GoldDashboard = (function () {
                     buy: Math.round(g9999Buy * 0.610),
                     sell: Math.round(g9999Sell * 0.610),
                     change: Math.round(g9999Change * 0.610),
-                    cl: Math.round(Math.round(g9999Sell * 0.610) - baseLuongInNgàn)
+                    cl: Math.round((Math.round(g9999Sell * 0.610) - baseLuongInNgàn) / 10)
                 },
                 {
                     name: 'Vàng 585',
@@ -506,7 +506,7 @@ const GoldDashboard = (function () {
                     buy: Math.round(g9999Buy * 0.585),
                     sell: Math.round(g9999Sell * 0.585),
                     change: Math.round(g9999Change * 0.585),
-                    cl: Math.round(Math.round(g9999Sell * 0.585) - baseLuongInNgàn)
+                    cl: Math.round((Math.round(g9999Sell * 0.585) - baseLuongInNgàn) / 10)
                 },
                 {
                     name: 'Vàng 416',
@@ -514,7 +514,7 @@ const GoldDashboard = (function () {
                     buy: Math.round(g9999Buy * 0.416),
                     sell: Math.round(g9999Sell * 0.416),
                     change: Math.round(g9999Change * 0.416),
-                    cl: Math.round(Math.round(g9999Sell * 0.416) - baseLuongInNgàn)
+                    cl: Math.round((Math.round(g9999Sell * 0.416) - baseLuongInNgàn) / 10)
                 }
             ];
 
@@ -850,6 +850,9 @@ const GoldDashboard = (function () {
                 const changeColor = item.change < 0 ? 'text-val-down' : 'text-val-up';
 
                 let clVal = item.cl !== undefined ? Math.round(item.cl) : 0;
+                if (currentMarket === 'gold' && !item.isWorld && Math.abs(clVal) > 5000) {
+                    clVal = Math.round(clVal / 10);
+                }
                 let clStr = '0';
                 if (clVal !== 0) {
                     if (currentMarket === 'silver' && !item.isWorld) {
@@ -956,6 +959,9 @@ const GoldDashboard = (function () {
                 const changeColor = item.change < 0 ? 'text-val-down' : 'text-val-up';
 
                 let clVal = item.cl !== undefined ? Math.round(item.cl) : 0;
+                if (currentMarket === 'gold' && !item.isWorld && Math.abs(clVal) > 5000) {
+                    clVal = Math.round(clVal / 10);
+                }
                 let clStr = '0';
                 if (clVal !== 0) {
                     if (currentMarket === 'silver' && !item.isWorld) {
