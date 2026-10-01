@@ -874,11 +874,11 @@ const GoldDashboard = (function () {
 
                     const changeDiv = cells[3].children[0] || cells[3];
                     if (changeDiv.textContent !== changeStr) changeDiv.textContent = changeStr;
-                    cells[3].className = `py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black ${changeColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap`;
+                    cells[3].className = `py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-center font-mono font-black ${changeColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap`;
 
                     const clDiv = cells[4].children[0] || cells[4];
                     if (clDiv.textContent !== clStr) clDiv.textContent = clStr;
-                    cells[4].className = `py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:pr-2 text-right font-mono font-black ${clColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap`;
+                    cells[4].className = `py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:pr-2 text-center font-mono font-black ${clColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap`;
                 }
             });
         } else {
@@ -970,11 +970,11 @@ const GoldDashboard = (function () {
                                 ${sellSub ? `<div class="text-[10px] sm:text-[12px] text-yellow-400 font-bold mt-0.5">${sellSub}</div>` : ''}
                             </td>
 
-                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-right font-mono font-black ${changeColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
+                            <td class="py-1.5 sm:py-2.5 px-0.5 sm:px-1 text-center font-mono font-black ${changeColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
                                 <div>${changeStr}</div>
                             </td>
 
-                            <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:pr-2 text-right font-mono font-black ${clColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
+                            <td class="py-1.5 sm:py-2.5 pl-0.5 pr-1 sm:pr-2 text-center font-mono font-black ${clColor} text-[11.5px] xs:text-[13px] sm:text-base md:text-lg tracking-tight whitespace-nowrap">
                                 <div>${clStr}</div>
                             </td>
                         </tr>

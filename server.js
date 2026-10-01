@@ -24,6 +24,40 @@ let cachedTaiemData = null;
 let lastTaiemCacheTime = 0;
 const TAIEM_CACHE_TTL_MS = 1000; // 1s cache for live jumping numbers
 
+// Cache lịch sử giá trước đó để tự động tính biến động (+/-) mỗi khi giá nhảy
+const itemPriceHistory = {};
+
+function applyDynamicChange(items, isSilver = false) {
+    if (!Array.isArray(items)) return;
+    items.forEach(item => {
+        if (!item || !item.name) return;
+        const currentSell = Number(item.sell) || 0;
+        let history = itemPriceHistory[item.name];
+
+        if (history) {
+            if (history.lastPrice !== undefined && history.lastPrice !== currentSell) {
+                let diff = 0;
+                if (item.isWorld) {
+                    diff = parseFloat((currentSell - history.lastPrice).toFixed(2));
+                } else if (isSilver) {
+                    diff = Math.round((currentSell - history.lastPrice) / 1000);
+                } else {
+                    diff = Math.round((currentSell - history.lastPrice) / 10);
+                }
+                if (diff !== 0) {
+                    history.change = diff;
+                    history.lastPrice = currentSell;
+                }
+            }
+            item.change = history.change !== undefined ? history.change : (item.change || 0);
+        } else {
+            history = { lastPrice: currentSell, change: item.change || 0 };
+            itemPriceHistory[item.name] = history;
+            item.change = history.change;
+        }
+    });
+}
+
 // TaiEmBold Custom Font Character Decoder Map
 const TAIEM_DECODE_MAP = {
   '!': '5', '#': '0', '$': '1',
@@ -398,6 +432,9 @@ async function fetchTaiemLiveData() {
         const nowD = new Date();
         const lastUpdatedStr = `${nowD.toLocaleDateString('vi-VN')} ${nowD.toLocaleTimeString('vi-VN')}`;
 
+        applyDynamicChange(goldItems, false);
+        applyDynamicChange(silverItems, true);
+
         cachedTaiemData = {
             success: true,
             source: 'taiem.com.vn (Tai Em Live Feed)',
@@ -742,6 +779,9 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
             const silverItems = buildSilverItemsFromVsg(vsg);
             const rawTime = vsg.vsg_gold_table?.[0]?.update_at || vsg.sjcNationWide?.[0]?.update_at || vsg.silver_price?.[0]?.update_at;
             const lastUpdatedStr = formatVsgTimestamp(rawTime);
+
+            applyDynamicChange(goldItems, false);
+            applyDynamicChange(silverItems, true);
 
             return res.json({
                 success: true,
