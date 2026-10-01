@@ -697,6 +697,9 @@ const GoldDashboard = (function () {
             return currentData;
         }
 
+        if (!currentData && !lastLiveVsgData) {
+            currentData = getInstantInitialData(currentMarket);
+        }
         return currentData || lastLiveVsgData;
     }
 
