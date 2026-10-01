@@ -500,6 +500,13 @@ async function fetchVsgData() {
     return cachedVsgData;
 }
 
+function getFormattedDateTimeStr() {
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Asia/Ho_Chi_Minh' });
+    const timeStr = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Ho_Chi_Minh' });
+    return `${dateStr} ${timeStr}`;
+}
+
 function formatVsgTimestamp(isoStr) {
     if (!isoStr) return '';
     try {
@@ -823,7 +830,7 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
             changePercent: 0,
             exchangeRate: fallbackExRate,
             baseLuongVND,
-            lastUpdatedStr: getFormattedDateTimeStr ? getFormattedDateTimeStr() : formatVsgTimestamp(new Date().toISOString()),
+            lastUpdatedStr: getFormattedDateTimeStr(),
             goldItems: [
                 { name: 'Vàng TG', isWorld: true, buy: fallbackXauBuy, sell: fallbackXauSell, change: 0.1, cl: 0 },
                 { name: 'SJC Tự do', isWorld: false, buy: sjcBuy, sell: sjcSell, change: sjcChange, cl: Math.round(sjcSell - baseLuongVND) },
