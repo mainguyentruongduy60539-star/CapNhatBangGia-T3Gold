@@ -166,8 +166,8 @@ const GoldDashboard = (function () {
         if (name.includes('1 Kg')) return 'Ngàn VNĐ / Kg';
         // Bạc 999 & Bạc nữ trang: tính theo chỉ
         if (name.includes('Bạc')) return 'Ngàn VNĐ / Chỉ';
-        // Vàng: giá hiển thị = raw ÷ 10 → ngàn VNĐ / chỉ
-        return 'Ngàn VNĐ / Chỉ';
+        // Vàng VangSaigon: giá hiển thị nguyên bản = ngàn VNĐ / lượng
+        return 'Ngàn VNĐ / Lượng';
     }
 
     function buildDynamicGoldItems(priceUsd, priceVnd, changeUsd, bid, ask) {
@@ -786,8 +786,8 @@ const GoldDashboard = (function () {
                 if (item.isWorld) {
                     const buyNum = Number(item.buy) || 0;
                     const sellNum = Number(item.sell) || 0;
-                    buyMain = buyNum > 0 ? (buyNum < 1000 ? buyNum.toFixed(2) : Math.floor(buyNum).toLocaleString('en-US')) : '0';
-                    sellMain = sellNum > 0 ? (sellNum < 1000 ? sellNum.toFixed(2) : Math.floor(sellNum).toLocaleString('en-US')) : '0';
+                    buyMain = buyNum > 0 ? buyNum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0';
+                    sellMain = sellNum > 0 ? sellNum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0';
                     
                     const exRate = data?.exchangeRate || EXCHANGE_RATE;
 
@@ -805,13 +805,8 @@ const GoldDashboard = (function () {
                         sellSub = `≈ ${Math.round(vndPerChiSell).toLocaleString('vi-VN')} VNĐ/chỉ`;
                     }
                 } else {
-                    if (currentMarket === 'gold') {
-                        buyMain = `${Math.round(item.buy / 10).toLocaleString('vi-VN')}`;
-                        sellMain = `${Math.round(item.sell / 10).toLocaleString('vi-VN')}`;
-                    } else {
-                        buyMain = `${Math.round(item.buy / 1000).toLocaleString('vi-VN')}`;
-                        sellMain = `${Math.round(item.sell / 1000).toLocaleString('vi-VN')}`;
-                    }
+                    buyMain = `${Math.round(item.buy).toLocaleString('en-US')}`;
+                    sellMain = `${Math.round(item.sell).toLocaleString('en-US')}`;
                 }
 
                 let changeStr = '0';
@@ -819,20 +814,12 @@ const GoldDashboard = (function () {
                     changeStr = item.change > 0 ? `+${item.change}` : `${item.change}`;
                 } else {
                     const chgVal = Math.round(item.change || 0);
-                    changeStr = chgVal === 0 ? '0' : ((chgVal > 0 ? '+' : '') + chgVal.toLocaleString('vi-VN'));
+                    changeStr = chgVal === 0 ? '0' : ((chgVal > 0 ? '+' : '') + chgVal.toLocaleString('en-US'));
                 }
                 const changeColor = item.change < 0 ? 'text-val-down' : 'text-val-up';
 
                 let clVal = item.cl !== undefined ? Math.round(item.cl) : 0;
-                let clStr = '0';
-                if (clVal !== 0) {
-                    if (currentMarket === 'silver' && !item.isWorld) {
-                        const clK = clVal / 1000;
-                        clStr = (clVal > 0 ? '+' : '') + (Math.abs(clK) < 10 ? clK.toFixed(1) : clK.toFixed(1));
-                    } else {
-                        clStr = (clVal > 0 ? '+' : '') + clVal.toLocaleString('vi-VN');
-                    }
-                }
+                let clStr = clVal.toLocaleString('en-US');
                 const clColor = clVal < 0 ? 'text-val-down' : 'text-val-up';
 
                 const cells = row.children;
@@ -892,8 +879,8 @@ const GoldDashboard = (function () {
                 if (item.isWorld) {
                     const buyNum = Number(item.buy) || 0;
                     const sellNum = Number(item.sell) || 0;
-                    buyMain = buyNum > 0 ? (buyNum < 1000 ? buyNum.toFixed(2) : Math.floor(buyNum).toLocaleString('en-US')) : '0';
-                    sellMain = sellNum > 0 ? (sellNum < 1000 ? sellNum.toFixed(2) : Math.floor(sellNum).toLocaleString('en-US')) : '0';
+                    buyMain = buyNum > 0 ? buyNum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0';
+                    sellMain = sellNum > 0 ? sellNum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0';
                     
                     const exRate = data?.exchangeRate || EXCHANGE_RATE;
 
@@ -911,13 +898,8 @@ const GoldDashboard = (function () {
                         sellSub = `≈ ${Math.round(vndPerChiSell).toLocaleString('vi-VN')} VNĐ/chỉ`;
                     }
                 } else {
-                    if (currentMarket === 'gold') {
-                        buyMain = `${Math.round(item.buy / 10).toLocaleString('vi-VN')}`;
-                        sellMain = `${Math.round(item.sell / 10).toLocaleString('vi-VN')}`;
-                    } else {
-                        buyMain = `${Math.round(item.buy / 1000).toLocaleString('vi-VN')}`;
-                        sellMain = `${Math.round(item.sell / 1000).toLocaleString('vi-VN')}`;
-                    }
+                    buyMain = `${Math.round(item.buy).toLocaleString('en-US')}`;
+                    sellMain = `${Math.round(item.sell).toLocaleString('en-US')}`;
                 }
 
                 let changeStr = '0';
@@ -925,20 +907,12 @@ const GoldDashboard = (function () {
                     changeStr = item.change > 0 ? `+${item.change}` : `${item.change}`;
                 } else {
                     const chgVal = Math.round(item.change || 0);
-                    changeStr = chgVal === 0 ? '0' : ((chgVal > 0 ? '+' : '') + chgVal.toLocaleString('vi-VN'));
+                    changeStr = chgVal === 0 ? '0' : ((chgVal > 0 ? '+' : '') + chgVal.toLocaleString('en-US'));
                 }
                 const changeColor = item.change < 0 ? 'text-val-down' : 'text-val-up';
 
                 let clVal = item.cl !== undefined ? Math.round(item.cl) : 0;
-                let clStr = '0';
-                if (clVal !== 0) {
-                    if (currentMarket === 'silver' && !item.isWorld) {
-                        const clK = clVal / 1000;
-                        clStr = (clVal > 0 ? '+' : '') + (Math.abs(clK) < 10 ? clK.toFixed(1) : clK.toFixed(1));
-                    } else {
-                        clStr = (clVal > 0 ? '+' : '') + clVal.toLocaleString('vi-VN');
-                    }
-                }
+                let clStr = clVal.toLocaleString('en-US');
                 const clColor = clVal < 0 ? 'text-val-down' : 'text-val-up';
 
                 if (!isAuthed) {

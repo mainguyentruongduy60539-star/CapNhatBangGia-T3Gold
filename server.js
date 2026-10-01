@@ -774,9 +774,6 @@ app.get(['/api/gold', '/gold', '/api/v1/gold', '/api/index.js', '/api'], async (
             const rawTime = vsg.vsg_gold_table?.[0]?.update_at || vsg.sjcNationWide?.[0]?.update_at || vsg.silver_price?.[0]?.update_at;
             const lastUpdatedStr = formatVsgTimestamp(rawTime);
 
-            applyDynamicChange(goldItems, false);
-            applyDynamicChange(silverItems, true);
-
             return res.json({
                 success: true,
                 source: 'vangsaigon.vn (Live WS-Prices)',
