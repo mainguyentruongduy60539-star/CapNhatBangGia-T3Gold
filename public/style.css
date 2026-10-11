@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 :root {
     --bg-dark: #0b1120;
     --bg-card: #131d31;
@@ -15,7 +17,22 @@
 /* =========================================================
    LIGHT THEME VARIABLES & ULTRA-PREMIUM STYLES
    ========================================================= */
-body.light-theme {
+
+:root {
+    --bg-dark: #0b1120;
+    --bg-card: #131d31;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --gold-accent: #facc15;
+    --gold-glow: rgba(250, 204, 21, 0.15);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --table-header-bg: #0f172a;
+    --table-header-text: #e2e8f0;
+    --table-row-alt: rgba(15, 23, 42, 0.4);
+    --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.25);
+}
+
+:is(html.light, html.light) {
     --bg-dark: #f1f5f9;
     --bg-card: #ffffff;
     --border-color: #e2e8f0;
@@ -23,17 +40,24 @@ body.light-theme {
     --gold-glow: rgba(217, 119, 6, 0.12);
     --text-main: #0f172a;
     --text-muted: #475569;
-    --table-header-bg: #092c74;
+    --table-header-bg: #854d0e;
     --table-header-text: #ffffff;
     --table-row-alt: #f8fafc;
     --card-shadow: 0 4px 18px -2px rgba(15, 23, 42, 0.06);
-    background-color: #f1f5f9 !important;
-    background-image: linear-gradient(180deg, #f8fafc 0%, #edf2f7 100%) !important;
-    color: #0f172a !important;
 }
 
-body {
+
+
+body, .gold-price-page-root, .gold-dashboard-wrapper, .t3gold-banner-dark {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+.fa-solid, .fas, .fa-regular, .far, .fa-brands, .fab, [class*="fa-"] {
+    font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
+    font-style: normal !important;
+}
+
+
+body {
     background-color: var(--bg-dark);
     color: var(--text-main);
     overflow-x: hidden;
@@ -59,15 +83,15 @@ body {
     background: #475569;
 }
 
-body.light-theme ::-webkit-scrollbar-track {
+html.light ::-webkit-scrollbar-track {
     background: #f1f5f9;
 }
 
-body.light-theme ::-webkit-scrollbar-thumb {
+html.light ::-webkit-scrollbar-thumb {
     background: #cbd5e1;
 }
 
-body.light-theme ::-webkit-scrollbar-thumb:hover {
+html.light ::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
 }
 
@@ -84,46 +108,46 @@ body.light-theme ::-webkit-scrollbar-thumb:hover {
     border-color: rgba(250, 204, 21, 0.3);
 }
 
-body.light-theme .dashboard-card {
+html.light .dashboard-card {
     background-color: #ffffff !important;
     border-color: #e2e8f0 !important;
     box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05) !important;
 }
 
-body.light-theme .dashboard-card:hover {
+html.light .dashboard-card:hover {
     border-color: #cbd5e1 !important;
     box-shadow: 0 6px 20px -2px rgba(15, 23, 42, 0.08) !important;
 }
 
 /* Section titles & Timestamps contrast in Dark & Light modes */
-body:not(.light-theme) .section-title,
-body:not(.light-theme) #table-heading,
-body:not(.light-theme) #table-title,
-body:not(.light-theme) #chart-title,
-body:not(.light-theme) h2 {
+html.dark .section-title,
+html.dark #table-heading,
+html.dark #table-title,
+html.dark #chart-title,
+html.dark h2 {
     color: #f8fafc !important;
     font-weight: 800 !important;
 }
 
-body:not(.light-theme) .timestamp-text,
-body:not(.light-theme) #last-updated-time,
-body:not(.light-theme) #currency-updated-time {
+html.dark .timestamp-text,
+html.dark #last-updated-time,
+html.dark #currency-updated-time {
     color: #94a3b8 !important;
     font-weight: 700 !important;
 }
 
-body.light-theme .section-title,
-body.light-theme #table-heading,
-body.light-theme #table-title,
-body.light-theme #chart-title,
-body.light-theme h2 {
+html.light .section-title,
+html.light #table-heading,
+html.light #table-title,
+html.light #chart-title,
+html.light h2 {
     color: #0f172a !important;
     font-weight: 800 !important;
 }
 
-body.light-theme .timestamp-text,
-body.light-theme #last-updated-time,
-body.light-theme #currency-updated-time {
+html.light .timestamp-text,
+html.light #last-updated-time,
+html.light #currency-updated-time {
     color: #334155 !important;
     font-weight: 700 !important;
 }
@@ -139,13 +163,18 @@ body.light-theme #currency-updated-time {
 .modern-table th {
     text-transform: uppercase;
     font-size: 0.75rem;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.02em;
     color: #ffffff !important;
-    padding: 0.55rem 0.2rem;
-    background-color: #002b9e !important;
-    border: 1px solid #002b9e !important;
+    padding: 0.65rem 0.3rem;
+    background: linear-gradient(135deg, #78350f 0%, #b45309 35%, #d97706 70%, #92400e 100%) !important;
+    border-bottom: 3.5px solid #f59e0b !important;
+    border-top: 1.5px solid #fcd34d !important;
+    border-left: 1px solid rgba(253, 230, 138, 0.25) !important;
+    border-right: 1px solid rgba(253, 230, 138, 0.25) !important;
     font-weight: 900;
     white-space: nowrap;
+    text-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.6);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 @media (min-width: 640px) {
@@ -158,7 +187,7 @@ body.light-theme #currency-updated-time {
 
 .modern-table td {
     padding: 0.45rem 0.2rem;
-    border: 1px solid rgba(59, 130, 246, 0.25);
+    border: 1px solid rgba(245, 158, 11, 0.2);
     color: #f8fafc;
     transition: background-color 0.15s ease;
 }
@@ -170,18 +199,37 @@ body.light-theme #currency-updated-time {
 }
 
 /* Dark Mode Cell Colors (High Specificity) */
-.modern-table td.col-org,
-.modern-table td .col-org,
-.col-org {
-    color: #60a5fa !important;
+html.dark .modern-table td.col-org,
+html.dark .modern-table td .col-org,
+html.dark .col-org {
+    color: #fbbf24 !important;
     font-weight: 800 !important;
 }
 
-.modern-table td.price-val,
-.modern-table td .price-val,
-.price-val {
+html.dark .modern-table td.price-val,
+html.dark .modern-table td .price-val,
+html.dark .price-val {
     color: #ffffff !important;
     font-weight: 800 !important;
+}
+
+/* Light Mode Cell Colors (High Specificity) */
+html.light .modern-table td {
+    color: #0f172a !important;
+}
+
+html.light .modern-table td.col-org,
+html.light .modern-table td .col-org,
+html.light .col-org {
+    color: #78350f !important;
+    font-weight: 900 !important;
+}
+
+html.light .modern-table td.price-val,
+html.light .modern-table td .price-val,
+html.light .price-val {
+    color: #0f172a !important;
+    font-weight: 900 !important;
 }
 
 .modern-table td.text-val-up,
@@ -198,358 +246,783 @@ body.light-theme #currency-updated-time {
     font-weight: 800 !important;
 }
 
-/* Table Row Hover Highlight - Vàng Hoàng Kim Sang Trọng (Chuẩn Mẫu 3) */
+/* Table row base transitions */
 .modern-table tbody tr {
-    transition: background-color 0.12s ease;
-}
-
-.modern-table tbody tr:hover td,
-body.light-theme .modern-table tbody tr:hover td {
-    background-color: #facc15 !important;
-    color: #000000 !important;
-}
-
-/* All text inside hovered row defaults to black for crisp readability on yellow */
-.modern-table tbody tr:hover td *,
-body.light-theme .modern-table tbody tr:hover td * {
-    color: #000000 !important;
-}
-
-/* Organization Column (Tổ chức) -> Navy Blue #002b9e */
-.modern-table tbody tr:hover td.col-org,
-.modern-table tbody tr:hover td.col-org *,
-.modern-table tbody tr:hover td .col-org,
-body.light-theme .modern-table tbody tr:hover td.col-org,
-body.light-theme .modern-table tbody tr:hover td.col-org *,
-body.light-theme .modern-table tbody tr:hover td .col-org {
-    color: #002b9e !important;
-}
-
-/* Price Values (MUA / BÁN) -> Black #000000 */
-.modern-table tbody tr:hover td.price-val,
-.modern-table tbody tr:hover td.price-val *,
-.modern-table tbody tr:hover td .price-val,
-body.light-theme .modern-table tbody tr:hover td.price-val,
-body.light-theme .modern-table tbody tr:hover td.price-val *,
-body.light-theme .modern-table tbody tr:hover td .price-val {
-    color: #000000 !important;
-}
-
-/* Positive Changes (+/- & CL) -> Dark Emerald Green #047857 */
-.modern-table tbody tr:hover td.text-val-up,
-.modern-table tbody tr:hover td.text-val-up *,
-.modern-table tbody tr:hover td .text-val-up,
-.modern-table tbody tr:hover td .text-val-up *,
-body.light-theme .modern-table tbody tr:hover td.text-val-up,
-body.light-theme .modern-table tbody tr:hover td.text-val-up *,
-body.light-theme .modern-table tbody tr:hover td .text-val-up,
-body.light-theme .modern-table tbody tr:hover td .text-val-up * {
-    color: #047857 !important;
-}
-
-/* Negative Changes (+/- & CL) -> Dark Red #b91c1c */
-.modern-table tbody tr:hover td.text-val-down,
-.modern-table tbody tr:hover td.text-val-down *,
-.modern-table tbody tr:hover td .text-val-down,
-.modern-table tbody tr:hover td .text-val-down *,
-body.light-theme .modern-table tbody tr:hover td.text-val-down,
-body.light-theme .modern-table tbody tr:hover td.text-val-down *,
-body.light-theme .modern-table tbody tr:hover td .text-val-down,
-body.light-theme .modern-table tbody tr:hover td .text-val-down * {
-    color: #b91c1c !important;
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
 }
 
 /* Light Theme - Table Grid & Colors (High Specificity Override) */
-body.light-theme .modern-table th {
-    background: #002b9e !important;
+html.light .modern-table th {
+    background: linear-gradient(135deg, #78350f 0%, #b45309 35%, #d97706 70%, #92400e 100%) !important;
     color: #ffffff !important;
-    font-weight: 800 !important;
-    border: 1px solid #002b9e !important;
+    font-weight: 900 !important;
+    border-bottom: 3.5px solid #f59e0b !important;
+    border-top: 1.5px solid #fcd34d !important;
+    text-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.6);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-body.light-theme .modern-table td {
-    border: 1px solid #002b9e !important;
+html.light .modern-table td {
+    border: 1px solid #fcd34d !important;
     color: #0f172a;
 }
 
-body.light-theme .modern-table td.col-org,
-body.light-theme .modern-table td .col-org,
-body.light-theme .col-org {
-    color: #002b9e !important;
-    font-weight: 800 !important;
+html.light .modern-table td.col-org,
+html.light .modern-table td .col-org,
+html.light .col-org {
+    color: #b45309 !important;
+    font-weight: 900 !important;
 }
 
-body.light-theme .modern-table td.price-val,
-body.light-theme .modern-table td .price-val,
-body.light-theme .price-val {
+html.light .modern-table td.price-val,
+html.light .modern-table td .price-val,
+html.light .price-val {
     color: #000000 !important;
     font-weight: 800 !important;
 }
 
-body.light-theme .modern-table td.text-val-up,
-body.light-theme .modern-table td .text-val-up,
-body.light-theme .text-val-up {
+html.light .modern-table td.text-val-up,
+html.light .modern-table td .text-val-up,
+html.light .text-val-up {
     color: #047857 !important;
     font-weight: 800 !important;
 }
 
-body.light-theme .modern-table td.text-val-down,
-body.light-theme .modern-table td .text-val-down,
-body.light-theme .text-val-down {
+html.light .modern-table td.text-val-down,
+html.light .modern-table td .text-val-down,
+html.light .text-val-down {
     color: #be123c !important;
     font-weight: 800 !important;
 }
 
-body.light-theme .modern-table td .text-slate-100,
-body.light-theme .modern-table td .text-slate-200,
-body.light-theme .modern-table td .text-white {
+html.light .modern-table td .text-slate-100,
+html.light .modern-table td .text-slate-200,
+html.light .modern-table td .text-white {
     color: #000000 !important;
     font-weight: 800 !important;
 }
 
-body.light-theme .modern-table td .text-slate-300 {
+html.light .modern-table td .text-slate-300 {
     color: #0f172a !important;
     font-weight: 700 !important;
 }
 
-body.light-theme .modern-table td .text-slate-400 {
+html.light .modern-table td .text-slate-400 {
     color: #475569 !important;
     font-weight: 500 !important;
 }
 
-body.light-theme .modern-table td .text-slate-500 {
+html.light .modern-table td .text-slate-500 {
     color: #64748b !important;
     font-weight: 600 !important;
 }
 
 /* Các màu sắc chi tiết cho Bán ra, Biến động, Chênh lệch trong Table */
-body.light-theme .modern-table td .text-yellow-400,
-body.light-theme .modern-table td .text-yellow-300,
-body.light-theme .modern-table td .text-amber-400,
-body.light-theme .modern-table td .text-amber-300 {
+html.light .modern-table td .text-yellow-400,
+html.light .modern-table td .text-yellow-300,
+html.light .modern-table td .text-amber-400,
+html.light .modern-table td .text-amber-300 {
     color: #b45309 !important;
     font-weight: 700 !important;
 }
 
-body.light-theme .modern-table td .text-cyan-400,
-body.light-theme .modern-table td .text-cyan-300 {
-    color: #0369a1 !important;
+html.light .modern-table td .text-cyan-400,
+html.light .modern-table td .text-cyan-300 {
+    color: #92400e !important;
     font-weight: 700 !important;
 }
 
-body.light-theme .modern-table td .text-blue-400,
-body.light-theme .modern-table td .text-blue-300 {
+html.light .modern-table td .text-blue-400,
+html.light .modern-table td .text-blue-300 {
     color: #1d4ed8 !important;
     font-weight: 700 !important;
 }
 
-body.light-theme .modern-table td .text-emerald-400,
-body.light-theme .modern-table td .text-emerald-300 {
+html.light .modern-table td .text-emerald-400,
+html.light .modern-table td .text-emerald-300 {
     color: #047857 !important;
     font-weight: 700 !important;
 }
 
-body.light-theme .modern-table td .text-rose-400,
-body.light-theme .modern-table td .text-rose-300 {
+html.light .modern-table td .text-rose-400,
+html.light .modern-table td .text-rose-300 {
     color: #be123c !important;
     font-weight: 700 !important;
 }
 
-body.light-theme .modern-table td .text-purple-400,
-body.light-theme .modern-table td .text-purple-300 {
+html.light .modern-table td .text-purple-400,
+html.light .modern-table td .text-purple-300 {
     color: #6b21a8 !important;
     font-weight: 700 !important;
 }
 
-body.light-theme .modern-table td .text-indigo-400,
-body.light-theme .modern-table td .text-indigo-300 {
+html.light .modern-table td .text-indigo-400,
+html.light .modern-table td .text-indigo-300 {
     color: #3730a3 !important;
     font-weight: 700 !important;
 }
 
-body.light-theme #currency-table-body td .text-slate-200,
-body.light-theme #currency-table-body td .text-white {
+html.light #currency-table-body td .text-slate-200,
+html.light #currency-table-body td .text-white {
     color: #090d16 !important;
     font-weight: 700 !important;
 }
 
-body.light-theme #currency-table-body td .text-slate-300 {
+html.light #currency-table-body td .text-slate-300 {
     color: #1e293b !important;
     font-weight: 600 !important;
 }
 
-body.light-theme #currency-table-body td .text-slate-400 {
+html.light #currency-table-body td .text-slate-400 {
     color: #475569 !important;
 }
 
-body.light-theme .modern-table tbody tr:nth-child(even) td {
+html.light .modern-table tbody tr:nth-child(even) td {
     background-color: #f8fafc;
 }
 
-body.light-theme .modern-table tbody tr:hover td {
-    background-color: #facc15 !important;
-}
-
 /* Header & User Profile in Light Theme */
-body.light-theme header {
+html.light header {
     border-bottom-color: #e2e8f0 !important;
 }
 
-body.light-theme header h1 {
+html.light header h1 {
     color: #0f172a !important;
 }
 
-body.light-theme header p {
+html.light header p {
     color: #64748b !important;
 }
 
-body.light-theme #auth-container .bg-slate-800 {
+/* Header T3Gold Banner Styling (High Contrast for Dark & Light Themes) */
+.t3gold-banner-dark {
+    background-color: #0b1329 !important;
+    border-color: rgba(245, 158, 11, 0.6) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+.t3gold-banner-dark .text-light-fix,
+.t3gold-banner-dark span {
+    color: #f8fafc !important;
+}
+
+.t3gold-banner-dark .text-gold-fix,
+.t3gold-banner-dark strong {
+    color: #fbbf24 !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+}
+
+.t3gold-banner-dark .t3gold-slogan-fix,
+.t3gold-banner-dark .t3gold-marquee-text {
+    color: #fcd34d !important;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7) !important;
+}
+
+.t3gold-banner-dark .btn-gold-fix {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+    color: #0f172a !important;
+    font-weight: 900 !important;
+}
+
+.t3gold-banner-dark .t3gold-hotline-btn {
+    background-color: rgba(245, 158, 11, 0.2) !important;
+    color: #fbbf24 !important;
+    border: 1px solid rgba(245, 158, 11, 0.5) !important;
+}
+
+.t3gold-banner-dark .t3gold-hotline-btn:hover {
+    background-color: #f59e0b !important;
+    color: #0f172a !important;
+}
+
+html.light #auth-container .bg-slate-800 {
     background-color: #ffffff !important;
     border-color: #cbd5e1 !important;
     color: #0f172a !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
 }
 
-body.light-theme #auth-container .text-slate-200,
-body.light-theme #auth-container .text-slate-100 {
+html.light #auth-container .text-slate-200,
+html.light #auth-container .text-slate-100 {
     color: #0f172a !important;
 }
 
-body.light-theme #theme-toggle-btn {
+html.light #theme-toggle-btn {
     background-color: #ffffff !important;
     border-color: #cbd5e1 !important;
     color: #0f172a !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
 }
 
-body.light-theme #theme-toggle-btn:hover {
+html.light #theme-toggle-btn:hover {
     background-color: #f8fafc !important;
     border-color: #94a3b8 !important;
 }
 
-body.light-theme .dashboard-card.text-slate-300,
-body.light-theme header .dashboard-card {
+html.light .dashboard-card.text-slate-300,
+html.light header .dashboard-card {
     background-color: #ffffff !important;
     border-color: #e2e8f0 !important;
     color: #334155 !important;
 }
 
 /* Market Switch Tabs in Light Mode */
-body.light-theme #tab-gold {
+html.light #tab-gold {
     background: linear-gradient(135deg, #f59e0b, #d97706) !important;
     color: #ffffff !important;
     box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25) !important;
 }
 
-body.light-theme #tab-silver {
+html.light #tab-silver {
     background-color: #ffffff !important;
     color: #334155 !important;
     border-color: #cbd5e1 !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
 }
 
-body.light-theme #tab-silver:hover {
+html.light #tab-silver:hover {
     background-color: #f8fafc !important;
     color: #0f172a !important;
 }
 
-/* Quick Calculator Card in Light Mode */
-body.light-theme #calc-card {
-    background: #ffffff !important;
-    border: 1px solid #cbd5e1 !important;
-    box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.08) !important;
-}
+/* =========================================================
+   HEADER ADVERTISING BANNER - CONTRAST & READABILITY FIX
+   ========================================================= */
 
-body.light-theme #calc-card #calc-title {
-    color: #9a3412 !important;
-    font-weight: 800 !important;
-}
-
-body.light-theme #calc-card #calc-desc {
-    color: #475569 !important;
-    font-weight: 600 !important;
-}
-
-body.light-theme #calc-card input,
-body.light-theme #calc-card select {
+/* Light Theme Banner */
+html.light .t3gold-banner-dark {
     background-color: #ffffff !important;
+    border-color: #f59e0b !important;
+    box-shadow: 0 4px 16px -2px rgba(245, 158, 11, 0.15) !important;
+}
+
+html.light .t3gold-banner-dark .text-light-fix {
     color: #0f172a !important;
-    border: 1.5px solid #cbd5e1 !important;
     font-weight: 700 !important;
 }
 
-body.light-theme #calc-card select#calc-unit {
-    color: #9a3412 !important;
-    font-weight: 800 !important;
-}
-
-body.light-theme #calc-card .bg-slate-950\/50 {
-    background: #f8fafc !important;
-    background-image: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%) !important;
-    border: 1.5px solid #cbd5e1 !important;
-}
-
-body.light-theme #calc-card .bg-yellow-500\/10 {
-    background-color: #fef3c7 !important;
-    border-color: #fde68a !important;
-    color: #9a3412 !important;
-    font-weight: 800 !important;
-}
-
-body.light-theme #calc-card #calc-result {
-    color: #9a3412 !important;
+html.light .t3gold-banner-dark .text-gold-fix {
+    color: #b45309 !important;
     font-weight: 900 !important;
+}
+
+/* Slogan in Light Theme: Deep Bold Amber Brown (#78350f), 100% Crisp & Clear */
+html.light .t3gold-slogan-fix,
+html.light .t3gold-banner-dark .t3gold-marquee-text {
+    color: #78350f !important;
+    font-weight: 900 !important;
+    text-shadow: none !important;
+    filter: none !important;
+}
+
+/* Hotline Button in Light Theme: Deep Rich Brown Text (#78350f) on Soft Amber Badge */
+html.light .t3gold-hotline-btn {
+    background-color: #fef3c7 !important;
+    border: 1.5px solid #f59e0b !important;
+    color: #78350f !important;
+    font-weight: 900 !important;
+    box-shadow: 0 1px 4px rgba(245, 158, 11, 0.15) !important;
+}
+
+html.light .t3gold-hotline-btn *,
+html.light .t3gold-hotline-btn span,
+html.light .t3gold-hotline-btn i {
+    color: #78350f !important;
+}
+
+html.light .t3gold-hotline-btn:hover {
+    background-color: #f59e0b !important;
+    color: #ffffff !important;
+}
+
+html.light .t3gold-hotline-btn:hover *,
+html.light .t3gold-hotline-btn:hover span,
+html.light .t3gold-hotline-btn:hover i {
+    color: #ffffff !important;
+}
+
+/* Dark Theme Banner */
+html.dark .t3gold-banner-dark {
+    background-color: #0b1329 !important;
+    border-color: rgba(245, 158, 11, 0.5) !important;
+}
+
+html.dark .t3gold-banner-dark .text-light-fix {
+    color: #f8fafc !important;
+}
+
+html.dark .t3gold-banner-dark .text-gold-fix {
+    color: #fbbf24 !important;
+}
+
+html.dark .t3gold-slogan-fix,
+html.dark .t3gold-banner-dark .t3gold-marquee-text {
+    color: #fcd34d !important;
+    font-weight: 800 !important;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8) !important;
+}
+
+html.dark .t3gold-hotline-btn {
+    background-color: rgba(245, 158, 11, 0.2) !important;
+    border: 1px solid rgba(245, 158, 11, 0.5) !important;
+    color: #fbbf24 !important;
+}
+
+html.dark .t3gold-hotline-btn *,
+html.dark .t3gold-hotline-btn span,
+html.dark .t3gold-hotline-btn i {
+    color: #fbbf24 !important;
+}
+
+html.dark .t3gold-hotline-btn:hover {
+    background-color: #f59e0b !important;
+    color: #0f172a !important;
+}
+
+html.dark .t3gold-hotline-btn:hover *,
+html.dark .t3gold-hotline-btn:hover span,
+html.dark .t3gold-hotline-btn:hover i {
+    color: #0f172a !important;
+}
+
+/* =========================================================
+   MÁY TÍNH QUY ĐỔI TIỀN - MÀU CHUẨN THEO HÌNH MẪU 100%
+   ========================================================= */
+
+#calc-card,
+html.light #calc-card {
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.08) !important;
+}
+
+html.dark #calc-card {
+    background: #131d31 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+#calc-card #calc-title,
+html.light #calc-card #calc-title {
+    color: #d97706 !important; /* Rich Dark Amber Gold Title in Light Mode */
+    font-weight: 900 !important;
+}
+
+html.dark #calc-card #calc-title {
+    color: #eab308 !important;
+    font-weight: 900 !important;
+}
+
+/* Subtitle & Descriptions: Chữ đen nét căng ở Chế độ Sáng */
+html.light #calc-card #calc-desc,
+html.light #calc-card .text-slate-400,
+html.light #calc-card .text-slate-200 {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+html.dark #calc-card #calc-desc {
+    color: #cbd5e1 !important;
+}
+
+/* Steel Charcoal Grey Inner Container like sample screenshot 1 */
+#calc-card .bg-slate-950\/50,
+html.light #calc-card .bg-slate-950\/50,
+html.dark #calc-card .bg-slate-950\/50 {
+    background-color: #64748b !important;
+    border: 1.5px solid #475569 !important;
+    border-radius: 0.75rem !important;
+}
+
+/* Chữ nhãn bên trong Khung Xám Than Charcoal */
+#calc-card .bg-slate-950\/50 .text-slate-400,
+html.light #calc-card .bg-slate-950\/50 .text-slate-400 {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+}
+
+#calc-card input,
+#calc-card select,
+html.light #calc-card input,
+html.light #calc-card select {
+    background-color: #0f172a !important; /* Dark Navy Input Box */
+    color: #ffffff !important;
+    border: 1.5px solid #1e293b !important;
+    font-weight: 700 !important;
+}
+
+#calc-card select#calc-unit,
+html.light #calc-card select#calc-unit {
+    color: #facc15 !important; /* Yellow Gold text for unit select */
+    font-weight: 800 !important;
+}
+
+#calc-card select#calc-type,
+html.light #calc-card select#calc-type {
+    color: #ffffff !important;
+}
+
+#calc-card #calc-result,
+html.light #calc-card #calc-result {
+    color: #facc15 !important; /* Bright Yellow Gold Result text */
+    font-weight: 900 !important;
+}
+
+#calc-card #calc-result-usd,
+html.light #calc-card #calc-result-usd {
+    color: #e2e8f0 !important;
+    font-weight: 700 !important;
+}
+
+/* =========================================================
+   MÀU NỀN KHUNG BẢNG GIÁ VÀNG & BẠC (HÀI HOÀ SÁNG & TỐI)
+   ========================================================= */
+
+/* 1. BẢNG GIÁ VÀNG - CHẾ ĐỘ SÁNG (VÀNG HỔ PHÁCH ĐẬM ĐÀ NỔI BẬT) */
+html.light #gold-price-section .dashboard-card {
+    background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%) !important;
+    border: 2px solid #d97706 !important;
+    box-shadow: 0 4px 20px -2px rgba(217, 119, 6, 0.2) !important;
+}
+
+html.light #price-table-body tr {
+    background-color: #fef08a !important; /* Gold Amber Tint Row */
+}
+
+html.light #price-table-body tr:nth-child(even) {
+    background-color: #fde047 !important; /* Rich Gold Accent Row */
+}
+
+html.light #price-table-body tr td {
+    border-color: rgba(217, 119, 6, 0.3) !important;
+}
+
+/* BẢNG GIÁ VÀNG - CHẾ ĐỘ TỐI */
+html.dark #gold-price-section .dashboard-card {
+    background-color: #1e1408 !important;
+    border: 2px solid rgba(245, 158, 11, 0.6) !important;
+}
+
+html.dark #price-table-body tr {
+    background-color: #1e1408 !important;
+}
+
+html.dark #price-table-body tr:nth-child(even) {
+    background-color: #2c1e0b !important;
+}
+
+html.dark #price-table-body tr td {
+    border-color: rgba(251, 191, 36, 0.25) !important;
+}
+
+/* 2. BẢNG GIÁ BẠC - CHẾ ĐỘ SÁNG (BẠCH KIM ÁNH BẠC ĐẬM ĐÀ NỔI BẬT) */
+html.light #silver-price-section .dashboard-card {
+    background: linear-gradient(180deg, #cbd5e1 0%, #94a3b8 100%) !important;
+    border: 2px solid #475569 !important;
+    box-shadow: 0 4px 20px -2px rgba(71, 85, 105, 0.25) !important;
+}
+
+html.light #silver-price-table-body tr {
+    background-color: #cbd5e1 !important; /* Metallic Silver Row */
+}
+
+html.light #silver-price-table-body tr:nth-child(even) {
+    background-color: #b0bccd !important; /* Darker Metallic Silver Accent Row */
+}
+
+html.light #silver-price-table-body tr td {
+    border-color: rgba(71, 85, 105, 0.35) !important;
+}
+
+/* BẢNG GIÁ BẠC - CHẾ ĐỘ TỐI */
+html.dark #silver-price-section .dashboard-card {
+    background-color: #111c33 !important;
+    border: 2px solid rgba(56, 189, 248, 0.5) !important;
+}
+
+html.dark #silver-price-table-body tr {
+    background-color: #111c33 !important;
+}
+
+html.dark #silver-price-table-body tr:nth-child(even) {
+    background-color: #1a2948 !important;
+}
+
+html.dark #silver-price-table-body tr td {
+    border-color: rgba(148, 163, 184, 0.25) !important;
+}
+
+/* =========================================================
+   MASTER 100% FULL CELL HOVER SYSTEM (HIGH SPECIFICITY)
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1. LIGHT MODE HOVERS (PHỦ 100% FULL CÁC Ô TD MÀU #fef3c7)
+   --------------------------------------------------------- */
+/* 1.1 Bảng Giá Vàng Hover Light Mode */
+html.light #price-table-body tr:hover td,
+html.light #price-table-body tr:nth-child(even):hover td,
+html.light #gold-price-section .modern-table tbody tr:hover td,
+html.light #gold-price-section .modern-table tbody tr:nth-child(even):hover td {
+    background-color: #fef3c7 !important;
+    background: linear-gradient(90deg, #afeeee 0%, #c4f4f4 100%) !important;
+    color: #0f172a !important;
+}
+
+html.light #price-table-body tr:hover td:first-child,
+html.light #price-table-body tr:nth-child(even):hover td:first-child,
+html.light #gold-price-section .modern-table tbody tr:hover td:first-child {
+    box-shadow: inset 5px 0 0 0 #0d9488 !important;
+}
+
+html.light #price-table-body tr:hover td *,
+html.light #price-table-body tr:nth-child(even):hover td *,
+html.light #gold-price-section .modern-table tbody tr:hover td * {
+    color: #0f172a !important;
+    opacity: 1 !important;
+}
+
+html.light #price-table-body tr:hover td.col-org,
+html.light #price-table-body tr:hover td .col-org,
+html.light #price-table-body tr:hover td div,
+html.light #price-table-body tr:hover td span {
+    color: #0f766e !important;
+    font-weight: 900 !important;
+}
+
+html.light #price-table-body tr:hover td.price-val,
+html.light #price-table-body tr:hover td .price-val {
+    color: #0f172a !important;
+    font-weight: 900 !important;
+}
+
+/* 1.2 Bảng Giá Bạc Hover Light Mode */
+html.light #silver-price-table-body tr:hover td,
+html.light #silver-price-table-body tr:nth-child(even):hover td,
+html.light #silver-price-section .modern-table tbody tr:hover td,
+html.light #silver-price-section .modern-table tbody tr:nth-child(even):hover td {
+    background-color: #fef3c7 !important;
+    background: linear-gradient(90deg, #afeeee 0%, #c4f4f4 100%) !important;
+    color: #0f172a !important;
+}
+
+html.light #silver-price-table-body tr:hover td:first-child,
+html.light #silver-price-table-body tr:nth-child(even):hover td:first-child,
+html.light #silver-price-section .modern-table tbody tr:hover td:first-child {
+    box-shadow: inset 5px 0 0 0 #b45309 !important;
+}
+
+html.light #silver-price-table-body tr:hover td *,
+html.light #silver-price-table-body tr:nth-child(even):hover td *,
+html.light #silver-price-section .modern-table tbody tr:hover td * {
+    color: #0f172a !important;
+    opacity: 1 !important;
+}
+
+html.light #silver-price-table-body tr:hover td.col-org,
+html.light #silver-price-table-body tr:hover td .col-org,
+html.light #silver-price-table-body tr:hover td div,
+html.light #silver-price-table-body tr:hover td span,
+html.light #silver-price-table-body tr:hover td.price-val,
+html.light #silver-price-table-body tr:hover td .price-val {
+    color: #0f172a !important;
+    font-weight: 900 !important;
+}
+
+/* 1.3 Bảng Tỷ Giá Ngoại Tệ Hover Light Mode */
+html.light #currency-table-body tr:hover td,
+html.light #currency-table-body tr:nth-child(even):hover td,
+html.light #currency-section .modern-table tbody tr:hover td,
+html.light #currency-section .modern-table tbody tr:nth-child(even):hover td {
+    background-color: #fef3c7 !important;
+    background: linear-gradient(90deg, #afeeee 0%, #c4f4f4 100%) !important;
+    color: #0f172a !important;
+}
+
+html.light #currency-table-body tr:hover td:first-child,
+html.light #currency-table-body tr:nth-child(even):hover td:first-child,
+html.light #currency-section .modern-table tbody tr:hover td:first-child {
+    box-shadow: inset 5px 0 0 0 #0d9488 !important;
+}
+
+html.light #currency-table-body tr:hover td *,
+html.light #currency-table-body tr:nth-child(even):hover td *,
+html.light #currency-section .modern-table tbody tr:hover td * {
+    color: #0f172a !important;
+    font-weight: 900 !important;
+}
+
+/* 1.4 Universal Fallback cho mọi Table TR Hover ở Light Mode */
+html.light .modern-table tbody tr:hover td,
+html.light .modern-table tbody tr:nth-child(even):hover td,
+html.light table tbody tr:hover td {
+    background-color: #fef3c7 !important;
+    background: linear-gradient(90deg, #afeeee 0%, #c4f4f4 100%) !important;
+    color: #0f172a !important;
+}
+
+/* ---------------------------------------------------------
+   2. DARK MODE HOVERS (PHỦ 100% FULL CÁC Ô TD & RỰC RỠ)
+   --------------------------------------------------------- */
+/* 2.1 Bảng Giá Vàng Hover Dark Mode */
+html.dark #price-table-body tr:hover td,
+html.dark #price-table-body tr:nth-child(even):hover td,
+html.dark #gold-price-section .modern-table tbody tr:hover td,
+html.dark #gold-price-section .modern-table tbody tr:nth-child(even):hover td {
+    background-color: #92400e !important;
+    background: linear-gradient(90deg, #92400e 0%, #b45309 100%) !important;
+    color: #ffffff !important;
+}
+
+html.dark #price-table-body tr:hover td:first-child,
+html.dark #price-table-body tr:nth-child(even):hover td:first-child,
+html.dark #gold-price-section .modern-table tbody tr:hover td:first-child {
+    box-shadow: inset 5px 0 0 0 #f59e0b !important;
+}
+
+html.dark #price-table-body tr:hover td *,
+html.dark #price-table-body tr:nth-child(even):hover td *,
+html.dark #gold-price-section .modern-table tbody tr:hover td * {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+html.dark #price-table-body tr:hover td.col-org,
+html.dark #price-table-body tr:hover td .col-org,
+html.dark #price-table-body tr:hover td div,
+html.dark #price-table-body tr:hover td span {
+    color: #fde047 !important;
+    font-weight: 900 !important;
+}
+
+html.dark #price-table-body tr:hover td.price-val,
+html.dark #price-table-body tr:hover td .price-val {
+    color: #ffffff !important;
+    font-weight: 900 !important;
+}
+
+/* 2.2 Bảng Giá Bạc Hover Dark Mode */
+html.dark #silver-price-table-body tr:hover td,
+html.dark #silver-price-table-body tr:nth-child(even):hover td,
+html.dark #silver-price-section .modern-table tbody tr:hover td,
+html.dark #silver-price-section .modern-table tbody tr:nth-child(even):hover td {
+    background-color: #92400e !important;
+    background: linear-gradient(90deg, #92400e 0%, #b45309 100%) !important;
+    color: #ffffff !important;
+}
+
+html.dark #silver-price-table-body tr:hover td:first-child,
+html.dark #silver-price-table-body tr:nth-child(even):hover td:first-child,
+html.dark #silver-price-section .modern-table tbody tr:hover td:first-child {
+    box-shadow: inset 5px 0 0 0 #f59e0b !important;
+}
+
+html.dark #silver-price-table-body tr:hover td *,
+html.dark #silver-price-table-body tr:nth-child(even):hover td *,
+html.dark #silver-price-section .modern-table tbody tr:hover td * {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+html.dark #silver-price-table-body tr:hover td.col-org,
+html.dark #silver-price-table-body tr:hover td .col-org,
+html.dark #silver-price-table-body tr:hover td div,
+html.dark #silver-price-table-body tr:hover td span {
+    color: #fde047 !important;
+    font-weight: 900 !important;
+}
+
+/* 2.3 Bảng Tỷ Giá Ngoại Tệ Hover Dark Mode */
+html.dark #currency-table-body tr:hover td,
+html.dark #currency-table-body tr:nth-child(even):hover td,
+html.dark #currency-section .modern-table tbody tr:hover td,
+html.dark #currency-section .modern-table tbody tr:nth-child(even):hover td {
+    background-color: #92400e !important;
+    background: linear-gradient(90deg, #92400e 0%, #b45309 100%) !important;
+    color: #ffffff !important;
+}
+
+html.dark #currency-table-body tr:hover td:first-child,
+html.dark #currency-table-body tr:nth-child(even):hover td:first-child,
+html.dark #currency-section .modern-table tbody tr:hover td:first-child {
+    box-shadow: inset 5px 0 0 0 #f59e0b !important;
+}
+
+html.dark #currency-table-body tr:hover td *,
+html.dark #currency-table-body tr:nth-child(even):hover td *,
+html.dark #currency-section .modern-table tbody tr:hover td * {
+    color: #ffffff !important;
+    font-weight: 900 !important;
+}
+
+/* 2.4 Universal Fallback cho mọi Table TR Hover ở Dark Mode */
+html.dark .modern-table tbody tr:hover td,
+html.dark .modern-table tbody tr:nth-child(even):hover td,
+html.dark table tbody tr:hover td {
+    background-color: #92400e !important;
+    background: linear-gradient(90deg, #92400e 0%, #b45309 100%) !important;
+    color: #ffffff !important;
 }
 
 /* =========================================================
    LIGHT MODE CONTRAST & READABILITY (TABLES, CARDS & TEXTS)
    ========================================================= */
-body.light-theme .dashboard-card {
+html.light .dashboard-card {
     background-color: #ffffff !important;
     border: 1px solid #cbd5e1 !important;
     box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04) !important;
 }
 
-body.light-theme .dashboard-card:hover {
+html.light .dashboard-card:hover {
     border-color: #94a3b8 !important;
     box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.12) !important;
 }
 
-/* Khung giá Mua/Bán bên trong thẻ */
-body.light-theme .bg-slate-950\/50,
-body.light-theme .bg-slate-950\/40 {
+/* Khung giá Mua/Bán bên trong thẻ chung */
+html.light .bg-slate-950\/50,
+html.light .bg-slate-950\/40 {
     background: #f8fafc !important;
     background-image: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%) !important;
     border: 1.5px solid #cbd5e1 !important;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03) !important;
 }
 
+/* Ngoại lệ riêng cho Máy Tính Quy Đổi: Luôn giữ màu Xám Than Charcoal giống 100% hình 1 */
+#calc-card .bg-slate-950\/50,
+html.light #calc-card .bg-slate-950\/50,
+html.dark #calc-card .bg-slate-950\/50 {
+    background-color: #64748b !important;
+    background-image: none !important;
+    border: 2px solid #475569 !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25) !important;
+}
+
 /* Đường ngăn cách */
-body.light-theme .border-r {
+html.light .border-r {
     border-right: 1.5px solid #cbd5e1 !important;
 }
 
-body.light-theme .border-slate-800\/40,
-body.light-theme .border-slate-800 {
+html.light .border-slate-800\/40,
+html.light .border-slate-800 {
     border-color: #e2e8f0 !important;
 }
 
 /* Badge Biến Động */
-body.light-theme .bg-slate-800 {
+html.light .bg-slate-800 {
     background-color: #f1f5f9 !important;
     border-color: #cbd5e1 !important;
     color: #334155 !important;
     font-weight: 800 !important;
 }
 
-body.light-theme .bg-emerald-950\/60 {
+html.light .bg-emerald-950\/60 {
     background-color: #ecfdf5 !important;
     border-color: #6ee7b7 !important;
     color: #047857 !important;
     font-weight: 800 !important;
 }
 
-body.light-theme .bg-rose-950\/60 {
+html.light .bg-rose-950\/60 {
     background-color: #fff1f2 !important;
     border-color: #fca5a5 !important;
     color: #b91c1c !important;
@@ -561,166 +1034,166 @@ body.light-theme .bg-rose-950\/60 {
    ========================================================= */
 
 /* Số chính (Lượng / Giá Mua / Tiêu đề chính) - Đen tuyền sắc nét */
-body.light-theme .text-slate-100,
-body.light-theme .text-slate-200,
-body.light-theme .text-white {
+html.light .text-slate-100,
+html.light .text-slate-200,
+html.light .text-white {
     color: #090d16 !important;
     font-weight: 800 !important;
 }
 
 /* Số phụ / Đơn vị / Giá Chỉ Mua vào */
-body.light-theme .text-slate-300 {
+html.light .text-slate-300 {
     color: #334155 !important;
     font-weight: 600 !important;
 }
 
 /* Phụ đề giải thích bên dưới tên sản phẩm */
-body.light-theme .text-slate-400 {
+html.light .text-slate-400 {
     color: #475569 !important;
     font-weight: 500 !important;
 }
 
 /* Nhãn nhỏ (Biến động, Chênh lệch) */
-body.light-theme .text-slate-500 {
+html.light .text-slate-500 {
     color: #64748b !important;
     font-weight: 600 !important;
 }
 
 /* Vàng / Amber / Bronze */
-body.light-theme .text-yellow-400,
-body.light-theme .text-yellow-300,
-body.light-theme .text-amber-400,
-body.light-theme .text-amber-300 {
+html.light .text-yellow-400,
+html.light .text-yellow-300,
+html.light .text-amber-400,
+html.light .text-amber-300 {
     color: #b45309 !important;
     /* Đậm nét ấm áp */
     font-weight: 800 !important;
 }
 
 /* Xanh Lục Bảo (Tăng trưởng / Biến động dương) */
-body.light-theme .text-emerald-400,
-body.light-theme .text-emerald-300 {
+html.light .text-emerald-400,
+html.light .text-emerald-300 {
     color: #047857 !important;
     /* Xanh lục bảo đậm */
     font-weight: 800 !important;
 }
 
 /* Xanh Dương Đậm / Sky / Cyan (Chênh lệch & Bạc Phú Quý 1L) */
-body.light-theme .text-cyan-400,
-body.light-theme .text-cyan-300 {
-    color: #0369a1 !important;
+html.light .text-cyan-400,
+html.light .text-cyan-300 {
+    color: #92400e !important;
     /* Xanh dương đậm cực nét */
     font-weight: 800 !important;
 }
 
 /* Xanh Hoàng Gia / Blue (Bạc Phú Quý 5L) */
-body.light-theme .text-blue-400,
-body.light-theme .text-blue-300 {
+html.light .text-blue-400,
+html.light .text-blue-300 {
     color: #1d4ed8 !important;
     /* Xanh hoàng gia đậm */
     font-weight: 800 !important;
 }
 
 /* Đỏ Ruby / Rose (Giảm giá / Biến động âm / Bạc Nữ Trang) */
-body.light-theme .text-rose-400,
-body.light-theme .text-rose-300 {
+html.light .text-rose-400,
+html.light .text-rose-300 {
     color: #be123c !important;
     /* Đỏ ruby đậm */
     font-weight: 800 !important;
 }
 
 /* Tím Đậm (Bạc Thái / Vàng 980) */
-body.light-theme .text-purple-400,
-body.light-theme .text-purple-300 {
+html.light .text-purple-400,
+html.light .text-purple-300 {
     color: #6b21a8 !important;
     /* Tím thạch anh đậm */
     font-weight: 800 !important;
 }
 
 /* Chàm Đậm / Indigo (Bạc Ý / Vàng 610) */
-body.light-theme .text-indigo-400,
-body.light-theme .text-indigo-300 {
+html.light .text-indigo-400,
+html.light .text-indigo-300 {
     color: #3730a3 !important;
     /* Chàm hoàng gia */
     font-weight: 800 !important;
 }
 
 /* Xanh Mòng Két / Teal */
-body.light-theme .text-teal-400,
-body.light-theme .text-teal-300 {
+html.light .text-teal-400,
+html.light .text-teal-300 {
     color: #0f766e !important;
     font-weight: 800 !important;
 }
 
 /* Cam Đậm / Orange */
-body.light-theme .text-orange-400,
-body.light-theme .text-orange-300 {
+html.light .text-orange-400,
+html.light .text-orange-300 {
     color: #c2410c !important;
     font-weight: 800 !important;
 }
 
 /* Xanh Olive / Lime */
-body.light-theme .text-lime-400,
-body.light-theme .text-lime-300 {
+html.light .text-lime-400,
+html.light .text-lime-300 {
     color: #3f6212 !important;
     font-weight: 800 !important;
 }
 
 /* Hồng Sen Đậm / Fuchsia */
-body.light-theme .text-fuchsia-400,
-body.light-theme .text-fuchsia-300 {
+html.light .text-fuchsia-400,
+html.light .text-fuchsia-300 {
     color: #86198f !important;
     font-weight: 800 !important;
 }
 
 /* Dot indicators trong Light Theme */
-body.light-theme .bg-yellow-400 {
+html.light .bg-yellow-400 {
     background-color: #d97706 !important;
 }
 
-body.light-theme .bg-amber-400 {
+html.light .bg-amber-400 {
     background-color: #d97706 !important;
 }
 
-body.light-theme .bg-cyan-400 {
-    background-color: #0284c7 !important;
+html.light .bg-cyan-400 {
+    background-color: #b45309 !important;
 }
 
-body.light-theme .bg-blue-400 {
+html.light .bg-blue-400 {
     background-color: #2563eb !important;
 }
 
-body.light-theme .bg-emerald-400 {
+html.light .bg-emerald-400 {
     background-color: #059669 !important;
 }
 
-body.light-theme .bg-rose-400 {
+html.light .bg-rose-400 {
     background-color: #e11d48 !important;
 }
 
-body.light-theme .bg-purple-400 {
+html.light .bg-purple-400 {
     background-color: #9333ea !important;
 }
 
-body.light-theme .bg-indigo-400 {
+html.light .bg-indigo-400 {
     background-color: #4f46e5 !important;
 }
 
 /* Header pill và Tiêu đề khu vực trong Light Theme */
-body.light-theme #table-heading,
-body.light-theme #table-title,
-body.light-theme #chart-title,
-body.light-theme .section-title {
+html.light #table-heading,
+html.light #table-title,
+html.light #chart-title,
+html.light .section-title {
     color: #0f172a !important;
 }
 
-body.light-theme #table-unit-subtitle {
+html.light #table-unit-subtitle {
     color: #475569 !important;
     font-weight: 600 !important;
 }
 
-body.light-theme #last-updated-time,
-body.light-theme #currency-updated-time,
-body.light-theme .timestamp-text {
+html.light #last-updated-time,
+html.light #currency-updated-time,
+html.light .timestamp-text {
     color: #334155 !important;
     font-weight: 700 !important;
 }
@@ -747,21 +1220,21 @@ body.light-theme .timestamp-text {
     background-color: rgba(244, 63, 94, 0.12);
 }
 
-body.light-theme .user-profile-pill {
+html.light .user-profile-pill {
     background-color: #ffffff !important;
     border-color: #cbd5e1 !important;
     box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06) !important;
 }
 
-body.light-theme .user-profile-pill .user-name {
+html.light .user-profile-pill .user-name {
     color: #0f172a !important;
 }
 
-body.light-theme .user-profile-pill .logout-btn {
+html.light .user-profile-pill .logout-btn {
     color: #e11d48 !important;
 }
 
-body.light-theme .user-profile-pill .logout-btn:hover {
+html.light .user-profile-pill .logout-btn:hover {
     color: #be123c !important;
     background-color: #ffe4e6 !important;
 }
@@ -790,51 +1263,51 @@ body.light-theme .user-profile-pill .logout-btn:hover {
 }
 
 .stat-box .stat-val-cyan {
-    color: #38bdf8;
+    color: #f59e0b;
 }
 
 .stat-box .stat-val-slate {
     color: #cbd5e1;
 }
 
-body.light-theme .stat-box {
+html.light .stat-box {
     background-color: #f8fafc !important;
     border-color: #e2e8f0 !important;
     box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
 }
 
-body.light-theme .stat-box .stat-label {
+html.light .stat-box .stat-label {
     color: #475569 !important;
 }
 
-body.light-theme .stat-box .stat-val-white {
+html.light .stat-box .stat-val-white {
     color: #0f172a !important;
 }
 
-body.light-theme .stat-box .stat-val-green {
+html.light .stat-box .stat-val-green {
     color: #047857 !important;
 }
 
-body.light-theme .stat-box .stat-val-gold {
+html.light .stat-box .stat-val-gold {
     color: #b45309 !important;
 }
 
-body.light-theme .stat-box .stat-val-cyan {
-    color: #0369a1 !important;
+html.light .stat-box .stat-val-cyan {
+    color: #92400e !important;
 }
 
-body.light-theme .stat-box .stat-val-slate {
+html.light .stat-box .stat-val-slate {
     color: #1e293b !important;
 }
 
 /* Footer & Notes in Light Mode */
-body.light-theme footer {
+html.light footer {
     border-top-color: #e2e8f0 !important;
     color: #64748b !important;
 }
 
-body.light-theme footer .text-slate-300,
-body.light-theme footer .text-slate-400 {
+html.light footer .text-slate-300,
+html.light footer .text-slate-400 {
     color: #64748b !important;
 }
 
@@ -851,17 +1324,17 @@ body.light-theme footer .text-slate-400 {
     color: var(--gold-accent);
 }
 
-body.light-theme .text-up {
+html.light .text-up {
     color: #059669 !important;
     font-weight: 700;
 }
 
-body.light-theme .text-down {
+html.light .text-down {
     color: #dc2626 !important;
     font-weight: 700;
 }
 
-body.light-theme .text-gold {
+html.light .text-gold {
     color: #b45309 !important;
     font-weight: 700;
 }
@@ -889,7 +1362,7 @@ body.light-theme .text-gold {
     color: #1d4ed8;
 }
 
-body.light-theme .auth-gate-link {
+html.light .auth-gate-link {
     color: #1d4ed8 !important;
 }
 
@@ -912,19 +1385,19 @@ body.light-theme .auth-gate-link {
     -webkit-overflow-scrolling: touch;
 }
 
-body.light-theme #auth-modal .dashboard-card {
+html.light #auth-modal .dashboard-card {
     background-color: #ffffff !important;
     border-color: #e2e8f0 !important;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2) !important;
 }
 
-body.light-theme #auth-modal input {
+html.light #auth-modal input {
     background-color: #f8fafc !important;
     border-color: #cbd5e1 !important;
     color: #0f172a !important;
 }
 
-body.light-theme #auth-modal input:focus {
+html.light #auth-modal input:focus {
     background-color: #ffffff !important;
     border-color: #3b82f6 !important;
 }
@@ -942,227 +1415,221 @@ body.light-theme #auth-modal input:focus {
 }
 
 /* Light theme for News Grid & Cards */
-body.light-theme .news-card {
+html.light .news-card {
     background-color: #ffffff !important;
     border-color: #e2e8f0 !important;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04) !important;
 }
 
-body.light-theme .news-card:hover {
+html.light .news-card:hover {
     border-color: #cbd5e1 !important;
     box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08) !important;
 }
 
-body.light-theme .news-card h3,
-body.light-theme .news-card h4 {
+html.light .news-card h3,
+html.light .news-card h4,
+html.light .news-card .text-slate-100,
+html.light .news-card .text-slate-200,
+html.light #news-section .text-slate-100,
+html.light #news-section .text-slate-200 {
     color: #0f172a !important;
+    font-weight: 800 !important;
 }
 
-body.light-theme .news-card:hover h3,
-body.light-theme .news-card:hover h4 {
+html.light .news-card:hover h3,
+html.light .news-card:hover h4 {
     color: #d97706 !important;
 }
 
-body.light-theme .news-card p {
-    color: #475569 !important;
+html.light .news-card p,
+html.light .news-card .text-slate-300,
+html.light .news-card .text-slate-400,
+html.light #news-section .text-slate-300,
+html.light #news-section .text-slate-400 {
+    color: #334155 !important;
+    font-weight: 500 !important;
 }
 
-body.light-theme #news-section .border-slate-800 {
+html.light #news-section .border-slate-800 {
     border-color: #e2e8f0 !important;
 }
 
-body.light-theme #news-section .text-slate-100 {
-    color: #0f172a !important;
-}
-
-body.light-theme #news-section .text-slate-200 {
-    color: #1e293b !important;
-}
-
-body.light-theme #news-section .text-slate-300 {
-    color: #475569 !important;
-}
-
-body.light-theme #news-section .text-slate-400 {
-    color: #64748b !important;
-}
-
 /* Filter Pills in Light Theme */
-body.light-theme #news-section button.bg-slate-800\/80 {
+html.light #news-section button.bg-slate-800\/80 {
     background-color: #ffffff !important;
     color: #334155 !important;
     border-color: #cbd5e1 !important;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
 }
 
-body.light-theme #news-section button.bg-slate-800\/80:hover {
+html.light #news-section button.bg-slate-800\/80:hover {
     background-color: #f1f5f9 !important;
     color: #0f172a !important;
     border-color: #94a3b8 !important;
 }
 
-body.light-theme #news-section button.bg-blue-950\/60 {
+html.light #news-section button.bg-blue-950\/60 {
     background-color: #eff6ff !important;
     color: #1d4ed8 !important;
     border-color: #bfdbfe !important;
 }
 
-body.light-theme #news-section button.bg-blue-950\/60:hover {
+html.light #news-section button.bg-blue-950\/60:hover {
     background-color: #dbeafe !important;
 }
 
 /* =========================================================
    NEWS MODAL READER IN LIGHT THEME
    ========================================================= */
-body.light-theme #news-modal .dashboard-card {
+html.light #news-modal .dashboard-card {
     background-color: #ffffff !important;
     border-color: #e2e8f0 !important;
     box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.2) !important;
     color: #0f172a !important;
 }
 
-body.light-theme #news-modal button {
+html.light #news-modal button {
     color: #64748b;
 }
 
-body.light-theme #news-modal button:hover {
+html.light #news-modal button:hover {
     color: #0f172a;
 }
 
-body.light-theme #news-modal h2 {
+html.light #news-modal h2 {
     color: #0f172a !important;
 }
 
-body.light-theme #news-modal .text-slate-100 {
+html.light #news-modal .text-slate-100 {
     color: #0f172a !important;
 }
 
-body.light-theme #news-modal .text-slate-200 {
+html.light #news-modal .text-slate-200 {
     color: #1e293b !important;
 }
 
-body.light-theme #news-modal .text-slate-300 {
+html.light #news-modal .text-slate-300 {
     color: #334155 !important;
 }
 
-body.light-theme #news-modal .text-slate-400 {
+html.light #news-modal .text-slate-400 {
     color: #64748b !important;
 }
 
-body.light-theme #news-modal .border-slate-800 {
+html.light #news-modal .border-slate-800 {
     border-color: #e2e8f0 !important;
 }
 
-body.light-theme #news-modal .article-body {
+html.light #news-modal .article-body {
     color: #1e293b !important;
 }
 
-body.light-theme #news-modal .article-body p {
+html.light #news-modal .article-body p {
     color: #334155 !important;
     font-size: 0.925rem !important;
     line-height: 1.7 !important;
 }
 
-body.light-theme #news-modal .article-summary {
+html.light #news-modal .article-summary {
     color: #0f172a !important;
     font-weight: 600 !important;
 }
 
 /* Callout Box inside News Modal in Light Mode */
-body.light-theme #news-modal .news-callout-box,
-body.light-theme #news-modal .bg-blue-950\/40 {
+html.light #news-modal .news-callout-box,
+html.light #news-modal .bg-blue-950\/40 {
     background-color: #f0f7ff !important;
     border: 1.5px solid #bfdbfe !important;
     box-shadow: 0 2px 8px rgba(37, 99, 235, 0.06) !important;
 }
 
-body.light-theme #news-modal .callout-text,
-body.light-theme #news-modal .news-callout-box p {
+html.light #news-modal .callout-text,
+html.light #news-modal .news-callout-box p {
     color: #1e3a8a !important;
     font-weight: 500 !important;
 }
 
-body.light-theme #news-modal .callout-source,
-body.light-theme #news-modal .news-callout-box strong {
+html.light #news-modal .callout-source,
+html.light #news-modal .news-callout-box strong {
     color: #0f172a !important;
     font-weight: 700 !important;
 }
 
-body.light-theme #news-modal .callout-link,
-body.light-theme #news-modal .news-callout-box a {
+html.light #news-modal .callout-link,
+html.light #news-modal .news-callout-box a {
     color: #1d4ed8 !important;
     font-weight: 700 !important;
 }
 
-body.light-theme #news-modal .callout-link:hover,
-body.light-theme #news-modal .news-callout-box a:hover {
+html.light #news-modal .callout-link:hover,
+html.light #news-modal .news-callout-box a:hover {
     color: #1e40af !important;
     text-decoration: underline !important;
 }
 
 /* Custom Content Highlights in Light Mode */
-body.light-theme #news-modal .news-summary-box,
-body.light-theme #news-modal .bg-amber-500\/10 {
+html.light #news-modal .news-summary-box,
+html.light #news-modal .bg-amber-500\/10 {
     background-color: #fffbeb !important;
     border-left-color: #f59e0b !important;
     color: #78350f !important;
 }
 
-body.light-theme #news-modal .news-summary-box strong {
+html.light #news-modal .news-summary-box strong {
     color: #b45309 !important;
 }
 
-body.light-theme #news-modal .news-card-box,
-body.light-theme #news-modal .bg-slate-800\/80 {
+html.light #news-modal .news-card-box,
+html.light #news-modal .bg-slate-800\/80 {
     background-color: #f8fafc !important;
     border-color: #cbd5e1 !important;
 }
 
-body.light-theme #news-modal .news-box-title {
+html.light #news-modal .news-box-title {
     color: #b45309 !important;
 }
 
-body.light-theme #news-modal .news-box-title-blue {
+html.light #news-modal .news-box-title-blue {
     color: #1d4ed8 !important;
 }
 
-body.light-theme #news-modal .news-box-desc {
+html.light #news-modal .news-box-desc {
     color: #1e293b !important;
 }
 
-body.light-theme #news-modal .bg-cyan-500\/10 {
+html.light #news-modal .bg-cyan-500\/10 {
     background-color: #ecfeff !important;
     border-left-color: #06b6d4 !important;
     color: #155e75 !important;
 }
 
 /* Badges in Light Mode for high contrast */
-body.light-theme .badge-category,
-body.light-theme span[class*="bg-emerald-500/20"] {
+html.light .badge-category,
+html.light span[class*="bg-emerald-500/20"] {
     background-color: #d1fae5 !important;
     color: #065f46 !important;
     border-color: #6ee7b7 !important;
 }
 
-body.light-theme span[class*="bg-amber-500/20"] {
+html.light span[class*="bg-amber-500/20"] {
     background-color: #fef3c7 !important;
     color: #92400e !important;
     border-color: #fcd34d !important;
 }
 
-body.light-theme span[class*="bg-cyan-500/20"] {
+html.light span[class*="bg-cyan-500/20"] {
     background-color: #cffafe !important;
     color: #155e75 !important;
     border-color: #67e8f9 !important;
 }
 
-body.light-theme span[class*="bg-purple-500/20"] {
+html.light span[class*="bg-purple-500/20"] {
     background-color: #f3e8ff !important;
     color: #6b21a8 !important;
     border-color: #d8b4fe !important;
 }
 
-body.light-theme span[class*="bg-rose-500/20"] {
+html.light span[class*="bg-rose-500/20"] {
     background-color: #ffe4e6 !important;
     color: #9f1239 !important;
     border-color: #fda4af !important;
@@ -1202,18 +1669,18 @@ body.light-theme span[class*="bg-rose-500/20"] {
 .gold-card-bg h3,
 .gold-card-bg div,
 .gold-card-bg span:not(.dark-pill-btn):not(.dark-badge),
-body.light-theme .gold-card-bg,
-body.light-theme .gold-card-bg *,
-body.light-theme .gold-card-bg h3,
-body.light-theme .gold-card-bg div,
-body.light-theme .gold-card-bg span:not(.dark-pill-btn):not(.dark-badge) {
+html.light .gold-card-bg,
+html.light .gold-card-bg *,
+html.light .gold-card-bg h3,
+html.light .gold-card-bg div,
+html.light .gold-card-bg span:not(.dark-pill-btn):not(.dark-badge) {
     color: #020617 !important;
 }
 
 .gold-card-bg .dark-pill-btn,
 .gold-card-bg .dark-badge,
-body.light-theme .gold-card-bg .dark-pill-btn,
-body.light-theme .gold-card-bg .dark-badge {
+html.light .gold-card-bg .dark-pill-btn,
+html.light .gold-card-bg .dark-badge {
     background-color: #020617 !important;
     color: #fbbf24 !important;
     border: 1px solid rgba(251, 191, 36, 0.5) !important;
@@ -1224,10 +1691,10 @@ body.light-theme .gold-card-bg .dark-badge {
 .gold-card-bg .dark-badge *,
 .gold-card-bg .dark-pill-btn i,
 .gold-card-bg .dark-badge i,
-body.light-theme .gold-card-bg .dark-pill-btn *,
-body.light-theme .gold-card-bg .dark-badge *,
-body.light-theme .gold-card-bg .dark-pill-btn i,
-body.light-theme .gold-card-bg .dark-badge i {
+html.light .gold-card-bg .dark-pill-btn *,
+html.light .gold-card-bg .dark-badge *,
+html.light .gold-card-bg .dark-pill-btn i,
+html.light .gold-card-bg .dark-badge i {
     color: #fbbf24 !important;
     background-color: transparent !important;
 }
@@ -1268,34 +1735,34 @@ body.light-theme .gold-card-bg .dark-badge i {
 }
 
 /* LIGHT THEME BANNER (Clean White Glass Theme - Airy, Elegant & High Contrast) */
-body.light-theme .t3gold-banner-dark {
+html.light .t3gold-banner-dark {
     background: #ffffff !important;
     border: 1.5px solid rgba(245, 158, 11, 0.6) !important;
     box-shadow: 0 4px 16px rgba(245, 158, 11, 0.12) !important;
 }
 
-body.light-theme .t3gold-banner-dark .text-light-fix,
-body.light-theme .t3gold-banner-dark .text-light-fix * {
+html.light .t3gold-banner-dark .text-light-fix,
+html.light .t3gold-banner-dark .text-light-fix * {
     color: #0f172a !important; /* Deep Obsidian Slate */
 }
 
-body.light-theme .t3gold-banner-dark .text-gold-fix,
-body.light-theme .t3gold-banner-dark .text-gold-fix * {
+html.light .t3gold-banner-dark .text-gold-fix,
+html.light .t3gold-banner-dark .text-gold-fix * {
     color: #d97706 !important; /* Warm Rich Gold */
 }
 
-body.light-theme .t3gold-banner-dark .btn-gold-fix {
+html.light .t3gold-banner-dark .btn-gold-fix {
     background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
     color: #020617 !important;
     border: none !important;
     box-shadow: 0 3px 10px rgba(245, 158, 11, 0.3) !important;
 }
 
-body.light-theme .t3gold-banner-dark .btn-gold-fix * {
+html.light .t3gold-banner-dark .btn-gold-fix * {
     color: #020617 !important;
 }
 
-/* T3Gold Slogan Marquee Animation */
+/* T3Gold Slogan Marquee Animation (Seamless Loop) */
 .t3gold-marquee-box {
     overflow: hidden;
     white-space: nowrap;
@@ -1306,13 +1773,13 @@ body.light-theme .t3gold-banner-dark .btn-gold-fix * {
 .t3gold-marquee-text {
     display: inline-block;
     white-space: nowrap;
-    padding-left: 100%;
-    animation: t3gold-marquee 16s linear infinite;
+    padding-left: 0;
+    animation: t3gold-marquee 14s linear infinite;
 }
 
 @keyframes t3gold-marquee {
     0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-100%, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
 }
 
 /* HIGH-CONTRAST SLOGAN & HOTLINE STYLES */
@@ -1329,7 +1796,7 @@ body.light-theme .t3gold-banner-dark .btn-gold-fix * {
     }
 }
 
-body.light-theme .t3gold-slogan-fix {
+html.light .t3gold-slogan-fix {
     color: #b45309 !important; /* Deep Crisp Amber in Light Mode */
     font-weight: 800 !important;
 }
@@ -1341,9 +1808,1749 @@ body.light-theme .t3gold-slogan-fix {
     font-weight: 800 !important;
 }
 
-body.light-theme .t3gold-hotline-btn {
+html.light .t3gold-hotline-btn {
     background: #fef3c7 !important;
     color: #92400e !important;
     border: 1.5px solid rgba(217, 119, 6, 0.6) !important;
     font-weight: 800 !important;
 }
+
+/* TradingView Widget Container & Iframe Fix */
+.tradingview-widget-container,
+.tradingview-widget-container iframe {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* =========================================================
+   ULTRA-RESPONSIVE MOBILE OPTIMIZATION SYSTEM (320px - 768px)
+   ========================================================= */
+
+/* Prevent text overflow, tap highlights, and text scaling bugs */
+html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Touch-friendly scrolling for tables and scrollable cards */
+.overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
+/* Screen sizes <= 640px (Mobile Phones & Small Tablets) */
+@media (max-width: 640px) {
+    .dashboard-card {
+        border-radius: 0.75rem !important;
+    }
+
+    /* Modal adjustments for touch screens */
+    .modal-backdrop > div {
+        max-height: 92vh !important;
+        overflow-y: auto !important;
+        margin: 0.5rem !important;
+        padding: 1.25rem 1rem !important;
+    }
+}
+
+/* Screen sizes <= 480px (iPhone SE, Android Phones, Compact Mobile) */
+@media (max-width: 480px) {
+    .modern-table th {
+        padding: 0.45rem 0.25rem !important;
+        font-size: 0.75rem !important;
+    }
+
+    .modern-table td {
+        padding: 0.4rem 0.2rem !important;
+    }
+
+    .modern-table td .price-val,
+    .modern-table td.price-val {
+        font-size: 13.5px !important;
+    }
+
+    header {
+        padding-left: 0.25rem !important;
+        padding-right: 0.25rem !important;
+    }
+}
+
+/* Extremely narrow screens <= 360px (iPhone 5/SE, Galaxy Z Fold Cover Screen) */
+@media (max-width: 360px) {
+    .modern-table th {
+        font-size: 0.7rem !important;
+        padding: 0.4rem 0.15rem !important;
+    }
+
+    .modern-table td {
+        padding: 0.35rem 0.15rem !important;
+    }
+
+    .modern-table td .price-val,
+    .modern-table td.price-val {
+        font-size: 12.5px !important;
+    }
+
+    .t3gold-slogan-fix {
+        font-size: 12px !important;
+    }
+}
+
+/* ==========================================================================
+   MÁY TÍNH TUỔI VÀNG - LIGHT & DARK THEME CUSTOM STYLING
+   ========================================================================== */
+
+/* ==========================================================================
+   BẢNG MÁY TÍNH CÔNG THỨC NÂNG HẠ TUỔI VÀNG - ĐỒNG BỘ 100% VỚI BẢNG GIÁ
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CHẾ ĐỘ TỐI (DARK MODE) - MÁY TÍNH CÔNG THỨC
+   -------------------------------------------------------------------------- */
+/* Khung viền ngoài: HOÀNG KIM VÀNG SÁNG RỰC RỠ (#fbbf24) */
+html.dark #calculator-section #calc-card,
+html.dark #calc-card {
+    background-color: #06373a !important;
+    border: 2.5px solid #fbbf24 !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 0 30px rgba(251, 191, 36, 0.4) !important;
+    overflow: hidden !important;
+}
+
+/* Header Banner: NỀN HOÀNG KIM VÀNG SÁNG RỰC RỠ, CHỮ XANH NAVBAR ĐẬM NÉT */
+html.dark #calculator-section #calc-card > div:first-child,
+html.dark #calc-card > div:first-child {
+    background: linear-gradient(135deg, #d97706 0%, #f59e0b 40%, #fbbf24 80%, #fde047 100%) !important;
+    border-bottom: 3px solid #fbbf24 !important;
+}
+html.dark #calculator-section #calc-card #calc-title,
+html.dark #calculator-section #calc-card > div:first-child h3,
+html.dark #calc-card #calc-title,
+html.dark #calc-card > div:first-child h3 {
+    color: #06373a !important;
+    -webkit-text-fill-color: #06373a !important;
+    background: none !important;
+    font-weight: 900 !important;
+    text-shadow: none !important;
+}
+html.dark #calculator-section #calc-card #calc-subtitle,
+html.dark #calculator-section #calc-card > div:first-child p,
+html.dark #calc-card #calc-subtitle,
+html.dark #calc-card > div:first-child p {
+    color: #06373a !important;
+    opacity: 0.95 !important;
+    font-weight: 700 !important;
+}
+html.dark #calculator-section #calc-card > div:first-child .w-11,
+html.dark #calc-card > div:first-child .w-11 {
+    background: #06373a !important;
+    color: #fbbf24 !important;
+    border: 1.5px solid #fbbf24 !important;
+}
+
+/* Thân máy tính: Nền màu xanh navbar #06373a */
+html.dark #calculator-section #calc-card > div:nth-child(2),
+html.dark #calc-card > div:nth-child(2) {
+    background-color: #042628 !important;
+}
+
+/* 3 Ô Input: Nền xanh navbar nhạt #0a4c51, viền vàng kim #fbbf24 */
+html.dark #calculator-section #calc-input-grid > div,
+html.dark #calc-input-grid > div {
+    background-color: #0a4c51 !important;
+    border: 2px solid #fbbf24 !important;
+    border-radius: 0.75rem !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+}
+html.dark #calculator-section #calc-input-grid > div div:first-child,
+html.dark #calculator-section #calc-input-grid > div span,
+html.dark #calc-input-grid > div div:first-child,
+html.dark #calc-input-grid > div span {
+    color: #fbbf24 !important;
+    font-weight: 800 !important;
+}
+html.dark #calculator-section #calc-card input[type="number"],
+html.dark #calc-card input[type="number"] {
+    background-color: #06373a !important;
+    border: 1.5px solid #fbbf24 !important;
+    color: #fbbf24 !important;
+    font-weight: 900 !important;
+    border-radius: 0.5rem !important;
+}
+
+/* Khối Kết Quả Pha Chế */
+html.dark #calculator-section #calc-results-container,
+html.dark #calc-results-container {
+    background-color: #06373a !important;
+    border: 2px solid #fbbf24 !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+html.dark #calculator-section #calc-results-container > div:first-child,
+html.dark #calc-results-container > div:first-child {
+    color: #fbbf24 !important;
+    font-weight: 900 !important;
+}
+
+/* 3 Card con kết quả */
+html.dark #calculator-section #calc-results-container .grid-cols-1.md\:grid-cols-3 > div,
+html.dark #calc-results-container .grid-cols-1.md\:grid-cols-3 > div {
+    background-color: #0a4c51 !important;
+    border: 1.5px solid rgba(251, 191, 36, 0.45) !important;
+    border-radius: 0.75rem !important;
+}
+html.dark #calculator-section #calc-results-container .grid-cols-1.md\:grid-cols-3 > div span.text-slate-400,
+html.dark #calc-results-container .grid-cols-1.md\:grid-cols-3 > div span.text-slate-400 {
+    color: #cbd5e1 !important;
+    font-weight: 700 !important;
+}
+
+/* 6 Box Thông Số Chi Tiết (Xen kẽ dòng đậm / dòng nhạt theo màu navbar) */
+html.dark #calculator-section #calc-results-container .mt-2.pt-3,
+html.dark #calc-results-container .mt-2.pt-3 {
+    border-top: 2px solid #fbbf24 !important;
+}
+html.dark #calculator-section #calc-results-container .mt-2.pt-3 > div:first-child,
+html.dark #calc-results-container .mt-2.pt-3 > div:first-child {
+    color: #fbbf24 !important;
+    font-weight: 900 !important;
+}
+html.dark #calculator-section #calc-results-container .grid-cols-1.md\:grid-cols-2 > div:nth-child(odd),
+html.dark #calc-results-container .grid-cols-1.md\:grid-cols-2 > div:nth-child(odd) {
+    background-color: #06373a !important;
+    border: 1.5px solid rgba(251, 191, 36, 0.35) !important;
+    border-radius: 0.75rem !important;
+}
+html.dark #calculator-section #calc-results-container .grid-cols-1.md\:grid-cols-2 > div:nth-child(even),
+html.dark #calc-results-container .grid-cols-1.md\:grid-cols-2 > div:nth-child(even) {
+    background-color: #0a4c51 !important;
+    border: 1.5px solid rgba(251, 191, 36, 0.35) !important;
+    border-radius: 0.75rem !important;
+}
+html.dark #calculator-section #calc-results-container .grid-cols-1.md\:grid-cols-2 > div span.text-slate-300,
+html.dark #calc-results-container .grid-cols-1.md\:grid-cols-2 > div span.text-slate-300 {
+    color: #f1f5f9 !important;
+    font-weight: 700 !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   2. CHẾ ĐỘ SÁNG (LIGHT MODE) - MÁY TÍNH CÔNG THỨC
+   -------------------------------------------------------------------------- */
+/* Khung viền ngoài: MÀU VÀNG (#f59e0b) */
+html.light #calculator-section #calc-card,
+html.light #calc-card {
+    background-color: #ffffff !important;
+    border: 2.5px solid #f59e0b !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 6px 24px -2px rgba(245, 158, 11, 0.22) !important;
+    overflow: hidden !important;
+}
+
+/* Header Banner: NỀN VÀNG HOÀNG KIM, CHỮ XANH NAVBAR CHUẨN (#06373a) */
+html.light #calculator-section #calc-card > div:first-child,
+html.light #calc-card > div:first-child {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #eab308 100%) !important;
+    border-bottom: 3px solid #d97706 !important;
+}
+html.light #calculator-section #calc-card #calc-title,
+html.light #calculator-section #calc-card > div:first-child h3,
+html.light #calc-card #calc-title,
+html.light #calc-card > div:first-child h3 {
+    color: #06373a !important;
+    -webkit-text-fill-color: #06373a !important;
+    background: none !important;
+    font-weight: 900 !important;
+    text-shadow: none !important;
+}
+html.light #calculator-section #calc-card #calc-subtitle,
+html.light #calculator-section #calc-card > div:first-child p,
+html.light #calc-card #calc-subtitle,
+html.light #calc-card > div:first-child p {
+    color: #06373a !important;
+    opacity: 0.95 !important;
+    font-weight: 700 !important;
+}
+html.light #calculator-section #calc-card > div:first-child .w-11,
+html.light #calc-card > div:first-child .w-11 {
+    background: #06373a !important;
+    color: #fde047 !important;
+    border: 1.5px solid #d97706 !important;
+}
+
+/* Thân máy tính */
+html.light #calculator-section #calc-card > div:nth-child(2),
+html.light #calc-card > div:nth-child(2) {
+    background-color: #ffffff !important;
+}
+
+/* 3 ô input: Trắng viền vàng, chữ xanh navbar */
+html.light #calculator-section #calc-input-grid > div,
+html.light #calc-input-grid > div {
+    background-color: #fffdf5 !important;
+    border: 2px solid #f59e0b !important;
+    border-radius: 0.75rem !important;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.08) !important;
+}
+html.light #calculator-section #calc-input-grid > div div:first-child,
+html.light #calculator-section #calc-input-grid > div span,
+html.light #calc-input-grid > div div:first-child,
+html.light #calc-input-grid > div span {
+    color: #06373a !important;
+    font-weight: 800 !important;
+}
+html.light #calculator-section #calc-card input[type="number"],
+html.light #calc-card input[type="number"] {
+    background-color: #ffffff !important;
+    border: 1.5px solid #f59e0b !important;
+    color: #06373a !important;
+    font-weight: 900 !important;
+    border-radius: 0.5rem !important;
+}
+
+/* Khối Kết Quả Pha Chế */
+html.light #calculator-section #calc-results-container,
+html.light #calc-results-container {
+    background-color: #fffdf5 !important;
+    border: 2px solid #f59e0b !important;
+    border-radius: 1rem !important;
+}
+html.light #calculator-section #calc-results-container > div:first-child,
+html.light #calc-results-container > div:first-child {
+    color: #06373a !important;
+    font-weight: 900 !important;
+}
+html.light #calculator-section #calc-results-container .grid-cols-1.md\:grid-cols-3 > div,
+html.light #calc-results-container .grid-cols-1.md\:grid-cols-3 > div {
+    background-color: #ffffff !important;
+    border: 1.5px solid #f59e0b !important;
+    border-radius: 0.75rem !important;
+}
+html.light #calculator-section #calc-results-container .grid-cols-1.md\:grid-cols-3 > div span.text-slate-400,
+html.light #calc-results-container .grid-cols-1.md\:grid-cols-3 > div span.text-slate-400 {
+    color: #06373a !important;
+    font-weight: 700 !important;
+}
+
+/* 6 Box Thông Số Chi Tiết */
+html.light #calculator-section #calc-results-container .mt-2.pt-3,
+html.light #calc-results-container .mt-2.pt-3 {
+    border-top: 2px solid #f59e0b !important;
+}
+html.light #calculator-section #calc-results-container .mt-2.pt-3 > div:first-child,
+html.light #calc-results-container .mt-2.pt-3 > div:first-child {
+    color: #06373a !important;
+    font-weight: 900 !important;
+}
+html.light #calculator-section #calc-results-container .grid-cols-1.md\:grid-cols-2 > div,
+html.light #calc-results-container .grid-cols-1.md\:grid-cols-2 > div {
+    background-color: #ffffff !important;
+    border: 1.5px solid #f59e0b !important;
+    border-radius: 0.75rem !important;
+}
+html.light #calculator-section #calc-results-container .grid-cols-1.md\:grid-cols-2 > div span.text-slate-300,
+html.light #calc-results-container .grid-cols-1.md\:grid-cols-2 > div span.text-slate-300 {
+    color: #06373a !important;
+    font-weight: 700 !important;
+}
+
+
+/* Guaranteed Top Spacing to prevent Navbar overlap */
+.gold-dashboard-wrapper {
+    padding-top: 110px !important;
+}
+
+@media (max-width: 640px) {
+    .gold-dashboard-wrapper {
+        padding-top: 95px !important;
+    }
+}
+
+/* LIGHT MODE ROOT & HEADER HIGH-CONTRAST OVERRIDES */
+.gold-price-page-root {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+html.light .gold-price-page-root,
+html.light .gold-price-page-root {
+    background-color: #f1f5f9 !important;
+    background-image: linear-gradient(180deg, #f8fafc 0%, #edf2f7 100%) !important;
+    color: #0f172a !important;
+}
+
+html.light h1,
+html.light h1 span,
+html.light h1,
+html.light h1 span {
+    color: #0f172a !important;
+}
+
+html.light h1 span.text-yellow-400,
+html.light h1 span.text-yellow-400 {
+    color: #b45309 !important;
+}
+
+html.light header p,
+html.light header span,
+html.light .text-slate-400,
+html.light .text-slate-400 {
+    color: #334155 !important;
+}
+
+html.light .t3gold-banner-dark {
+    background: #ffffff !important;
+    border: 1.5px solid rgba(245, 158, 11, 0.7) !important;
+    box-shadow: 0 4px 18px rgba(245, 158, 11, 0.15) !important;
+}
+
+html.light .t3gold-banner-dark strong,
+html.light .t3gold-banner-dark span,
+html.light .t3gold-banner-dark div {
+    color: #0f172a !important;
+}
+
+html.light .t3gold-banner-dark .text-gold-fix {
+    color: #92400e !important;
+}
+/* ==========================================================================
+   PERFECT UI / UX FORM & BANNER ALIGNMENT FIX (T3GOLD LIGHT & DARK THEME)
+   ========================================================================== */
+
+/* 1. HEADER BANNER T3GOLD: HOÃ€N TOÃ€N NGAY NGáº®N, KHÃ”NG TRÃ€N VIá»€N, KHÃ”NG DÃNH NÃšT */
+.t3gold-banner-dark {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    padding: 10px 18px !important;
+    min-height: 94px !important;
+    height: auto !important;
+    max-width: 660px !important;
+    width: 100% !important;
+    border-radius: 20px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    gap: 6px !important;
+}
+
+html.light .t3gold-banner-dark {
+    background: #ffffff !important;
+    border: 1.5px solid #f59e0b !important;
+    box-shadow: 0 4px 16px -2px rgba(245, 158, 11, 0.18) !important;
+}
+
+.t3gold-banner-dark > div:first-child {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+}
+
+html.light .t3gold-banner-dark .text-gold-fix {
+    color: #b45309 !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+    font-weight: 800 !important;
+}
+
+.t3gold-banner-dark > div:nth-child(2) {
+    height: 1px !important;
+    width: 100% !important;
+    background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.45), transparent) !important;
+    margin: 2px 0 !important;
+}
+
+.t3gold-banner-dark > div:last-child {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.t3gold-banner-dark .btn-gold-fix {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 5px 14px !important;
+    font-size: 11.5px !important;
+    font-weight: 900 !important;
+    border-radius: 9999px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+    color: #0f172a !important;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3) !important;
+}
+
+.t3gold-banner-dark .t3gold-marquee-box {
+    flex: 1 1 auto !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    margin: 0 8px !important;
+    position: relative !important;
+}
+
+html.light .t3gold-banner-dark .t3gold-marquee-text {
+    color: #92400e !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+}
+
+.t3gold-banner-dark .t3gold-hotline-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 5px 12px !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    border-radius: 9999px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+html.light .t3gold-banner-dark .t3gold-hotline-btn {
+    background-color: #fef3c7 !important;
+    border: 1px solid #f59e0b !important;
+    color: #78350f !important;
+}
+
+/* 2. Báº¢NG GIÃ VÃ€NG - Sáº CH Sáº¼, Äá»’NG NHáº¤T, RÃ• RÃ€NG */
+html.light #gold-price-section .dashboard-card {
+    background-color: #ffffff !important;
+    border: 2px solid #f59e0b !important;
+    box-shadow: 0 4px 18px rgba(245, 158, 11, 0.1) !important;
+}
+
+html.light #price-table-body tr {
+    background-color: #ffffff !important;
+}
+
+html.light #price-table-body tr:nth-child(even) {
+    background-color: #fffbeb !important;
+}
+
+html.light #price-table-body tr td {
+    border-bottom: 1px solid #fde68a !important;
+    color: #0f172a !important;
+    padding: 9px 12px !important;
+}
+
+html.light #price-table-body tr td.col-org,
+html.light #price-table-body tr td .col-org {
+    color: #92400e !important;
+    font-weight: 800 !important;
+}
+
+html.light #price-table-body tr td.price-val,
+html.light #price-table-body tr td .price-val {
+    color: #0f172a !important;
+    font-weight: 900 !important;
+}
+
+/* 3. Báº¢NG GIÃ Báº C - Sáº CH Sáº¼, Äá»’NG NHáº¤T */
+html.light #silver-price-section .dashboard-card {
+    background-color: #ffffff !important;
+    border: 2px solid #94a3b8 !important;
+    box-shadow: 0 4px 18px rgba(100, 116, 139, 0.1) !important;
+}
+
+html.light #silver-price-table-body tr {
+    background-color: #ffffff !important;
+}
+
+html.light #silver-price-table-body tr:nth-child(even) {
+    background-color: #f8fafc !important;
+}
+
+html.light #silver-price-table-body tr td {
+    border-bottom: 1px solid #e2e8f0 !important;
+    color: #0f172a !important;
+    padding: 9px 12px !important;
+}
+
+html.light #silver-price-table-body tr td.col-org,
+html.light #silver-price-table-body tr td .col-org {
+    color: #334155 !important;
+    font-weight: 800 !important;
+}
+
+html.light #silver-price-table-body tr td.price-val,
+html.light #silver-price-table-body tr td .price-val {
+    color: #0f172a !important;
+    font-weight: 900 !important;
+}
+
+/* 4. Báº¢NG NGOáº I Tá»† - Sáº CH Sáº¼, Äá»’NG NHáº¤T */
+html.light #currency-section .dashboard-card {
+    background-color: #ffffff !important;
+    border: 2px solid #f59e0b !important;
+}
+
+html.light #currency-table-body tr {
+    background-color: #ffffff !important;
+}
+
+html.light #currency-table-body tr:nth-child(even) {
+    background-color: #fffbeb !important;
+}
+
+html.light #currency-table-body tr td {
+    border-bottom: 1px solid #fde68a !important;
+    color: #0f172a !important;
+    padding: 8px 12px !important;
+}
+
+html.light #currency-table-body tr td.col-org,
+html.light #currency-table-body tr td .col-org {
+    color: #92400e !important;
+    font-weight: 800 !important;
+}
+
+html.light #currency-table-body tr td.price-val,
+html.light #currency-table-body tr td .price-val {
+    color: #0f172a !important;
+    font-weight: 900 !important;
+}
+
+/* 5. CÃ”NG THá»¨C NÃ‚NG Háº  TUá»”I VÃ€NG - LIGHT MODE Äá»’NG Bá»˜ 100% */
+html.light #calc-card {
+    background-color: #ffffff !important;
+    border: 2px solid #f59e0b !important;
+    box-shadow: 0 10px 25px rgba(245, 158, 11, 0.15) !important;
+}
+
+html.light #calc-card > div:first-child {
+    background: linear-gradient(135deg, #b45309 0%, #92400e 50%, #78350f 100%) !important;
+    border-bottom: 2px solid #f59e0b !important;
+}
+
+html.light #calc-card > div:last-child {
+    background-color: #fffdf5 !important;
+}
+
+/* 3 Ã” INPUT: Trá»ng lÆ°á»£ng, HÃ m lÆ°á»£ng thá»±c, HÃ m lÆ°á»£ng muá»‘n quy ra */
+html.light #calc-card .grid-cols-1.md\:grid-cols-3 > div {
+    background-color: #ffffff !important;
+    border: 1.5px solid #fed7aa !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+    padding: 12px 14px !important;
+}
+
+html.light #calc-card .grid-cols-1.md\:grid-cols-3 > div div {
+    color: #78350f !important;
+    font-weight: 800 !important;
+}
+
+html.light #calc-card input[type="number"] {
+    background-color: #ffffff !important;
+    border: 1.5px solid #fbbf24 !important;
+    color: #b45309 !important;
+    font-weight: 900 !important;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* 2 Ã” CHá»ŒN NHANH */
+html.light #calc-card .grid-cols-1.lg\:grid-cols-2 > div {
+    background-color: #ffffff !important;
+    border: 1.5px solid #fed7aa !important;
+    padding: 12px 14px !important;
+}
+
+html.light #calc-card .grid-cols-1.lg\:grid-cols-2 > div div {
+    color: #78350f !important;
+    font-weight: 800 !important;
+}
+
+html.light .tv-quick-btn-current,
+html.light .tv-quick-btn-target {
+    background-color: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+html.light .tv-quick-btn-current span,
+html.light .tv-quick-btn-target span {
+    color: #334155 !important;
+}
+
+html.light .tv-quick-btn-current.active {
+    background-color: #ecfeff !important;
+    border: 2px solid #06b6d4 !important;
+}
+
+html.light .tv-quick-btn-current.active span {
+    color: #0e7490 !important;
+    font-weight: 900 !important;
+}
+
+html.light .tv-quick-btn-target.active {
+    background-color: #fffbeb !important;
+    border: 2px solid #f59e0b !important;
+}
+
+html.light .tv-quick-btn-target.active span {
+    color: #b45309 !important;
+    font-weight: 900 !important;
+}
+
+/* KHá»I Káº¾T QUáº¢ PHA CHáº¾ */
+html.light #calc-results-container {
+    background-color: #fefce8 !important;
+    border: 1.5px solid #fde047 !important;
+}
+
+html.light #calc-results-container > div:first-child {
+    color: #92400e !important;
+    font-weight: 900 !important;
+}
+
+html.light #calc-results-container .grid-cols-1.md\:grid-cols-3 > div {
+    background-color: #ffffff !important;
+    border: 1.5px solid #fed7aa !important;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.08) !important;
+}
+
+html.light #calc-results-container .grid-cols-1.md\:grid-cols-3 > div span.text-slate-400 {
+    color: #64748b !important;
+    font-weight: 700 !important;
+}
+
+html.light #tv-res-gold {
+    color: #e11d48 !important;
+}
+
+html.light #tv-res-alloy {
+    color: #b45309 !important;
+}
+
+html.light #tv-res-total {
+    color: #b45309 !important;
+}
+
+/* KHá»I THÃ”NG Sá» CHI TIáº¾T */
+html.light #calc-results-container .mt-2.pt-3 {
+    border-top: 1px solid #fed7aa !important;
+}
+
+html.light #calc-results-container .mt-2.pt-3 div {
+    color: #78350f !important;
+}
+
+html.light #calc-results-container .grid-cols-1.md\:grid-cols-2 > div {
+    background-color: #ffffff !important;
+    border: 1.5px solid #e2e8f0 !important;
+}
+
+html.light #calc-results-container .grid-cols-1.md\:grid-cols-2 > div span.text-slate-400,
+html.light #calc-results-container .grid-cols-1.md\:grid-cols-2 > div span.text-slate-300 {
+    color: #475569 !important;
+    font-weight: 700 !important;
+}
+
+html.light #calc-results-container .grid-cols-1.md\:grid-cols-2 > div span.font-mono {
+    color: #0f172a !important;
+    font-weight: 900 !important;
+}
+
+/* ==========================================================================
+   PERFECT HORIZONTAL CENTERING & GRID ALIGNMENT FIX (MATCH GIAVANG EXACTLY)
+   ========================================================================== */
+
+/* 1. ToÃ n bá»™ trang vÃ  wrapper cÄƒn giá»¯a tuyá»‡t Ä‘á»‘i */
+.gold-price-page-root {
+    width: 100% !important;
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+}
+
+.gold-dashboard-wrapper {
+    width: 100% !important;
+    max-width: 1440px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    box-sizing: border-box !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+
+.gold-dashboard-wrapper > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.25rem !important;
+    align-items: stretch !important;
+    box-sizing: border-box !important;
+}
+
+/* 2. Header dÃ n Ä‘á»u 2 bÃªn, Banner T3Gold cÄƒn chÃ­nh giá»¯a */
+.gold-dashboard-wrapper header {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+}
+
+@media (max-width: 1023px) {
+    .gold-dashboard-wrapper header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+    .gold-dashboard-wrapper header > div:nth-child(2) {
+        display: none !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .gold-dashboard-wrapper header > div:nth-child(2) {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex: 1 1 0% !important;
+        margin-left: 1.5rem !important;
+        margin-right: 1.5rem !important;
+    }
+
+    .gold-dashboard-wrapper header .t3gold-banner-dark {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+}
+
+/* 3. Main Container: Chia lÆ°á»›i 12 cá»™t cÄƒn giá»¯a chuáº©n xÃ¡c */
+#main-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: grid !important;
+    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+    gap: 1.25rem !important;
+    box-sizing: border-box !important;
+}
+
+@media (max-width: 1023px) {
+    #main-container {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+}
+
+#main-left-col {
+    grid-column: span 8 / span 8 !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    box-sizing: border-box !important;
+}
+
+#main-right-col {
+    grid-column: span 4 / span 4 !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    box-sizing: border-box !important;
+}
+
+#calculator-section {
+    grid-column: span 12 / span 12 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+}
+
+#news-section {
+    grid-column: span 12 / span 12 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+}
+
+/* 4. Footer cÄƒn giá»¯a dÃ n Ä‘á»u */
+.gold-dashboard-wrapper footer {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+}
+
+
+
+
+/* ==========================================================================
+   T3GOLD DESIGN SYSTEM - PHIÊN BẢN CHUẨN XÁC THEO 4 HÌNH ẢNH GÓP Ý
+   1. Light Mode: 
+      - Khung viền & Header bảng: MÀU VÀNG (#f59e0b)
+      - Chữ trong Header, chữ giá mua/bán, chữ máy tính: MÀU XANH NAVBAR (#06373a)
+      - Tên các sản phẩm (Vàng TG, Vàng 9999,...): MÀU VÀNG (#d97706)
+   2. Dark Mode: 
+      - Khung viền & Header bảng: MÀU HOÀNG KIM SÁNG LÊN (#fbbf24 / #f59e0b)
+      - Chữ trong Header: MÀU XANH NAVBAR (#06373a) ĐẬM NÉT TRÊN NỀN HOÀNG KIM
+      - Nền khung các dòng: Dòng đậm xanh navbar (#06373a), dòng nhạt xanh nhạt (#0a4c51)
+      - Tên các sản phẩm: VÀNG KIM SÁNG (#fbbf24)
+      - Chữ giá mua/bán: TRẮNG SÁNG (#ffffff)
+   3. Bảng Công Thức Nâng Hạ Tuổi Vàng: ĐỒNG BỘ 100% CẢ LIGHT VÀ DARK MODES
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   I. CHẾ ĐỘ SÁNG (LIGHT MODE)
+   -------------------------------------------------------------------------- */
+
+/* 1. KHUNG VIỀN CÁC BẢNG & MÁY TÍNH (MÀU VÀNG) */
+html.light #gold-price-section .dashboard-card,
+html.light #silver-price-section .dashboard-card,
+html.light #currency-section .dashboard-card,
+html.light #calc-card,
+html.light .dashboard-card.border-amber-600\/80,
+html.light .dashboard-card.border-amber-600\/70,
+html.light .dashboard-card.border-amber-500\/40 {
+    border: 2.5px solid #f59e0b !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 6px 24px -2px rgba(245, 158, 11, 0.22) !important;
+}
+
+/* 2. HEADER CỦA BẢNG GIÁ (NỀN VÀNG, CHỮ XANH NAVBAR CHUẨN) */
+html.light .modern-table th,
+html.light #price-table-body + thead th,
+html.light #silver-price-table-body + thead th,
+html.light #currency-table-body + thead th {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #eab308 100%) !important;
+    color: #06373a !important;
+    font-weight: 900 !important;
+    border-bottom: 3px solid #d97706 !important;
+    border-top: none !important;
+    border-left: 1px solid rgba(217, 119, 6, 0.25) !important;
+    border-right: 1px solid rgba(217, 119, 6, 0.25) !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
+
+/* Đường kẻ phân cách giữa các ô */
+html.light .modern-table td {
+    border: 1px solid rgba(245, 158, 11, 0.28) !important;
+}
+
+/* Dòng xen kẽ trong bảng */
+html.light .modern-table tbody tr:nth-child(odd) td,
+html.light .modern-table tbody tr:nth-child(odd),
+html.light #price-table-body tr:nth-child(odd) td,
+html.light #silver-price-table-body tr:nth-child(odd) td,
+html.light #currency-table-body tr:nth-child(odd) td {
+    background-color: #ffffff !important;
+}
+html.light .modern-table tbody tr:nth-child(even) td,
+html.light .modern-table tbody tr:nth-child(even),
+html.light #price-table-body tr:nth-child(even) td,
+html.light #silver-price-table-body tr:nth-child(even) td,
+html.light #currency-table-body tr:nth-child(even) td {
+    background-color: #fffdf2 !important;
+}
+
+/* 3. CHỮ SỐ LIỆU: MÀU XANH NAVBAR (#06373a) */
+html.light .modern-table td.price-val,
+html.light .modern-table td .price-val,
+html.light .modern-table td.price-val div,
+html.light #price-table-body td.price-val div,
+html.light #silver-price-table-body td.price-val div,
+html.light #currency-table-body td.price-val {
+    color: #06373a !important;
+    font-weight: 900 !important;
+}
+
+/* 4. TÊN CÁC SẢN PHẨM: MÀU VÀNG (#d97706) */
+html.light .modern-table td.col-org,
+html.light .modern-table td .col-org,
+html.light .modern-table td.col-org div,
+html.light .modern-table td.col-org span,
+html.light #price-table-body td.col-org div:first-child,
+html.light #silver-price-table-body td.col-org div:first-child,
+html.light #currency-table-body td.col-org span {
+    color: #d97706 !important;
+    font-weight: 900 !important;
+}
+html.light .modern-table td.col-org div:nth-child(2) {
+    color: #b45309 !important;
+    opacity: 0.85 !important;
+}
+html.light .modern-table td div.text-yellow-400,
+html.light .modern-table td div.col-org {
+    color: #d97706 !important;
+}
+
+/* Hover dòng trong Light Mode */
+html.light .modern-table tbody tr:hover td,
+html.light .modern-table tbody tr:nth-child(even):hover td,
+html.light #price-table-body tr:hover td,
+html.light #silver-price-table-body tr:hover td,
+html.light #currency-table-body tr:hover td {
+    background-color: #fef3c7 !important;
+}
+html.light .modern-table tbody tr:hover td.price-val div {
+    color: #06373a !important;
+}
+html.light .modern-table tbody tr:hover td.col-org div:first-child {
+    color: #b45309 !important;
+}
+
+/* 5. ĐỒNG BỘ BẢNG MÁY TÍNH CÔNG THỨC Ở LIGHT MODE (HÌNH 4) */
+html.light #calc-card {
+    background-color: #ffffff !important;
+    border: 2.5px solid #f59e0b !important;
+}
+/* Banner tiêu đề: NỀN VÀNG, CHỮ XANH NAVBAR CHUẨN */
+html.light #calc-card > div:first-child {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #eab308 100%) !important;
+    border-bottom: 3px solid #d97706 !important;
+}
+html.light #calc-card #calc-title,
+html.light #calc-card > div:first-child h3 {
+    color: #06373a !important;
+    -webkit-text-fill-color: #06373a !important;
+    background: none !important;
+    font-weight: 900 !important;
+    text-shadow: none !important;
+}
+html.light #calc-card #calc-subtitle,
+html.light #calc-card > div:first-child p {
+    color: #06373a !important;
+    opacity: 0.9 !important;
+    font-weight: 700 !important;
+}
+
+/* Thân máy tính */
+html.light #calc-card > div:nth-child(2) {
+    background-color: #ffffff !important;
+}
+
+/* 3 ô input: Trắng viền vàng, chữ xanh navbar */
+html.light #calc-card > div:nth-child(2) .grid-cols-1.md\:grid-cols-3 > div {
+    background-color: #fffdf5 !important;
+    border: 2px solid #f59e0b !important;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.08) !important;
+}
+html.light #calc-card > div:nth-child(2) .grid-cols-1.md\:grid-cols-3 > div div:first-child,
+html.light #calc-card > div:nth-child(2) .grid-cols-1.md\:grid-cols-3 > div span {
+    color: #06373a !important;
+    font-weight: 800 !important;
+}
+html.light #calc-card input[type="number"] {
+    background-color: #ffffff !important;
+    border: 1.5px solid #f59e0b !important;
+    color: #06373a !important;
+    font-weight: 900 !important;
+}
+
+/* Khối Kết Quả Pha Chế */
+html.light #calc-results-container {
+    background-color: #fffdf5 !important;
+    border: 2px solid #f59e0b !important;
+}
+html.light #calc-results-container > div:first-child {
+    color: #06373a !important;
+    font-weight: 900 !important;
+}
+html.light #calc-results-container .grid-cols-1.md\:grid-cols-3 > div {
+    background-color: #ffffff !important;
+    border: 1.5px solid #f59e0b !important;
+}
+html.light #calc-results-container .grid-cols-1.md\:grid-cols-3 > div span.text-slate-400 {
+    color: #06373a !important;
+    font-weight: 700 !important;
+}
+
+/* 6 Box Thông Số Chi Tiết */
+html.light #calc-results-container .mt-2.pt-3 {
+    border-top: 2px solid #f59e0b !important;
+}
+html.light #calc-results-container .mt-2.pt-3 > div:first-child {
+    color: #06373a !important;
+    font-weight: 900 !important;
+}
+html.light #calc-results-container .grid-cols-1.md\:grid-cols-2 > div {
+    background-color: #ffffff !important;
+    border: 1.5px solid #f59e0b !important;
+}
+html.light #calc-results-container .grid-cols-1.md\:grid-cols-2 > div span.text-slate-300 {
+    color: #06373a !important;
+    font-weight: 700 !important;
+}
+html.light #calc-results-container .grid-cols-1.md\:grid-cols-2 > div span.font-mono {
+    color: #06373a !important;
+    font-weight: 900 !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   II. CHẾ ĐỘ TỐI (DARK MODE)
+   -------------------------------------------------------------------------- */
+
+/* 1. KHUNG VIỀN CÁC BẢNG & MÁY TÍNH (MÀU HOÀNG KIM SÁNG LÊN RỰC RỠ) */
+html.dark #gold-price-section .dashboard-card,
+html.dark #silver-price-section .dashboard-card,
+html.dark #currency-section .dashboard-card,
+html.dark #calc-card,
+html.dark .dashboard-card.border-amber-600\/80,
+html.dark .dashboard-card.border-amber-600\/70,
+html.dark .dashboard-card.border-amber-500\/40 {
+    border: 2.5px solid #fbbf24 !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 0 25px rgba(251, 191, 36, 0.38) !important;
+}
+
+/* 2. HEADER CỦA BẢNG GIÁ (MÀU HOÀNG KIM SÁNG LÊN, CHỮ XANH NAVBAR ĐẬM NÉT) */
+html.dark .modern-table th,
+html.dark #price-table-body + thead th,
+html.dark #silver-price-table-body + thead th,
+html.dark #currency-table-body + thead th {
+    background: linear-gradient(135deg, #d97706 0%, #f59e0b 40%, #fbbf24 80%, #fde047 100%) !important;
+    color: #06373a !important;
+    font-weight: 900 !important;
+    border-bottom: 3px solid #fbbf24 !important;
+    border-top: none !important;
+    border-left: 1px solid rgba(251, 191, 36, 0.3) !important;
+    border-right: 1px solid rgba(251, 191, 36, 0.3) !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
+
+/* Đường kẻ phân cách giữa các ô */
+html.dark .modern-table td {
+    border: 1px solid rgba(251, 191, 36, 0.2) !important;
+}
+
+/* NỀN CÁC DÒNG XEN KẼ TRONG DARK MODE:
+   - Dòng đậm: Màu xanh navbar #06373a
+   - Dòng nhạt: Màu xanh navbar nhạt đi tí #0a4c51 */
+html.dark .modern-table tbody tr:nth-child(odd) td,
+html.dark .modern-table tbody tr:nth-child(odd),
+html.dark #price-table-body tr:nth-child(odd) td,
+html.dark #silver-price-table-body tr:nth-child(odd) td,
+html.dark #currency-table-body tr:nth-child(odd) td {
+    background-color: #06373a !important;
+}
+html.dark .modern-table tbody tr:nth-child(even) td,
+html.dark .modern-table tbody tr:nth-child(even),
+html.dark #price-table-body tr:nth-child(even) td,
+html.dark #silver-price-table-body tr:nth-child(even) td,
+html.dark #currency-table-body tr:nth-child(even) td {
+    background-color: #0a4c51 !important;
+}
+
+/* 3. CHỮ SỐ LIỆU GIÁ MUA / BÁN: MÀU TRẮNG SÁNG RÕ NÉT */
+html.dark .modern-table td.price-val,
+html.dark .modern-table td .price-val,
+html.dark .modern-table td.price-val div,
+html.dark #price-table-body td.price-val div,
+html.dark #silver-price-table-body td.price-val div,
+html.dark #currency-table-body td.price-val {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+}
+
+/* 4. TÊN CÁC SẢN PHẨM: MÀU HOÀNG KIM SÁNG (#fbbf24) */
+html.dark .modern-table td.col-org,
+html.dark .modern-table td .col-org,
+html.dark .modern-table td.col-org div,
+html.dark .modern-table td.col-org span,
+html.dark #price-table-body td.col-org div:first-child,
+html.dark #silver-price-table-body td.col-org div:first-child,
+html.dark #currency-table-body td.col-org span {
+    color: #fbbf24 !important;
+    font-weight: 900 !important;
+}
+html.dark .modern-table td.col-org div:nth-child(2) {
+    color: #fde68a !important;
+    opacity: 0.8 !important;
+}
+html.dark .modern-table td div.text-yellow-400,
+html.dark .modern-table td div.col-org {
+    color: #fde047 !important;
+}
+
+/* Hover dòng trong Dark Mode */
+html.dark .modern-table tbody tr:hover td,
+html.dark .modern-table tbody tr:nth-child(even):hover td,
+html.dark #price-table-body tr:hover td,
+html.dark #silver-price-table-body tr:hover td,
+html.dark #currency-table-body tr:hover td {
+    background-color: #0e5e65 !important;
+}
+
+/* 5. ĐỒNG BỘ BẢNG MÁY TÍNH CÔNG THỨC Ở DARK MODE (HÌNH 3) */
+html.dark #calc-card {
+    background-color: #06373a !important;
+    border: 2.5px solid #fbbf24 !important;
+    box-shadow: 0 0 25px rgba(251, 191, 36, 0.38) !important;
+}
+/* Banner tiêu đề: MÀU HOÀNG KIM SÁNG RỰC RỠ, CHỮ XANH NAVBAR ĐẬM NÉT */
+html.dark #calc-card > div:first-child {
+    background: linear-gradient(135deg, #d97706 0%, #f59e0b 40%, #fbbf24 80%, #fde047 100%) !important;
+    border-bottom: 3px solid #fbbf24 !important;
+}
+html.dark #calc-card #calc-title,
+html.dark #calc-card > div:first-child h3 {
+    color: #06373a !important;
+    -webkit-text-fill-color: #06373a !important;
+    background: none !important;
+    font-weight: 900 !important;
+    text-shadow: none !important;
+}
+html.dark #calc-card #calc-subtitle,
+html.dark #calc-card > div:first-child p {
+    color: #06373a !important;
+    opacity: 0.9 !important;
+    font-weight: 700 !important;
+}
+
+/* Thân máy tính */
+html.dark #calc-card > div:nth-child(2) {
+    background-color: #06373a !important;
+}
+
+/* 3 ô input: Nền xanh navbar nhạt #0a4c51, viền vàng kim #fbbf24, chữ vàng kim */
+html.dark #calc-input-grid > div {
+    background-color: #0a4c51 !important;
+    border: 2px solid #fbbf24 !important;
+}
+html.dark #calc-input-grid > div div:first-child,
+html.dark #calc-input-grid > div span {
+    color: #fbbf24 !important;
+    font-weight: 800 !important;
+}
+html.dark #calc-card input[type="number"] {
+    background-color: #06373a !important;
+    border: 1.5px solid #fbbf24 !important;
+    color: #fbbf24 !important;
+    font-weight: 900 !important;
+}
+
+/* Khối Kết Quả Pha Chế */
+html.dark #calc-results-container {
+    background-color: #06373a !important;
+    border: 2px solid #fbbf24 !important;
+}
+html.dark #calc-results-container > div:first-child {
+    color: #fbbf24 !important;
+    font-weight: 900 !important;
+}
+html.dark #calc-results-container .grid-cols-1.md\:grid-cols-3 > div {
+    background-color: #0a4c51 !important;
+    border: 1.5px solid rgba(251, 191, 36, 0.4) !important;
+}
+html.dark #calc-results-container .grid-cols-1.md\:grid-cols-3 > div span.text-slate-400 {
+    color: #e2e8f0 !important;
+    font-weight: 700 !important;
+}
+
+/* 6 Box Thông Số Chi Tiết (Xen kẽ dòng đậm / dòng nhạt của navbar) */
+html.dark #calc-results-container .mt-2.pt-3 {
+    border-top: 2px solid #fbbf24 !important;
+}
+html.dark #calc-results-container .mt-2.pt-3 > div:first-child {
+    color: #fbbf24 !important;
+    font-weight: 900 !important;
+}
+html.dark #calc-results-container .grid-cols-1.md\:grid-cols-2 > div:nth-child(odd) {
+    background-color: #06373a !important;
+    border: 1.5px solid rgba(251, 191, 36, 0.35) !important;
+}
+html.dark #calc-results-container .grid-cols-1.md\:grid-cols-2 > div:nth-child(even) {
+    background-color: #0a4c51 !important;
+    border: 1.5px solid rgba(251, 191, 36, 0.35) !important;
+}
+html.dark #calc-results-container .grid-cols-1.md\:grid-cols-2 > div span.text-slate-300 {
+    color: #f1f5f9 !important;
+    font-weight: 700 !important;
+}
+
+
+/* ==========================================================================
+   CẬP NHẬT THEO YÊU CẦU:
+   1. Chế độ sáng: Tên sản phẩm (Vàng TG, Vàng SJC tự do, Vàng 9999,...) 
+      đổi thành màu VÀNG NGUYÊN CHẤT (#eab308) tươi sáng rực rỡ.
+   2. Máy tính: Khôi phục lại màu riêng biệt cho từng con số:
+      - Vàng 9999 cần thêm: MÀU ĐỎ (#ef4444 / #dc2626)
+      - Hợp kim cần thêm: MÀU TÍM (#a855f7 / #9333ea)
+      - Tổng trọng lượng: MÀU VÀNG (#eab308 / #f59e0b)
+      - Trọng lượng ban đầu: MÀU VÀNG
+      - Hàm lượng ban đầu: MÀU CYAN
+      - Hàm lượng muốn quy ra: MÀU HỒNG ĐỎ
+   ========================================================================== */
+
+/* 1. CHẾ ĐỘ SÁNG: MÀU VÀNG NGUYÊN CHẤT CHO TÊN CÁC SẢN PHẨM */
+html.light .modern-table td.col-org,
+html.light .modern-table td .col-org,
+html.light .modern-table td.col-org div,
+html.light .modern-table td.col-org span,
+html.light #price-table-body td.col-org div:first-child,
+html.light #silver-price-table-body td.col-org div:first-child,
+html.light #currency-table-body td.col-org span {
+    color: #eab308 !important; /* Vàng nguyên chất rực rỡ */
+    font-weight: 900 !important;
+    text-shadow: 0 0.5px 1px rgba(180, 83, 9, 0.25) !important;
+}
+
+html.light .modern-table tbody tr:hover td.col-org div:first-child,
+html.light #price-table-body tr:hover td.col-org div:first-child,
+html.light #silver-price-table-body tr:hover td.col-org div:first-child {
+    color: #ca8a04 !important;
+}
+
+/* 2. MÀU SẮC RIÊNG BIỆT CHO TỪNG CON SỐ TRONG MÁY TÍNH (CẢ LIGHT & DARK) */
+
+/* --- 2.1 KẾT QUẢ PHA CHẾ (3 CARD LỚN) --- */
+/* Vàng 9999 thêm vào: MÀU ĐỎ */
+#tv-res-gold,
+html.light #tv-res-gold,
+html.dark #tv-res-gold,
+html.light #calculator-section #tv-res-gold,
+html.dark #calculator-section #tv-res-gold {
+    color: #ef4444 !important; /* Màu đỏ tươi rực rỡ */
+    font-weight: 900 !important;
+}
+
+/* Hợp kim thêm vào: MÀU TÍM */
+#tv-res-alloy,
+html.light #tv-res-alloy,
+html.dark #tv-res-alloy,
+html.light #calculator-section #tv-res-alloy,
+html.dark #calculator-section #tv-res-alloy {
+    color: #a855f7 !important; /* Màu tím chuẩn */
+    font-weight: 900 !important;
+}
+
+/* Tổng trọng lượng sau cùng: MÀU VÀNG */
+#tv-res-total,
+html.light #tv-res-total,
+html.dark #tv-res-total,
+html.light #calculator-section #tv-res-total,
+html.dark #calculator-section #tv-res-total {
+    color: #eab308 !important; /* Màu vàng nguyên chất */
+    font-weight: 900 !important;
+}
+
+/* --- 2.2 THÔNG SỐ CHI TIẾT (6 BOX NHỎ) --- */
+/* Item 1: Trọng lượng thực ban đầu -> MÀU VÀNG */
+#tv-dt-init-w,
+html.light #tv-dt-init-w,
+html.dark #tv-dt-init-w,
+html.light #calculator-section #tv-dt-init-w,
+html.dark #calculator-section #tv-dt-init-w {
+    color: #eab308 !important; /* Màu vàng */
+    font-weight: 900 !important;
+}
+
+/* Item 2: Hàm lượng thực ban đầu -> MÀU CYAN / XANH DƯƠNG */
+#tv-dt-init-p,
+html.light #tv-dt-init-p,
+html.dark #tv-dt-init-p,
+html.light #calculator-section #tv-dt-init-p,
+html.dark #calculator-section #tv-dt-init-p {
+    color: #06b6d4 !important; /* Màu xanh cyan */
+    font-weight: 900 !important;
+}
+
+/* Item 3: Hàm lượng muốn quy ra -> MÀU HỒNG ĐỎ */
+#tv-dt-target-p,
+html.light #tv-dt-target-p,
+html.dark #tv-dt-target-p,
+html.light #calculator-section #tv-dt-target-p,
+html.dark #calculator-section #tv-dt-target-p {
+    color: #f43f5e !important; /* Màu hồng đỏ */
+    font-weight: 900 !important;
+}
+
+/* Item 4: Vàng 9999 cần thêm -> MÀU ĐỎ */
+#tv-dt-gold,
+html.light #tv-dt-gold,
+html.dark #tv-dt-gold,
+html.light #calculator-section #tv-dt-gold,
+html.dark #calculator-section #tv-dt-gold {
+    color: #ef4444 !important; /* Màu đỏ */
+    font-weight: 900 !important;
+}
+
+/* Item 5: Hợp kim cần thêm -> MÀU TÍM */
+#tv-dt-alloy,
+html.light #tv-dt-alloy,
+html.dark #tv-dt-alloy,
+html.light #calculator-section #tv-dt-alloy,
+html.dark #calculator-section #tv-dt-alloy {
+    color: #a855f7 !important; /* Màu tím */
+    font-weight: 900 !important;
+}
+
+/* Item 6: Tổng trọng lượng sau cùng -> MÀU VÀNG */
+#tv-dt-total,
+html.light #tv-dt-total,
+html.dark #tv-dt-total,
+html.light #calculator-section #tv-dt-total,
+html.dark #calculator-section #tv-dt-total {
+    color: #eab308 !important; /* Màu vàng */
+    font-weight: 900 !important;
+}
+
+/* Các dòng phụ gam (≈ ... gam) */
+#tv-res-gold-g, #tv-res-alloy-g, #tv-res-total-g,
+#tv-dt-init-w-g, #tv-dt-gold-g, #tv-dt-alloy-g, #tv-dt-total-g,
+html.light #tv-res-gold-g, html.light #tv-res-alloy-g, html.light #tv-res-total-g,
+html.light #tv-dt-init-w-g, html.light #tv-dt-gold-g, html.light #tv-dt-alloy-g, html.light #tv-dt-total-g,
+html.dark #tv-res-gold-g, html.dark #tv-res-alloy-g, html.dark #tv-res-total-g,
+html.dark #tv-dt-init-w-g, html.dark #tv-dt-gold-g, html.dark #tv-dt-alloy-g, html.dark #tv-dt-total-g {
+    color: #94a3b8 !important;
+    font-weight: 500 !important;
+}
+
+/* ==========================================================================
+   3. TĂNG KÍCH THƯỚC CHỮ BẢNG GIÁ VÀNG & BẠC (TẦM TRUNG, DỄ NHÌN)
+   ========================================================================== */
+.modern-table th {
+    font-size: 0.95rem !important;
+    font-weight: 900 !important;
+    padding: 8px 10px !important;
+}
+
+@media (min-width: 640px) {
+    .modern-table th {
+        font-size: 1.1rem !important;
+        padding: 10px 14px !important;
+    }
+}
+
+.modern-table td {
+    padding: 0.55rem 0.4rem !important;
+}
+
+@media (min-width: 640px) {
+    .modern-table td {
+        padding: 0.75rem 0.55rem !important;
+    }
+}
+
+/* Tên loại vàng / nguyên liệu */
+#price-table-body td:first-child div:first-child,
+#silver-price-table-body td:first-child div:first-child,
+.modern-table td.col-org > div:first-child {
+    font-size: 0.95rem !important;
+    font-weight: 900 !important;
+    line-height: 1.2 !important;
+}
+
+@media (min-width: 640px) {
+    #price-table-body td:first-child div:first-child,
+    #silver-price-table-body td:first-child div:first-child,
+    .modern-table td.col-org > div:first-child {
+        font-size: 1.15rem !important;
+    }
+}
+
+/* Đơn vị dưới tên loại */
+#price-table-body td:first-child div:nth-child(2),
+#silver-price-table-body td:first-child div:nth-child(2),
+.modern-table td.col-org > div:nth-child(2) {
+    font-size: 0.78rem !important;
+    font-weight: 500 !important;
+    margin-top: 2px !important;
+}
+
+/* Con số Giá Mua và Giá Bán */
+#price-table-body td.price-val,
+#price-table-body td.price-val > div:first-child,
+#silver-price-table-body td.price-val,
+#silver-price-table-body td.price-val > div:first-child,
+.modern-table td.price-val > div:first-child,
+#price-table-body td:nth-child(2) > div:first-child,
+#price-table-body td:nth-child(3) > div:first-child,
+#silver-price-table-body td:nth-child(2) > div:first-child,
+#silver-price-table-body td:nth-child(3) > div:first-child {
+    font-size: 1.25rem !important;
+    font-weight: 900 !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.02em !important;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+}
+
+@media (min-width: 640px) {
+    #price-table-body td.price-val,
+    #price-table-body td.price-val > div:first-child,
+    #silver-price-table-body td.price-val,
+    #silver-price-table-body td.price-val > div:first-child,
+    .modern-table td.price-val > div:first-child,
+    #price-table-body td:nth-child(2) > div:first-child,
+    #price-table-body td:nth-child(3) > div:first-child,
+    #silver-price-table-body td:nth-child(2) > div:first-child,
+    #silver-price-table-body td:nth-child(3) > div:first-child {
+        font-size: 1.45rem !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    #price-table-body td.price-val,
+    #price-table-body td.price-val > div:first-child,
+    #silver-price-table-body td.price-val,
+    #silver-price-table-body td.price-val > div:first-child,
+    .modern-table td.price-val > div:first-child,
+    #price-table-body td:nth-child(2) > div:first-child,
+    #price-table-body td:nth-child(3) > div:first-child,
+    #silver-price-table-body td:nth-child(2) > div:first-child,
+    #silver-price-table-body td:nth-child(3) > div:first-child {
+        font-size: 1.7rem !important;
+    }
+}
+
+/* Dòng quy đổi VNĐ/chỉ bên dưới giá */
+#price-table-body td.price-val > div:nth-child(2),
+#silver-price-table-body td.price-val > div:nth-child(2),
+.modern-table td.price-val > div:nth-child(2),
+#price-table-body td:nth-child(2) > div:nth-child(2),
+#price-table-body td:nth-child(3) > div:nth-child(2),
+#silver-price-table-body td:nth-child(2) > div:nth-child(2),
+#silver-price-table-body td:nth-child(3) > div:nth-child(2) {
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    color: #fbbf24 !important;
+    margin-top: 2px !important;
+}
+
+@media (min-width: 640px) {
+    #price-table-body td.price-val > div:nth-child(2),
+    #silver-price-table-body td.price-val > div:nth-child(2),
+    .modern-table td.price-val > div:nth-child(2),
+    #price-table-body td:nth-child(2) > div:nth-child(2),
+    #price-table-body td:nth-child(3) > div:nth-child(2),
+    #silver-price-table-body td:nth-child(2) > div:nth-child(2),
+    #silver-price-table-body td:nth-child(3) > div:nth-child(2) {
+        font-size: 0.85rem !important;
+    }
+}
+
+/* =====================================================================
+   CHẾ ĐỘ SÁNG (LIGHT MODE) TOÀN DIỆN - KHÔNG CÒN MÀU TỐI NÀO TRÊN TRANG
+   ===================================================================== */
+
+/* 1. Header & Băng rôn thương hiệu T3Gold */
+html.light .t3gold-banner-dark,
+.light .t3gold-banner-dark {
+    background: linear-gradient(135deg, #ffffff 0%, #fffdf7 50%, #fffbeb 100%) !important;
+    border: 1.5px solid rgba(245, 158, 11, 0.45) !important;
+    box-shadow: 0 8px 24px rgba(217, 119, 6, 0.08) !important;
+}
+html.light .t3gold-banner-dark strong,
+.light .t3gold-banner-dark strong {
+    color: #0f172a !important;
+}
+html.light .t3gold-marquee-text,
+.light .t3gold-marquee-text {
+    color: #b45309 !important;
+    font-weight: 800 !important;
+}
+html.light .t3gold-hotline-btn,
+.light .t3gold-hotline-btn {
+    background: #fffbeb !important;
+    border: 1.5px solid rgba(245, 158, 11, 0.45) !important;
+    color: #b45309 !important;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.12) !important;
+}
+
+/* 2. Tiêu đề các mục & Thời gian cập nhật */
+html.light .section-title,
+.light .section-title,
+html.light h1,
+html.light h2,
+html.light h3 {
+    color: #0f172a !important;
+}
+html.light #last-updated-time,
+html.light #silver-updated-time,
+html.light #currency-updated-time,
+html.light .timestamp-text {
+    color: #64748b !important;
+}
+
+/* 3. Thẻ Card Chứa Bảng Giá & Biểu Đồ */
+html.light .dashboard-card,
+.light .dashboard-card {
+    background: #ffffff !important;
+    border: 1.5px solid rgba(245, 158, 11, 0.35) !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 0 15px rgba(245, 158, 11, 0.05) !important;
+}
+
+/* 4. Bảng Giá Vàng & Bạc: Hàng & Chữ */
+html.light .modern-table thead tr,
+.light .modern-table thead tr {
+    background: linear-gradient(90deg, #d97706 0%, #b45309 50%, #92400e 100%) !important;
+    color: #ffffff !important;
+    border-bottom: 2px solid #f59e0b !important;
+}
+html.light .modern-table tbody tr,
+.light .modern-table tbody tr {
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(245, 158, 11, 0.15) !important;
+}
+html.light .modern-table tbody tr:nth-child(even),
+.light .modern-table tbody tr:nth-child(even) {
+    background: #fffdf7 !important;
+}
+html.light .modern-table tbody tr:hover,
+.light .modern-table tbody tr:hover {
+    background: #fef9e7 !important;
+}
+html.light #price-table-body td.price-val,
+.light #price-table-body td.price-val,
+html.light #price-table-body td.price-val > div:first-child,
+html.light #silver-price-table-body td.price-val,
+html.light #silver-price-table-body td.price-val > div:first-child,
+html.light #price-table-body td:nth-child(2) > div:first-child,
+html.light #price-table-body td:nth-child(3) > div:first-child,
+html.light #silver-price-table-body td:nth-child(2) > div:first-child,
+html.light #silver-price-table-body td:nth-child(3) > div:first-child {
+    color: #0f172a !important;
+}
+html.light .col-org,
+.light .col-org,
+html.light td.col-org div:first-child {
+    color: #b45309 !important;
+}
+html.light #price-table-body td.price-val > div:nth-child(2),
+html.light #silver-price-table-body td.price-val > div:nth-child(2),
+html.light #price-table-body td:nth-child(2) > div:nth-child(2),
+html.light #price-table-body td:nth-child(3) > div:nth-child(2) {
+    color: #d97706 !important;
+}
+html.light td div.text-slate-400,
+.light td div.text-slate-400 {
+    color: #64748b !important;
+}
+
+/* 5. Bảng Ngoại Tệ */
+html.light #currency-table-body tr,
+.light #currency-table-body tr {
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(245, 158, 11, 0.15) !important;
+}
+html.light #currency-table-body tr:nth-child(even),
+.light #currency-table-body tr:nth-child(even) {
+    background: #fffdf7 !important;
+}
+html.light #currency-table-body td,
+.light #currency-table-body td {
+    color: #0f172a !important;
+}
+html.light #currency-table-body td.col-org span,
+.light #currency-table-body td.col-org span {
+    color: #b45309 !important;
+}
+
+/* 6. Công Thức Quy Đổi Tuổi Vàng (Không còn màu đen/tối) */
+html.light #calc-card,
+.light #calc-card {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 2px solid rgba(245, 158, 11, 0.4) !important;
+    box-shadow: 0 15px 40px -10px rgba(217, 119, 6, 0.1) !important;
+}
+html.light #calc-card > div:first-child,
+.light #calc-card > div:first-child {
+    background: linear-gradient(90deg, #fef3c7 0%, #fde68a 50%, #fef3c7 100%) !important;
+    color: #0f172a !important;
+    border-bottom: 1.5px solid rgba(245, 158, 11, 0.35) !important;
+}
+html.light #calc-title,
+.light #calc-title {
+    color: #92400e !important;
+}
+html.light #calc-subtitle,
+.light #calc-subtitle {
+    color: #78350f !important;
+}
+html.light #calc-card > div:nth-child(2),
+.light #calc-card > div:nth-child(2) {
+    background: #fffdfa !important;
+}
+html.light #calc-input-grid > div,
+.light #calc-input-grid > div {
+    background: #ffffff !important;
+    border: 1.5px solid rgba(245, 158, 11, 0.25) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03) !important;
+}
+html.light #calc-input-grid > div > div:first-child,
+.light #calc-input-grid > div > div:first-child {
+    color: #1e293b !important;
+}
+html.light #calc-input-grid input,
+.light #calc-input-grid input {
+    background: #fffbeb !important;
+    border: 1.5px solid rgba(245, 158, 11, 0.4) !important;
+    color: #92400e !important;
+}
+html.light #calc-results-container,
+.light #calc-results-container {
+    background: #ffffff !important;
+    border: 1.5px solid rgba(245, 158, 11, 0.3) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+}
+html.light #calc-results-container > div:first-child,
+.light #calc-results-container > div:first-child {
+    color: #b45309 !important;
+}
+html.light #calc-results-container .grid > div,
+.light #calc-results-container .grid > div {
+    background: #fffdf7 !important;
+    border: 1px solid rgba(245, 158, 11, 0.25) !important;
+}
+html.light #calc-results-container .grid > div span.text-slate-400,
+.light #calc-results-container .grid > div span.text-slate-400 {
+    color: #475569 !important;
+}
+html.light #calc-results-container .mt-2 > div:first-child,
+.light #calc-results-container .mt-2 > div:first-child {
+    color: #b45309 !important;
+}
+html.light #calc-results-container .mt-2 .grid > div,
+.light #calc-results-container .mt-2 .grid > div {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+}
+html.light #calc-results-container .mt-2 .grid > div span.text-slate-300,
+.light #calc-results-container .mt-2 .grid > div span.text-slate-300 {
+    color: #334155 !important;
+}
+
+/* 7. Tin Tức Thị Trường */
+html.light .news-card,
+.light .news-card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+}
+html.light .news-card h3,
+.light .news-card h3 {
+    color: #0f172a !important;
+}
+html.light .news-card p,
+.light .news-card p {
+    color: #475569 !important;
+}
+

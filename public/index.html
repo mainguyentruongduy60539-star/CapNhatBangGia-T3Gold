@@ -2,6 +2,17 @@
 <html lang="vi">
 
 <head>
+    <script>
+        try {
+            var token = localStorage.getItem('token');
+            var user = localStorage.getItem('user');
+            if (!token || !user) {
+                window.location.replace('/bang-gia-vang-bac-hom-nay');
+            }
+        } catch (e) {
+            window.location.replace('/bang-gia-vang-bac-hom-nay');
+        }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
@@ -64,8 +75,8 @@
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 
     <!-- File CSS tùy chỉnh -->
-    <link rel="stylesheet" href="style.css?v=49">
-    <link rel="stylesheet" href="assets/css/style.css?v=49">
+    <link rel="stylesheet" href="style.css?v=8006">
+    <link rel="stylesheet" href="assets/css/style.css?v=8006">
 </head>
 
 <body class="min-h-screen p-1.5 sm:p-4 md:p-6 flex flex-col gap-3 sm:gap-5">
@@ -90,132 +101,136 @@
         </div>
 
         <!-- 2. Ở Giữa (DESKTOP / LAPTOP MÀN HÌNH LỚN >= 1024px): Capsule Bar 2 Tầng Đẳng Cấp -->
-        <div class="hidden lg:flex items-center justify-center flex-1 mx-4">
+        <div class="hidden lg:flex items-center justify-center flex-1 mx-2 sm:mx-6">
             <div
-                class="t3gold-banner-dark group relative px-5 py-2.5 rounded-2xl bg-[#0b1329] border border-amber-500/50 shadow-lg shadow-amber-500/10 flex flex-col gap-2 transition-all max-w-xl w-full">
-                
-                <!-- Tầng 1: Logo | Tiêu Đề | Nút Xem Ngay -->
+                class="t3gold-banner-dark group relative px-6 py-3.5 sm:py-4 rounded-3xl bg-[#0b1329] border border-amber-500/50 shadow-lg shadow-amber-500/10 flex flex-col gap-2 transition-all max-w-2xl w-full">
+
+                <!-- Tầng 1: Logo | 3 Dòng Chữ T3Gold -->
                 <div class="flex items-center justify-between gap-3">
                     <a href="https://www.t3gold.vn/cac-goi-phan-mem" target="_blank" rel="noopener noreferrer"
                         class="flex items-center gap-3 shrink-0 min-w-0 flex-1">
                         <!-- Logo T3Gold -->
-                        <img src="logo-slogan-transparent.png" alt="T3Gold" class="h-[32px] w-auto object-contain shrink-0" />
-                        
+                        <img src="/logo-slogan-transparent.png" alt="T3Gold"
+                            class="h-[36px] w-auto object-contain shrink-0" />
+
                         <!-- Vạch ngăn cách vertical vàng ánh kim -->
-                        <div class="h-6 w-px bg-gradient-to-b from-transparent via-amber-500/60 to-transparent shrink-0"></div>
-
-                        <!-- Chữ Khám phá Các Gói Phần Mềm T3Gold -->
-                        <div class="flex items-center gap-1.5 whitespace-nowrap">
-                            <span class="text-light-fix text-xs sm:text-sm font-semibold">Khám phá</span>
-                            <strong class="text-gold-fix text-xs sm:text-sm font-black">Các Gói Phần Mềm T3Gold</strong>
+                        <div
+                            class="h-9 w-px bg-gradient-to-b from-transparent via-amber-500/60 to-transparent shrink-0">
                         </div>
-                    </a>
 
-                    <!-- Nút Vàng XEM NGAY ➔ -->
-                    <a href="https://www.t3gold.vn/cac-goi-phan-mem" target="_blank" rel="noopener noreferrer"
-                        class="btn-gold-fix px-3.5 py-1 rounded-full text-slate-950 text-xs font-black uppercase tracking-wider flex items-center gap-1 shadow-md shadow-amber-500/25 shrink-0 group-hover:brightness-110 transition-all">
-                        XEM NGAY <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-0.5 transition-transform pointer-events-none"></i>
+                        <!-- Chữ 3 Dòng (Bằng kích cỡ & độ đậm) -->
+                        <div class="flex flex-col text-left flex-1 min-w-0 justify-center">
+                            <strong
+                                class="text-gold-fix text-xs sm:text-sm font-black tracking-tight block leading-tight">
+                                Phần mềm vàng bạc T3Gold
+                            </strong>
+                            <strong
+                                class="text-gold-fix text-xs sm:text-sm font-black tracking-tight block leading-tight mt-0.5">
+                                Quản lý mua bán - Cầm đồ - Xuất HĐĐT
+                            </strong>
+                            <strong
+                                class="text-gold-fix text-xs sm:text-sm font-black tracking-tight block leading-tight mt-0.5">
+                                Tạo chứng từ Kế toán - Báo cáo thuế
+                            </strong>
+                        </div>
                     </a>
                 </div>
 
                 <!-- Đường kẻ ngang Vàng Ánh Kim Gradient thẩm mỹ cao -->
                 <div class="h-px w-full bg-gradient-to-r from-transparent via-amber-500/50 to-transparent my-0.5"></div>
 
-                <!-- Tầng 2: Slogan Chạy Chữ Marquee & Số Hotline -->
+                <!-- Tầng 2: Nút XEM NGAY bên trái | Marquee Slogan ở giữa | Số Hotline bên phải -->
                 <div class="flex items-center justify-between gap-3 pt-0.5">
+                    <!-- Nút Vàng XEM NGAY ➔ -->
+                    <a href="https://www.t3gold.vn/cac-goi-phan-mem" target="_blank" rel="noopener noreferrer"
+                        class="btn-gold-fix px-3 py-1 rounded-full text-slate-950 text-xs font-black uppercase tracking-wider flex items-center gap-1 shadow-md shadow-amber-500/25 shrink-0 group-hover:brightness-110 transition-all">
+                        XEM NGAY <i
+                            class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-0.5 transition-transform pointer-events-none"></i>
+                    </a>
+
                     <!-- Slogan chữ chạy mượt (Màu nổi bật, chữ lớn rõ nét) -->
                     <div class="t3gold-marquee-box flex-1 overflow-hidden">
-                        <div class="t3gold-marquee-text t3gold-slogan-fix text-[13.5px] sm:text-sm md:text-base font-extrabold">
+                        <div
+                            class="t3gold-marquee-text t3gold-slogan-fix text-[12.5px] sm:text-xs md:text-xs font-extrabold">
                             ✨ Đơn giản thao tác &nbsp;•&nbsp; Chính xác nghiệp vụ &nbsp;•&nbsp; Báo cáo thông minh ✨
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✨ Đơn giản thao tác &nbsp;•&nbsp; Chính xác
+                            nghiệp vụ &nbsp;•&nbsp; Báo cáo thông minh ✨
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         </div>
                     </div>
 
-                    <!-- Hotline Button (Mở trực tiếp bàn phím điện thoại & tự động sao chép số) -->
+                    <!-- Hotline Button -->
                     <a href="tel:0942758213" rel="nofollow" title="Bấm gọi ngay Hotline T3Gold"
                         onclick="GoldDashboard.handleHotlineClick(event)"
-                        class="t3gold-hotline-btn inline-flex items-center gap-1.5 text-xs sm:text-sm font-black px-3 py-1 rounded-full shadow-sm shrink-0 transition-all">
+                        class="t3gold-hotline-btn inline-flex items-center gap-1.5 text-xs font-black px-3 py-1 rounded-full shadow-sm shrink-0 transition-all">
                         <i class="fa-solid fa-phone text-xs animate-pulse pointer-events-none"></i>
                         <span class="pointer-events-none">0942 758 213</span>
                     </a>
                 </div>
             </div>
         </div>
-
-        <!-- 3. Bên Phải: Theme Switch + Auth -->
-        <div class="flex items-center gap-2 shrink-0">
-            <!-- Nút Chuyển Đổi Chế Độ Sáng / Tối -->
-            <button id="theme-toggle-btn" onclick="GoldDashboard.toggleTheme()" title="Chuyển chế độ Sáng / Tối"
-                class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all cursor-pointer flex items-center gap-1.5 text-xs shadow-sm">
-                <span id="theme-icon">☀️</span>
-                <span id="theme-text" class="hidden sm:inline font-semibold">Chế độ Sáng</span>
-            </button>
-
-            <!-- Khối Đăng Ký / Đăng Nhập (Chuẩn vangsaigon.vn) -->
-            <div id="auth-container" class="flex items-center gap-2">
-                <!-- JS sẽ tự đổ nút [ĐĂNG KÝ] [ĐĂNG NHẬP] hoặc Profile User -->
-            </div>
-        </div>
     </header>
 
-    <!-- 2. Băng Rôn Quảng Cáo Dành Cho Mobile & Tablet (< 1024px: Cấu Trúc 2 Tầng + Marquee Slogan + Hotline) -->
+    <!-- 2. Băng Rôn Quảng Cáo Dành Cho Mobile & Tablet (< 1024px: Cấu Trúc 3 Dòng Chữ + Marquee Slogan + Nút Xem Ngay & Hotline) -->
     <div class="lg:hidden w-full my-2">
         <div
             class="t3gold-banner-dark group relative block p-3 sm:p-4 rounded-2xl bg-[#0b1329] border border-amber-500/50 shadow-lg shadow-amber-500/10 transition-all overflow-hidden">
-            
-            <!-- Tầng 1: Logo | Khám phá Các Gói Phần Mềm | Nút XEM NGAY -->
-            <div class="flex items-center justify-between gap-2 pb-1.5">
-                <a href="https://www.t3gold.vn/cac-goi-phan-mem" target="_blank" rel="noopener noreferrer"
-                    class="flex items-center gap-2 min-w-0 flex-1">
-                    <!-- Logo Trái -->
-                    <div class="flex items-center shrink-0 pr-0.5">
-                        <img src="logo-slogan-transparent.png" alt="T3Gold" class="w-auto object-contain shrink-0"
-                            style="height: clamp(24px, 5vw, 34px); max-height: 36px;" />
-                    </div>
 
-                    <!-- Chữ Ở Giữa (Khóa 1 dòng duy nhất, chữ rõ ràng dễ đọc) -->
-                    <div class="flex flex-col text-left flex-1 min-w-0 justify-center">
-                        <span class="text-light-fix font-semibold tracking-normal block leading-tight whitespace-nowrap"
-                            style="font-size: clamp(10px, 2.5vw, 12px);">
-                            Khám phá
-                        </span>
-                        <strong class="text-gold-fix font-black tracking-tight block leading-tight whitespace-nowrap"
-                            style="font-size: clamp(10.5px, 3vw, 14px);">
-                            Các Gói Phần Mềm T3Gold
-                        </strong>
-                    </div>
-                </a>
+            <!-- Tầng 1: Logo | 3 Dòng Chữ T3Gold -->
+            <a href="https://www.t3gold.vn/cac-goi-phan-mem" target="_blank" rel="noopener noreferrer"
+                class="flex items-center gap-2.5 min-w-0 pb-1">
+                <!-- Logo Trái -->
+                <div class="flex items-center shrink-0 pr-0.5">
+                    <img src="/logo-slogan-transparent.png" alt="T3Gold" class="w-auto object-contain shrink-0"
+                        style="height: clamp(30px, 7vw, 42px); max-height: 44px;" />
+                </div>
 
-                <!-- Nút Vàng Bên Phải: XEM NGAY ➔ -->
-                <a href="https://www.t3gold.vn/cac-goi-phan-mem" target="_blank" rel="noopener noreferrer"
-                    class="btn-gold-fix px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-slate-950 font-black uppercase tracking-wider flex items-center gap-1 shadow-md shadow-amber-500/25 shrink-0 group-hover:brightness-110"
-                    style="font-size: clamp(10px, 2.5vw, 12px);">
-                    XEM NGAY <i class="fa-solid fa-arrow-right text-[9px] sm:text-[10px] pointer-events-none"></i>
-                </a>
-            </div>
+                <!-- Chữ 3 Dòng (Bằng kích cỡ & độ đậm) -->
+                <div class="flex flex-col text-left flex-1 min-w-0 justify-center">
+                    <strong
+                        class="text-gold-fix font-black tracking-tight block leading-tight text-[12px] sm:text-[13.5px]">
+                        Phần mềm vàng bạc T3Gold
+                    </strong>
+                    <strong
+                        class="text-gold-fix font-black tracking-tight block leading-tight text-[12px] sm:text-[13.5px] mt-0.5">
+                        Quản lý mua bán - Cầm đồ - Xuất HĐĐT
+                    </strong>
+                    <strong
+                        class="text-gold-fix font-black tracking-tight block leading-tight text-[12px] sm:text-[13.5px] mt-0.5">
+                        Tạo chứng từ Kế toán - Báo cáo thuế
+                    </strong>
+                </div>
+            </a>
 
             <!-- Đường kẻ ngang Vàng Ánh Kim Gradient thẩm mỹ cao -->
             <div class="h-px w-full bg-gradient-to-r from-transparent via-amber-500/50 to-transparent my-1"></div>
 
-            <!-- Tầng 2: Dòng Slogan chữ chạy mượt Marquee (Màu sắc tương phản nét căng, chữ lớn rõ) -->
+            <!-- Tầng 2: Dòng Slogan chữ chạy mượt Marquee -->
             <div class="t3gold-marquee-box py-1 my-0.5">
-                <div class="t3gold-marquee-text t3gold-slogan-fix text-[13.5px] sm:text-[14.5px] font-extrabold">
+                <div class="t3gold-marquee-text t3gold-slogan-fix text-[13px] sm:text-[14px] font-extrabold">
                     ✨ Đơn giản thao tác &nbsp;•&nbsp; Chính xác nghiệp vụ &nbsp;•&nbsp; Báo cáo thông minh ✨
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✨ Đơn giản thao tác &nbsp;•&nbsp; Chính xác nghiệp
+                    vụ &nbsp;•&nbsp; Báo cáo thông minh ✨ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </div>
             </div>
 
             <!-- Đường kẻ ngang Vàng Ánh Kim Gradient thẩm mỹ cao -->
             <div class="h-px w-full bg-gradient-to-r from-transparent via-amber-500/50 to-transparent my-1"></div>
 
-            <!-- Tầng 3: Dòng Hotline Bấm Gọi (Mở trực tiếp bàn phím điện thoại & tự động sao chép số) -->
-            <div class="flex items-center justify-between pt-1">
-                <span class="text-light-fix text-[11px] sm:text-xs font-semibold flex items-center gap-1">
-                    <i class="fa-solid fa-headset text-gold-fix text-xs"></i> Hỗ trợ Hotline / Zalo:
-                </span>
-                <a href="tel:0942758213" rel="nofollow"
+            <!-- Tầng 3: Nút Xem Ngay Bên Trái & Nút Hotline Bên Phải -->
+            <div class="flex items-center justify-between pt-1 mt-0.5">
+                <!-- Nút Vàng Bên Trái: XEM NGAY ➔ -->
+                <a href="https://www.t3gold.vn/cac-goi-phan-mem" target="_blank" rel="noopener noreferrer"
+                    class="btn-gold-fix px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-slate-950 font-black uppercase tracking-wider flex items-center gap-1 shadow-md shadow-amber-500/25 shrink-0 group-hover:brightness-110 text-[10.5px] sm:text-xs">
+                    XEM NGAY <i class="fa-solid fa-arrow-right text-[9px] sm:text-[10px] pointer-events-none"></i>
+                </a>
+
+                <!-- Nút Hotline Bên Phải -->
+                <a href="tel:0942758213" rel="nofollow" title="Bấm gọi ngay Hotline T3Gold"
                     onclick="GoldDashboard.handleHotlineClick(event)"
                     class="t3gold-hotline-btn inline-flex items-center gap-1.5 text-xs sm:text-sm font-black px-3 py-1 rounded-full shadow-sm transition-all">
-                    <i class="fa-solid fa-phone text-xs animate-pulse pointer-events-none"></i>
-                    <span class="pointer-events-none">0942 758 213</span>
+                    <i class="fa-solid fa-phone text-xs animate-pulse pointer-events-none"></i> <span
+                        class="pointer-events-none">0942 758 213</span>
                 </a>
             </div>
         </div>
@@ -244,7 +259,7 @@
                 <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-0 px-1">
                     <div class="flex items-baseline gap-1.5 flex-wrap">
                         <h2 class="section-title text-sm sm:text-base md:text-lg font-black uppercase tracking-tight">
-                            <span>GIÁ VÀNG THAM KHẢO</span>
+                            <span>BẢNG GIÁ VÀNG THAM KHẢO</span>
                         </h2>
                         <span
                             class="text-[11px] sm:text-xs font-normal text-slate-400 italic lowercase tracking-normal">(không
@@ -257,22 +272,18 @@
 
                 <!-- Bảng Giá Vàng Dạng Bảng -->
                 <div
-                    class="dashboard-card overflow-hidden rounded-xl border-2 border-[#002b9e] dark:border-blue-900/60 shadow-lg">
+                    class="dashboard-card overflow-hidden rounded-xl border-2 border-amber-600/80 dark:border-amber-600/60 shadow-xl shadow-amber-500/15">
                     <div class="overflow-x-auto">
                         <table class="modern-table w-full text-right">
                             <thead>
                                 <tr
-                                    class="bg-[#002b9e] text-white font-black text-xs sm:text-base md:text-lg uppercase tracking-tight">
+                                    class="bg-gradient-to-r from-amber-900 via-amber-700 to-amber-800 text-white font-black text-sm sm:text-lg md:text-xl uppercase tracking-tight border-b-2 border-yellow-400">
                                     <th
-                                        class="text-left pl-1 sm:pl-2 py-2 sm:py-2.5 w-[26%] sm:w-[28%] whitespace-nowrap">
-                                        Tổ chức</th>
-                                    <th class="py-2 px-0.5 sm:px-1.5 text-right w-[20%] sm:w-[19%] whitespace-nowrap">
-                                        MUA</th>
-                                    <th class="py-2 px-0.5 sm:px-1.5 text-right w-[20%] sm:w-[19%] whitespace-nowrap">
-                                        BÁN</th>
-                                    <th class="py-2 px-0.5 sm:px-1.5 text-center w-[17%] sm:w-[17%] whitespace-nowrap">
-                                        +/-</th>
-                                    <th class="py-2 pr-0.5 sm:pr-2 text-center w-[17%] sm:w-[17%] whitespace-nowrap">CL
+                                        class="text-left pl-2.5 sm:pl-3.5 py-2.5 sm:py-3 w-[38%] sm:w-[40%] whitespace-nowrap">
+                                        LOẠI NGUYÊN LIỆU</th>
+                                    <th class="py-2.5 px-1.5 sm:px-2.5 text-right w-[31%] sm:w-[30%] whitespace-nowrap">MUA
+                                    </th>
+                                    <th class="py-2.5 pr-2.5 sm:pr-3.5 text-right w-[31%] sm:w-[30%] whitespace-nowrap">BÁN
                                     </th>
                                 </tr>
                             </thead>
@@ -289,8 +300,8 @@
                 <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-0 px-1">
                     <div class="flex items-baseline gap-1.5 flex-wrap">
                         <h2
-                            class="section-title text-sm sm:text-base md:text-lg font-black uppercase tracking-tight text-cyan-400">
-                            <span>GIÁ BẠC THAM KHẢO</span>
+                            class="section-title text-sm sm:text-base md:text-lg font-black uppercase tracking-tight text-amber-400">
+                            <span>BẢNG GIÁ BẠC THAM KHẢO</span>
                         </h2>
                         <span
                             class="text-[11px] sm:text-xs font-normal text-slate-400 italic lowercase tracking-normal">(không
@@ -303,22 +314,18 @@
 
                 <!-- Bảng Giá Bạc Dạng Bảng -->
                 <div
-                    class="dashboard-card overflow-hidden rounded-xl border-2 border-cyan-800 dark:border-cyan-900/60 shadow-lg">
+                    class="dashboard-card overflow-hidden rounded-xl border-2 border-amber-600/70 dark:border-amber-600/60 shadow-lg shadow-amber-500/10">
                     <div class="overflow-x-auto">
                         <table class="modern-table w-full text-right">
                             <thead>
                                 <tr
-                                    class="bg-cyan-900 text-white font-black text-xs sm:text-base md:text-lg uppercase tracking-tight">
+                                    class="bg-gradient-to-r from-amber-800 via-amber-600 to-amber-700 text-white font-black text-sm sm:text-lg md:text-xl uppercase tracking-tight">
                                     <th
-                                        class="text-left pl-1 sm:pl-2 py-2 sm:py-2.5 w-[26%] sm:w-[28%] whitespace-nowrap">
-                                        Tổ chức</th>
-                                    <th class="py-2 px-0.5 sm:px-1.5 text-right w-[20%] sm:w-[19%] whitespace-nowrap">
-                                        MUA</th>
-                                    <th class="py-2 px-0.5 sm:px-1.5 text-right w-[20%] sm:w-[19%] whitespace-nowrap">
-                                        BÁN</th>
-                                    <th class="py-2 px-0.5 sm:px-1.5 text-center w-[17%] sm:w-[17%] whitespace-nowrap">
-                                        +/-</th>
-                                    <th class="py-2 pr-0.5 sm:pr-2 text-center w-[17%] sm:w-[17%] whitespace-nowrap">CL
+                                        class="text-left pl-2.5 sm:pl-3.5 py-2.5 sm:py-3 w-[38%] sm:w-[40%] whitespace-nowrap">
+                                        LOẠI NGUYÊN LIỆU</th>
+                                    <th class="py-2.5 px-1.5 sm:px-2.5 text-right w-[31%] sm:w-[30%] whitespace-nowrap">MUA
+                                    </th>
+                                    <th class="py-2.5 pr-2.5 sm:pr-3.5 text-right w-[31%] sm:w-[30%] whitespace-nowrap">BÁN
                                     </th>
                                 </tr>
                             </thead>
@@ -329,104 +336,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- 6. MÁY TÍNH QUY ĐỔI TIỀN VÀNG & BẠC (Mobile Order 6 | Web: Cuối Cột Trái) -->
-            <div id="calculator-section" class="order-6 lg:order-none mt-1">
-                <div id="calc-card"
-                    class="dashboard-card p-5 flex flex-col justify-between border-l-4 border-amber-500 hover:border-amber-400 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300">
-                    <!-- Top: Tên công cụ + Subtitle + Huy hiệu -->
-                    <div class="flex justify-between items-start mb-2.5">
-                        <div class="pr-2">
-                            <div
-                                class="flex items-center gap-2 font-black uppercase tracking-wide text-yellow-400 text-base sm:text-lg">
-                                <span class="w-2.5 h-2.5 rounded-full bg-yellow-400 animate-pulse"></span>
-                                <span id="calc-title">MÁY TÍNH QUY ĐỔI TIỀN VÀNG & BẠC</span>
-                            </div>
-                            <div id="calc-desc" class="text-xs sm:text-sm text-slate-400 mt-0.5 font-medium">Nhập số
-                                lượng & chọn loại vàng/bạc để tính tiền VNĐ</div>
-                        </div>
-                        <div class="flex flex-col items-end shrink-0">
-                            <span class="text-[11px] sm:text-xs text-slate-400 font-mono">Công cụ</span>
-                            <span
-                                class="text-xs sm:text-sm font-mono font-bold px-2.5 py-1 rounded border bg-yellow-500/10 text-yellow-400 border-yellow-500/30">QUY
-                                ĐỔI</span>
-                        </div>
-                    </div>
-
-                    <!-- Middle: Form nhập và hiển thị kết quả -->
-                    <div
-                        class="bg-slate-950/50 p-3.5 rounded-xl border border-slate-800/60 my-1.5 flex flex-col gap-2.5">
-                        <!-- Hàng 1: Số lượng & Đơn vị -->
-                        <div class="grid grid-cols-12 gap-2">
-                            <div class="col-span-5 relative">
-                                <input type="number" id="calc-amount" value="1" min="0.1" step="0.1"
-                                    oninput="GoldDashboard.calculate()"
-                                    class="w-full bg-slate-900 border border-slate-700 focus:border-yellow-500 text-white font-mono font-bold text-center px-2 py-1.5 rounded-lg outline-none text-base transition-colors" />
-                            </div>
-                            <div class="col-span-7">
-                                <select id="calc-unit" onchange="GoldDashboard.calculate()"
-                                    class="w-full bg-slate-900 border border-slate-700 focus:border-yellow-500 text-yellow-400 font-semibold text-xs sm:text-sm rounded-lg px-2.5 py-2 outline-none cursor-pointer">
-                                    <option value="chi" selected>Chỉ (3.75g)</option>
-                                    <option value="luong">Lượng / Cây (37.5g)</option>
-                                    <option value="kg">Kilogram (1000g)</option>
-                                    <option value="gram">Gram (g)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Hàng 2: Chọn Loại vàng / Bạc -->
-                        <div>
-                            <select id="calc-type" onchange="GoldDashboard.calculate()"
-                                class="w-full bg-slate-900 border border-slate-700 focus:border-yellow-500 text-slate-200 font-medium text-xs sm:text-sm rounded-lg px-2.5 py-2 outline-none cursor-pointer">
-                                <optgroup label="--- VÀNG ---">
-                                    <option value="sjc" selected>Vàng Miếng SJC (SJC Tự do)</option>
-                                    <option value="24k">Vàng 999.9</option>
-                                    <option value="22k">Vàng 99.9</option>
-                                    <option value="980">Vàng 980</option>
-                                    <option value="750">Vàng 750</option>
-                                    <option value="610">Vàng 610</option>
-                                    <option value="585">Vàng 585</option>
-                                    <option value="416">Vàng 416</option>
-                                    <option value="18k">Vàng 95</option>
-                                    <option value="tg">Vàng TG (Quốc tế)</option>
-                                </optgroup>
-                                <optgroup label="--- BẠC ---">
-                                    <option value="phuquy_1l">Bạc Phú Quý (1 Lượng)</option>
-                                    <option value="phuquy_1kg">Bạc Phú Quý (1 Kg)</option>
-                                    <option value="bac_999">Bạc 999 thị trường</option>
-                                    <option value="bac_925">Bạc nữ trang bán lẻ</option>
-                                    <option value="bac_tg">Bạc TG (Spot XAG/USD)</option>
-                                </optgroup>
-                            </select>
-                        </div>
-
-                        <!-- Hàng 3: Thành tiền -->
-                        <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-xs sm:text-sm text-slate-400 font-bold uppercase tracking-wider">THÀNH
-                                TIỀN:</span>
-                            <div class="text-right">
-                                <div id="calc-result"
-                                    class="text-lg sm:text-xl lg:text-2xl font-black text-amber-400 font-mono tracking-tight whitespace-nowrap">
-                                    Đang tính...</div>
-                                <div id="calc-result-usd" class="text-xs text-slate-400 font-mono"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Bottom: Chân thẻ -->
-                    <div
-                        class="mt-2.5 pt-2.5 border-t border-slate-800/80 flex justify-between items-center text-xs sm:text-sm font-mono">
-                        <div>
-                            <span class="text-slate-400 font-medium">Quy chuẩn:</span>
-                            <strong class="text-slate-200 font-bold ml-1">Thời gian thực</strong>
-                        </div>
-                        <div class="text-slate-400 text-xs sm:text-sm">
-                            1 Lượng = 10 Chỉ · 1 Kg = 26.66 Lượng
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
         <!-- Cột Phải (Web: 4 cột | Mobile: unwrapped qua contents CSS) -->
@@ -480,12 +389,12 @@
                 </div>
 
                 <div
-                    class="dashboard-card overflow-hidden rounded-xl border-2 border-[#002b9e] dark:border-blue-900/60 shadow-lg">
+                    class="dashboard-card overflow-hidden rounded-xl border-2 border-amber-600/80 dark:border-amber-600/60 shadow-xl shadow-amber-500/15">
                     <div class="overflow-x-auto">
                         <table class="modern-table w-full text-right">
                             <thead>
                                 <tr
-                                    class="bg-[#002b9e] text-white font-black text-xs sm:text-sm md:text-base uppercase tracking-wider">
+                                    class="bg-gradient-to-r from-amber-900 via-amber-700 to-amber-800 text-white font-black text-xs sm:text-sm md:text-base uppercase tracking-wider border-b-2 border-yellow-400">
                                     <th class="text-left pl-1.5 sm:pl-2.5 py-2 sm:py-2.5 w-[25%] whitespace-nowrap">Tiền
                                         tệ</th>
                                     <th class="py-2 px-1 sm:px-1.5 text-right w-[25%] whitespace-nowrap">MUA</th>
@@ -501,6 +410,250 @@
                 </div>
             </div>
 
+        </div>
+
+        <!-- 6. CÔNG THỨC NÂNG HẠ TUỔI VÀNG - BẠC TỰ ĐỘNG (Mobile Order 6 | Web: Tràn 12 Cột Full Trang) -->
+        <div id="calculator-section" class="order-6 lg:order-none lg:col-span-12 w-full mt-4">
+            <div id="calc-card"
+                class="dashboard-card bg-[#0b1329] text-slate-100 rounded-2xl shadow-2xl border-2 border-amber-500/40 overflow-hidden transition-all duration-300">
+                <!-- Header Banner -->
+                <div
+                    class="bg-gradient-to-r from-amber-950 via-slate-900 to-amber-900 text-white p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 relative overflow-hidden border-b border-amber-500/30">
+                    <div
+                        class="absolute -right-10 -top-10 w-40 h-40 bg-amber-500/20 rounded-full blur-2xl pointer-events-none">
+                    </div>
+
+                    <div class="flex items-center gap-3 z-10">
+                        <div
+                            class="w-11 h-11 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-600 text-slate-950 flex items-center justify-center text-2xl shadow-md shadow-amber-900/50 shrink-0 font-bold">
+                            🪙
+                        </div>
+                        <div>
+                            <h3 id="calc-title" class="text-xl sm:text-2xl font-black uppercase tracking-wider">CÔNG THỨC NÂNG HẠ TUỔI VÀNG - BẠC TỰ ĐỘNG</h3>
+                            <p id="calc-subtitle" class="text-xs sm:text-sm font-medium mt-0.5">Tự động tính toán lượng Vàng 9999 hoặc Hợp kim cần thêm</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Body Content -->
+                <div class="p-4 sm:p-5 flex flex-col gap-4 bg-slate-900/70">
+                    <!-- Input Grid (3 boxes: Trọng lượng thực, Hàm lượng thực, Hàm lượng muốn quy ra) -->
+                    <div id="calc-input-grid" class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                        <!-- Box 1: Trọng lượng thực -->
+                        <div
+                            class="bg-slate-950/80 p-3 sm:p-3.5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-between gap-2">
+                            <div
+                                class="flex items-center gap-2 font-extrabold text-xs sm:text-sm text-slate-200 shrink-0">
+                                <span class="text-lg">📦</span> TRỌNG LƯỢNG THỰC (Chỉ):
+                            </div>
+                            <div class="w-full">
+                                <input type="number" id="calc-tv-weight" value="1.0" min="0" step="0.0001"
+                                    oninput="GoldDashboard.calculatePurity()"
+                                    class="w-full bg-slate-900 border border-slate-700 focus:border-amber-400 text-amber-300 font-mono font-bold text-center px-3 py-1.5 rounded-lg outline-none text-base sm:text-lg transition-colors shadow-inner" />
+                            </div>
+                        </div>
+
+                        <!-- Box 2: Hàm lượng thực -->
+                        <div
+                            class="bg-slate-950/80 p-3 sm:p-3.5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-between gap-2">
+                            <div
+                                class="flex items-center gap-2 font-extrabold text-xs sm:text-sm text-slate-200 shrink-0">
+                                <span class="text-cyan-400 text-lg">📊</span> HÀM LƯỢNG THỰC ( tuổi/% ):
+                            </div>
+                            <div class="w-full relative">
+                                <input type="number" id="calc-tv-current-purity" value="61.0" min="0" max="100"
+                                    step="0.1" oninput="GoldDashboard.calculatePurity()"
+                                    class="w-full bg-slate-900 border border-slate-700 focus:border-amber-400 text-amber-300 font-mono font-bold text-center px-3 py-1.5 pr-7 rounded-lg outline-none text-base sm:text-lg transition-colors shadow-inner" />
+                                <span
+                                    class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs">%</span>
+                            </div>
+                        </div>
+
+                        <!-- Box 3: Hàm lượng muốn quy ra -->
+                        <div
+                            class="bg-slate-950/80 p-3 sm:p-3.5 rounded-xl border border-slate-800 shadow-sm flex flex-col justify-between gap-2">
+                            <div
+                                class="flex items-center gap-2 font-extrabold text-xs sm:text-sm text-slate-200 shrink-0">
+                                <span class="text-rose-400 text-lg">🎯</span> HÀM LƯỢNG MUỐN QUY RA ( tuổi/% ):
+                            </div>
+                            <div class="w-full relative">
+                                <input type="number" id="calc-tv-target-purity" value="75.0" min="0" max="100"
+                                    step="0.1" oninput="GoldDashboard.calculatePurity()"
+                                    class="w-full bg-slate-900 border border-slate-700 focus:border-amber-400 text-amber-300 font-mono font-bold text-center px-3 py-1.5 pr-7 rounded-lg outline-none text-base sm:text-lg transition-colors shadow-inner" />
+                                <span
+                                    class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs">%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div id="calc-results-container"
+                        class="bg-slate-950/90 p-4 rounded-2xl border border-slate-800 flex flex-col gap-3 transition-all duration-300">
+                        <div
+                            class="flex items-center gap-2 font-black text-amber-400 text-sm sm:text-base uppercase tracking-wide">
+                            <span class="text-lg">📄</span> KẾT QUẢ PHA CHẾ
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <!-- Result Card 1: Vàng 9999 thêm vào -> MÀU ĐỎ -->
+                            <div
+                                class="bg-slate-900 p-3.5 rounded-xl border border-slate-800 shadow-sm flex items-center gap-3">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-2xl shrink-0">
+                                    🧈
+                                </div>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="text-xs text-slate-400 font-bold">Vàng 9999 thêm vào:</span>
+                                    <span id="tv-res-gold" style="color: #ef4444 !important;"
+                                        class="text-lg sm:text-xl font-black font-mono leading-tight truncate">0.5602
+                                        Chỉ</span>
+                                    <span id="tv-res-gold-g" style="color: #94a3b8 !important;" class="text-[11px] font-medium">≈ 2.1008
+                                        gam</span>
+                                </div>
+                            </div>
+
+                            <!-- Result Card 2: Hợp kim thêm vào -> MÀU TÍM -->
+                            <div
+                                class="bg-slate-900 p-3.5 rounded-xl border border-slate-800 shadow-sm flex items-center gap-3">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-2xl shrink-0">
+                                    🧊
+                                </div>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="text-xs text-slate-400 font-bold">Hợp kim thêm vào:</span>
+                                    <span id="tv-res-alloy" style="color: #a855f7 !important;"
+                                        class="text-lg sm:text-xl font-black font-mono leading-tight truncate">0.0000
+                                        Chỉ</span>
+                                    <span id="tv-res-alloy-g" style="color: #94a3b8 !important;" class="text-[11px] font-medium">≈ 0.0000
+                                        gam</span>
+                                </div>
+                            </div>
+
+                            <!-- Result Card 3: Tổng trọng lượng sau cùng -> MÀU VÀNG -->
+                            <div
+                                class="bg-slate-900 p-3.5 rounded-xl border border-slate-800 shadow-sm flex items-center gap-3">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-2xl shrink-0">
+                                    ⚖️
+                                </div>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="text-xs text-slate-400 font-bold">TỔNG TRỌNG LƯỢNG SAU CÙNG:</span>
+                                    <span id="tv-res-total" style="color: #eab308 !important;"
+                                        class="text-lg sm:text-xl font-black font-mono leading-tight truncate">1.5602
+                                        Chỉ</span>
+                                    <span id="tv-res-total-g" style="color: #94a3b8 !important;" class="text-[11px] font-medium">≈ 5.8508
+                                        gam</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Thông số chi tiết -->
+                        <div class="mt-2 pt-3 border-t border-slate-800 flex flex-col gap-3">
+                            <div
+                                class="flex items-center gap-2 font-bold text-xs text-slate-300 uppercase tracking-wider">
+                                <span>📑</span> THÔNG SỐ CHI TIẾT
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm">
+                                <!-- Item 1: Trọng lượng thực ban đầu -> MÀU VÀNG -->
+                                <div
+                                    class="bg-slate-900/90 p-3 sm:p-3.5 rounded-xl border border-slate-800/80 shadow-sm flex justify-between items-center gap-2 hover:border-slate-700 transition">
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        <span class="text-base">📦</span>
+                                        <span class="text-slate-300 font-semibold">Trọng lượng thực ban đầu:</span>
+                                    </div>
+                                    <div class="text-right flex flex-col items-end">
+                                        <span id="tv-dt-init-w" style="color: #eab308 !important;"
+                                            class="font-mono font-black text-base sm:text-lg leading-tight">1.0000
+                                            Chỉ</span>
+                                        <span id="tv-dt-init-w-g" style="color: #94a3b8 !important;"
+                                            class="font-mono text-[11px] sm:text-xs font-medium mt-0.5">≈
+                                            3.7500 gam</span>
+                                    </div>
+                                </div>
+
+                                <!-- Item 2: Hàm lượng thực ban đầu -> MÀU CYAN / XANH DƯƠNG -->
+                                <div
+                                    class="bg-slate-900/90 p-3 sm:p-3.5 rounded-xl border border-slate-800/80 shadow-sm flex justify-between items-center gap-2 hover:border-slate-700 transition">
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        <span class="text-base text-cyan-400">📊</span>
+                                        <span class="text-slate-300 font-semibold">Hàm lượng thực ban đầu:</span>
+                                    </div>
+                                    <div class="text-right flex flex-col items-end">
+                                        <span id="tv-dt-init-p" style="color: #06b6d4 !important;"
+                                            class="font-mono font-black text-base sm:text-lg leading-tight">61.0
+                                            %</span>
+                                    </div>
+                                </div>
+
+                                <!-- Item 3: Hàm lượng muốn quy ra -> MÀU HỒNG ĐỎ -->
+                                <div
+                                    class="bg-slate-900/90 p-3 sm:p-3.5 rounded-xl border border-slate-800/80 shadow-sm flex justify-between items-center gap-2 hover:border-slate-700 transition">
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        <span class="text-base text-rose-400">🎯</span>
+                                        <span class="text-slate-300 font-semibold">Hàm lượng muốn quy ra:</span>
+                                    </div>
+                                    <div class="text-right flex flex-col items-end">
+                                        <span id="tv-dt-target-p" style="color: #f43f5e !important;"
+                                            class="font-mono font-black text-base sm:text-lg leading-tight">75.0
+                                            %</span>
+                                    </div>
+                                </div>
+
+                                <!-- Item 4: Vàng 9999 cần thêm -> MÀU ĐỎ -->
+                                <div
+                                    class="bg-slate-900/90 p-3 sm:p-3.5 rounded-xl border border-slate-800/80 shadow-sm flex justify-between items-center gap-2 hover:border-slate-700 transition">
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        <span class="text-base">🧈</span>
+                                        <span class="text-slate-300 font-semibold">Vàng 9999 cần thêm:</span>
+                                    </div>
+                                    <div class="text-right flex flex-col items-end">
+                                        <span id="tv-dt-gold" style="color: #ef4444 !important;"
+                                            class="font-mono font-black text-base sm:text-lg leading-tight">0.5602
+                                            Chỉ</span>
+                                        <span id="tv-dt-gold-g" style="color: #94a3b8 !important;"
+                                            class="font-mono text-[11px] sm:text-xs font-medium mt-0.5">≈
+                                            2.1008 gam</span>
+                                    </div>
+                                </div>
+
+                                <!-- Item 5: Hợp kim cần thêm -> MÀU TÍM -->
+                                <div
+                                    class="bg-slate-900/90 p-3 sm:p-3.5 rounded-xl border border-slate-800/80 shadow-sm flex justify-between items-center gap-2 hover:border-slate-700 transition">
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        <span class="text-base">🧊</span>
+                                        <span class="text-slate-300 font-semibold">Hợp kim cần thêm:</span>
+                                    </div>
+                                    <div class="text-right flex flex-col items-end">
+                                        <span id="tv-dt-alloy" style="color: #a855f7 !important;"
+                                            class="font-mono font-black text-base sm:text-lg leading-tight">0.0000
+                                            Chỉ</span>
+                                        <span id="tv-dt-alloy-g" style="color: #94a3b8 !important;"
+                                            class="font-mono text-[11px] sm:text-xs font-medium mt-0.5">≈
+                                            0.0000 gam</span>
+                                    </div>
+                                </div>
+
+                                <!-- Item 6: Tổng trọng lượng sau cùng -> MÀU VÀNG -->
+                                <div
+                                    class="bg-slate-900/90 p-3 sm:p-3.5 rounded-xl border border-slate-800/80 shadow-sm flex justify-between items-center gap-2 hover:border-slate-700 transition">
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        <span class="text-base">⚖️</span>
+                                        <span class="text-slate-300 font-semibold">Tổng trọng lượng sau cùng:</span>
+                                    </div>
+                                    <div class="text-right flex flex-col items-end">
+                                        <span id="tv-dt-total" style="color: #eab308 !important;"
+                                            class="font-mono font-black text-base sm:text-lg leading-tight">1.5602
+                                            Chỉ</span>
+                                        <span id="tv-dt-total-g" style="color: #94a3b8 !important;"
+                                            class="font-mono text-[11px] sm:text-xs font-medium mt-0.5">≈
+                                            5.8508 gam</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- 7. TIN TỨC THỊ TRƯỜNG (Mobile Order 7 | Web: 12 cột tràn lề ở cuối trang) -->
@@ -523,78 +676,9 @@
         </div>
     </footer>
 
-    <!-- Hộp Thoại Modal Đăng Nhập / Đăng Ký Nhanh -->
-    <div id="auth-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
-        <div class="dashboard-card w-full max-w-md p-6 rounded-2xl border border-slate-800 shadow-2xl relative">
-            <button onclick="GoldDashboard.closeAuthModal()"
-                class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold cursor-pointer">✕</button>
-            <div class="text-center mb-5">
-                <h3 id="modal-auth-title" class="text-base font-bold text-slate-100">Đăng Nhập Tài Khoản</h3>
-                <p class="text-xs text-slate-400 mt-0.5">Đăng ký hoặc đăng nhập để xem toàn bộ bảng giá và tính năng</p>
-            </div>
-
-            <div class="flex items-center bg-slate-950/80 p-1 rounded-xl border border-slate-800 mb-5">
-                <button id="modal-tab-login" onclick="GoldDashboard.switchModalAuthTab('login')"
-                    class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all bg-yellow-500 text-slate-950 shadow-md cursor-pointer">Đăng
-                    Nhập</button>
-                <button id="modal-tab-register" onclick="GoldDashboard.switchModalAuthTab('register')"
-                    class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white cursor-pointer">Đăng
-                    Ký</button>
-            </div>
-
-            <!-- Modal Login Form -->
-            <form id="modal-form-login" onsubmit="GoldDashboard.handleModalLogin(event)" class="space-y-3.5">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Email hoặc SĐT</label>
-                    <input type="text" id="modal-login-acc" required placeholder="name@example.com hoặc 0912345678"
-                        class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs outline-none focus:border-yellow-500" />
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Mật khẩu</label>
-                    <input type="password" id="modal-login-pwd" required placeholder="••••••••"
-                        class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs outline-none focus:border-yellow-500" />
-                </div>
-                <div id="modal-login-error"
-                    class="hidden text-xs text-rose-400 bg-rose-950/60 p-2 rounded-lg border border-rose-800"></div>
-                <button type="submit"
-                    class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 font-bold text-slate-950 text-xs shadow-md cursor-pointer">
-                    Đăng Nhập Ngay
-                </button>
-                <button type="button" onclick="GoldDashboard.loginDemo()"
-                    class="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs border border-slate-700 cursor-pointer">
-                    ⚡ Dùng thử nhanh (Tài khoản Demo)
-                </button>
-            </form>
-
-            <!-- Modal Register Form -->
-            <form id="modal-form-register" onsubmit="GoldDashboard.handleModalRegister(event)"
-                class="space-y-3.5 hidden">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Họ và tên</label>
-                    <input type="text" id="modal-reg-name" required placeholder="Nguyễn Văn A"
-                        class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs outline-none focus:border-yellow-500" />
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Email hoặc SĐT</label>
-                    <input type="text" id="modal-reg-acc" required placeholder="name@example.com hoặc 0912345678"
-                        class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs outline-none focus:border-yellow-500" />
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Mật khẩu</label>
-                    <input type="password" id="modal-reg-pwd" required minlength="6" placeholder="Tối thiểu 6 ký tự"
-                        class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs outline-none focus:border-yellow-500" />
-                </div>
-                <button type="submit"
-                    class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 font-bold text-slate-950 text-xs shadow-md cursor-pointer">
-                    Tạo Tài Khoản & Mở Khóa Giá
-                </button>
-            </form>
-        </div>
-    </div>
-
     <!-- Hộp Thoại Đọc Tin Tức Chi Tiết (News Modal) -->
-    <div id="news-modal"
-        class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 modal-backdrop overflow-y-auto">
+    <div id="news-modal" style="display: none !important;"
+        class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-4 modal-backdrop overflow-y-auto">
         <div
             class="dashboard-card w-full max-w-2xl p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-2xl relative max-h-[88vh] flex flex-col my-auto">
             <button onclick="GoldDashboard.closeNewsModal()"
@@ -606,8 +690,7 @@
     </div>
 
     <!-- File JavaScript -->
-    <script src="app.js?v=61"></script>
-
+    <script src="app.js?v=8007"></script>
 </body>
 
 </html>
